@@ -1,9 +1,27 @@
 <?xml version="1.0"?>
 <doc>
     <assembly>
-        <name>Polenter.SharpSerializer</name>
+        <name>Polenter.SharpSerializer.Portable</name>
     </assembly>
     <members>
+        <member name="T:Polenter.Serialization.Advanced.PropertyCache">
+            <summary>
+             Supports multithreading. It's slower but neccessary, 
+             because Portable Framework does not support ThreadStaticAttribute.
+            </summary>
+        </member>
+        <member name="M:Polenter.Serialization.Advanced.PropertyCache.TryGetPropertyInfos(System.Type)">
+            <summary>
+            </summary>
+            <returns>null if the key was not found</returns>
+        </member>
+        <member name="M:Polenter.Serialization.Advanced.PropertyCache.Add(System.Type,System.Collections.Generic.IList{System.Reflection.PropertyInfo})">
+            <summary>
+            If the key exists, the value will not be added.
+            </summary>
+            <param name="key"></param>
+            <param name="value"></param>
+        </member>
         <member name="T:Polenter.Serialization.Advanced.DefaultXmlWriter">
             <summary>
               Stores data in xml format
@@ -140,6 +158,53 @@
             <param name = "values"></param>
             <returns></returns>
         </member>
+        <member name="T:Polenter.Serialization.Serializing.PropertyTypeInfo`1">
+            <summary>
+              Contains info about property and its type.
+              It is of use to avoid double type definitions.
+            </summary>
+            <typeparam name = "TProperty"></typeparam>
+            <remarks>
+              During serialization is each property wrapped in this class.
+              there is no need to define type of every array element if there is a global ElementType type defined
+              and each array element type is equal to that global ElementType
+              In such a case ElementType is stored in ExpectedPropertyType, ValueType contains null.
+            </remarks>
+        </member>
+        <member name="M:Polenter.Serialization.Serializing.PropertyTypeInfo`1.#ctor(`0,System.Type)">
+            <summary>
+            </summary>
+            <param name = "property"></param>
+            <param name = "valueType"></param>
+        </member>
+        <member name="M:Polenter.Serialization.Serializing.PropertyTypeInfo`1.#ctor(`0,System.Type,System.Type)">
+            <summary>
+            </summary>
+            <param name = "property"></param>
+            <param name = "expectedPropertyType"></param>
+            <param name = "valueType"></param>
+        </member>
+        <member name="P:Polenter.Serialization.Serializing.PropertyTypeInfo`1.ExpectedPropertyType">
+            <summary>
+              Of what type should be this property
+            </summary>
+        </member>
+        <member name="P:Polenter.Serialization.Serializing.PropertyTypeInfo`1.ValueType">
+            <summary>
+              Of what type is the property value. If it is null - then the value type is equal to expectedPropertyType
+              and does not need to be additionally serialized
+            </summary>
+        </member>
+        <member name="P:Polenter.Serialization.Serializing.PropertyTypeInfo`1.Name">
+            <summary>
+              Property name
+            </summary>
+        </member>
+        <member name="P:Polenter.Serialization.Serializing.PropertyTypeInfo`1.Property">
+            <summary>
+              Property itself
+            </summary>
+        </member>
         <member name="T:Polenter.Serialization.Core.Tools">
             <summary>
               Some help functions for the serializing framework. As these functions are complexer
@@ -186,6 +251,35 @@
               Creates instance from type. There must be a standard constructor (without parameters) in the type.
             </summary>
             <param name = "type"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Polenter.Serialization.Core.Binary.BinaryReaderTools">
+            <summary>
+              Some methods which are used by IBinaryReader
+            </summary>
+        </member>
+        <member name="M:Polenter.Serialization.Core.Binary.BinaryReaderTools.ReadString(System.IO.BinaryReader)">
+            <summary>
+            </summary>
+            <param name = "reader"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Polenter.Serialization.Core.Binary.BinaryReaderTools.ReadNumber(System.IO.BinaryReader)">
+            <summary>
+            </summary>
+            <param name = "reader"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Polenter.Serialization.Core.Binary.BinaryReaderTools.ReadNumbers(System.IO.BinaryReader)">
+            <summary>
+            </summary>
+            <returns>empty array if there are no indexes</returns>
+        </member>
+        <member name="M:Polenter.Serialization.Core.Binary.BinaryReaderTools.ReadValue(System.Type,System.IO.BinaryReader)">
+            <summary>
+            </summary>
+            <param name = "expectedType"></param>
+            <param name = "reader"></param>
             <returns></returns>
         </member>
         <member name="T:Polenter.Serialization.Advanced.SimpleValueConverter">
@@ -241,82 +335,6 @@
             <param name = "text"></param>
             <param name = "type">expected type. Result should be of this type.</param>
             <returns>null if the text is null</returns>
-        </member>
-        <member name="T:Polenter.Serialization.Serializing.PropertyTypeInfo`1">
-            <summary>
-              Contains info about property and its type.
-              It is of use to avoid double type definitions.
-            </summary>
-            <typeparam name = "TProperty"></typeparam>
-            <remarks>
-              During serialization is each property wrapped in this class.
-              there is no need to define type of every array element if there is a global ElementType type defined
-              and each array element type is equal to that global ElementType
-              In such a case ElementType is stored in ExpectedPropertyType, ValueType contains null.
-            </remarks>
-        </member>
-        <member name="M:Polenter.Serialization.Serializing.PropertyTypeInfo`1.#ctor(`0,System.Type)">
-            <summary>
-            </summary>
-            <param name = "property"></param>
-            <param name = "valueType"></param>
-        </member>
-        <member name="M:Polenter.Serialization.Serializing.PropertyTypeInfo`1.#ctor(`0,System.Type,System.Type)">
-            <summary>
-            </summary>
-            <param name = "property"></param>
-            <param name = "expectedPropertyType"></param>
-            <param name = "valueType"></param>
-        </member>
-        <member name="P:Polenter.Serialization.Serializing.PropertyTypeInfo`1.ExpectedPropertyType">
-            <summary>
-              Of what type should be this property
-            </summary>
-        </member>
-        <member name="P:Polenter.Serialization.Serializing.PropertyTypeInfo`1.ValueType">
-            <summary>
-              Of what type is the property value. If it is null - then the value type is equal to expectedPropertyType
-              and does not need to be additionally serialized
-            </summary>
-        </member>
-        <member name="P:Polenter.Serialization.Serializing.PropertyTypeInfo`1.Name">
-            <summary>
-              Property name
-            </summary>
-        </member>
-        <member name="P:Polenter.Serialization.Serializing.PropertyTypeInfo`1.Property">
-            <summary>
-              Property itself
-            </summary>
-        </member>
-        <member name="T:Polenter.Serialization.Core.Binary.BinaryReaderTools">
-            <summary>
-              Some methods which are used by IBinaryReader
-            </summary>
-        </member>
-        <member name="M:Polenter.Serialization.Core.Binary.BinaryReaderTools.ReadString(System.IO.BinaryReader)">
-            <summary>
-            </summary>
-            <param name = "reader"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Polenter.Serialization.Core.Binary.BinaryReaderTools.ReadNumber(System.IO.BinaryReader)">
-            <summary>
-            </summary>
-            <param name = "reader"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Polenter.Serialization.Core.Binary.BinaryReaderTools.ReadNumbers(System.IO.BinaryReader)">
-            <summary>
-            </summary>
-            <returns>empty array if there are no indexes</returns>
-        </member>
-        <member name="M:Polenter.Serialization.Core.Binary.BinaryReaderTools.ReadValue(System.Type,System.IO.BinaryReader)">
-            <summary>
-            </summary>
-            <param name = "expectedType"></param>
-            <param name = "reader"></param>
-            <returns></returns>
         </member>
         <member name="T:Polenter.Serialization.Advanced.BinaryPropertySerializer">
             <summary>
@@ -491,12 +509,6 @@
             <param name = "message"></param>
             <param name = "innerException"></param>
         </member>
-        <member name="M:Polenter.Serialization.Core.SimpleValueParsingException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
-            <summary>
-            </summary>
-            <param name = "info"></param>
-            <param name = "context"></param>
-        </member>
         <member name="T:Polenter.Serialization.Serializing.TypeInfo">
             <summary>
               Gives extended information about a Type
@@ -618,26 +630,12 @@
             <param name = "serializer"></param>
             <param name = "deserializer"></param>
         </member>
-        <member name="M:Polenter.Serialization.SharpSerializer.Serialize(System.Object,System.String)">
-            <summary>
-              Serializing to a file. File will be always new created and closed after the serialization.
-            </summary>
-            <param name = "data"></param>
-            <param name = "filename"></param>
-        </member>
         <member name="M:Polenter.Serialization.SharpSerializer.Serialize(System.Object,System.IO.Stream)">
             <summary>
               Serializing to the stream. After serialization the stream will NOT be closed.
             </summary>
             <param name = "data"></param>
             <param name = "stream"></param>
-        </member>
-        <member name="M:Polenter.Serialization.SharpSerializer.Deserialize(System.String)">
-            <summary>
-              Deserializing from the file. After deserialization the file will be closed.
-            </summary>
-            <param name = "filename"></param>
-            <returns></returns>
         </member>
         <member name="M:Polenter.Serialization.SharpSerializer.Deserialize(System.IO.Stream)">
             <summary>
@@ -656,75 +654,6 @@
             <summary>
               What name should have the root property. Default is "Root".
             </summary>
-        </member>
-        <member name="T:Polenter.Serialization.Advanced.XmlPropertyDeserializer">
-            <summary>
-              Contains logic to read data stored with XmlPropertySerializer
-            </summary>
-        </member>
-        <member name="T:Polenter.Serialization.Advanced.Deserializing.IPropertyDeserializer">
-            <summary>
-              Deserializes a stream and gives back a Property
-            </summary>
-        </member>
-        <member name="M:Polenter.Serialization.Advanced.Deserializing.IPropertyDeserializer.Open(System.IO.Stream)">
-            <summary>
-              Open the stream to read
-            </summary>
-            <param name = "stream"></param>
-        </member>
-        <member name="M:Polenter.Serialization.Advanced.Deserializing.IPropertyDeserializer.Deserialize">
-            <summary>
-              Reading the stream
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:Polenter.Serialization.Advanced.Deserializing.IPropertyDeserializer.Close">
-            <summary>
-              Cleans all
-            </summary>
-        </member>
-        <member name="F:Polenter.Serialization.Advanced.XmlPropertyDeserializer._propertyCache">
-            <summary>
-            All reference targets already processed. Used to for reference resolution.
-            </summary>
-        </member>
-        <member name="M:Polenter.Serialization.Advanced.XmlPropertyDeserializer.#ctor(Polenter.Serialization.Advanced.Xml.IXmlReader)">
-            <summary>
-            </summary>
-            <param name = "reader"></param>
-        </member>
-        <member name="M:Polenter.Serialization.Advanced.XmlPropertyDeserializer.Open(System.IO.Stream)">
-            <summary>
-              Open the stream to read
-            </summary>
-            <param name = "stream"></param>
-        </member>
-        <member name="M:Polenter.Serialization.Advanced.XmlPropertyDeserializer.Deserialize">
-            <summary>
-              Reading the property
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:Polenter.Serialization.Advanced.XmlPropertyDeserializer.Close">
-            <summary>
-              Cleans all
-            </summary>
-        </member>
-        <member name="T:Polenter.Serialization.Serializing.TypeInfoCollection">
-            <summary>
-            </summary>
-        </member>
-        <member name="M:Polenter.Serialization.Serializing.TypeInfoCollection.TryGetTypeInfo(System.Type)">
-            <summary>
-            </summary>
-            <returns>null if the key was not found</returns>
-        </member>
-        <member name="M:Polenter.Serialization.Serializing.TypeInfoCollection.GetKeyForItem(Polenter.Serialization.Serializing.TypeInfo)">
-            <summary>
-            </summary>
-            <param name = "item"></param>
-            <returns></returns>
         </member>
         <member name="T:Polenter.Serialization.Advanced.Xml.IXmlReader">
             <summary>
@@ -790,6 +719,60 @@
               Stream can be further used
             </summary>
         </member>
+        <member name="T:Polenter.Serialization.Advanced.XmlPropertyDeserializer">
+            <summary>
+              Contains logic to read data stored with XmlPropertySerializer
+            </summary>
+        </member>
+        <member name="T:Polenter.Serialization.Advanced.Deserializing.IPropertyDeserializer">
+            <summary>
+              Deserializes a stream and gives back a Property
+            </summary>
+        </member>
+        <member name="M:Polenter.Serialization.Advanced.Deserializing.IPropertyDeserializer.Open(System.IO.Stream)">
+            <summary>
+              Open the stream to read
+            </summary>
+            <param name = "stream"></param>
+        </member>
+        <member name="M:Polenter.Serialization.Advanced.Deserializing.IPropertyDeserializer.Deserialize">
+            <summary>
+              Reading the stream
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Polenter.Serialization.Advanced.Deserializing.IPropertyDeserializer.Close">
+            <summary>
+              Cleans all
+            </summary>
+        </member>
+        <member name="F:Polenter.Serialization.Advanced.XmlPropertyDeserializer._propertyCache">
+            <summary>
+            All reference targets already processed. Used to for reference resolution.
+            </summary>
+        </member>
+        <member name="M:Polenter.Serialization.Advanced.XmlPropertyDeserializer.#ctor(Polenter.Serialization.Advanced.Xml.IXmlReader)">
+            <summary>
+            </summary>
+            <param name = "reader"></param>
+        </member>
+        <member name="M:Polenter.Serialization.Advanced.XmlPropertyDeserializer.Open(System.IO.Stream)">
+            <summary>
+              Open the stream to read
+            </summary>
+            <param name = "stream"></param>
+        </member>
+        <member name="M:Polenter.Serialization.Advanced.XmlPropertyDeserializer.Deserialize">
+            <summary>
+              Reading the property
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Polenter.Serialization.Advanced.XmlPropertyDeserializer.Close">
+            <summary>
+              Cleans all
+            </summary>
+        </member>
         <member name="T:Polenter.Serialization.Core.DeserializingException">
             <summary>
               Can occure during deserialization
@@ -809,12 +792,6 @@
             </summary>
             <param name = "message"></param>
             <param name = "inner"></param>
-        </member>
-        <member name="M:Polenter.Serialization.Core.DeserializingException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
-            <summary>
-            </summary>
-            <param name = "info"></param>
-            <param name = "context"></param>
         </member>
         <member name="T:Polenter.Serialization.Serializing.PropertyFactory">
             <summary>
@@ -1113,119 +1090,6 @@
             <param name = "infos"></param>
             <returns></returns>
         </member>
-        <member name="T:Polenter.Serialization.Advanced.BurstBinaryWriter">
-            <summary>
-              Stores data in a binary format. All types and property names which describe an object are stored together with the object.
-              If there are more objects to store, their types are multiple stored, what increases the file size. 
-              This format is simple and has small overhead.
-            </summary>
-        </member>
-        <member name="T:Polenter.Serialization.Advanced.Binary.IBinaryWriter">
-            <summary>
-              Writes in a binary format
-            </summary>
-        </member>
-        <member name="M:Polenter.Serialization.Advanced.Binary.IBinaryWriter.WriteElementId(System.Byte)">
-            <summary>
-              Writes Element Id
-            </summary>
-            <param name = "id"></param>
-        </member>
-        <member name="M:Polenter.Serialization.Advanced.Binary.IBinaryWriter.WriteType(System.Type)">
-            <summary>
-              Writes type
-            </summary>
-            <param name = "type"></param>
-        </member>
-        <member name="M:Polenter.Serialization.Advanced.Binary.IBinaryWriter.WriteName(System.String)">
-            <summary>
-              Writes property name
-            </summary>
-            <param name = "name"></param>
-        </member>
-        <member name="M:Polenter.Serialization.Advanced.Binary.IBinaryWriter.WriteValue(System.Object)">
-            <summary>
-              Writes a simple value (value of a simple property)
-            </summary>
-            <param name = "value"></param>
-        </member>
-        <member name="M:Polenter.Serialization.Advanced.Binary.IBinaryWriter.WriteNumber(System.Int32)">
-            <summary>
-              Writes an integer. It saves the number with the least required bytes
-            </summary>
-            <param name = "number"></param>
-        </member>
-        <member name="M:Polenter.Serialization.Advanced.Binary.IBinaryWriter.WriteNumbers(System.Int32[])">
-            <summary>
-              Writes an array of numbers. It saves numbers with the least required bytes
-            </summary>
-            <param name = "numbers"></param>
-        </member>
-        <member name="M:Polenter.Serialization.Advanced.Binary.IBinaryWriter.Open(System.IO.Stream)">
-            <summary>
-              Opens the stream for writing
-            </summary>
-            <param name = "stream"></param>
-        </member>
-        <member name="M:Polenter.Serialization.Advanced.Binary.IBinaryWriter.Close">
-            <summary>
-              Saves the data to the stream, the stream is not closed and can be further used
-            </summary>
-        </member>
-        <member name="M:Polenter.Serialization.Advanced.BurstBinaryWriter.#ctor(Polenter.Serialization.Advanced.Serializing.ITypeNameConverter,System.Text.Encoding)">
-            <summary>
-            </summary>
-            <param name="typeNameConverter"></param>
-            <param name="encoding"></param>
-            <exception cref="T:System.ArgumentNullException"></exception>
-        </member>
-        <member name="M:Polenter.Serialization.Advanced.BurstBinaryWriter.WriteElementId(System.Byte)">
-            <summary>
-              Writes Element Id
-            </summary>
-            <param name = "id"></param>
-        </member>
-        <member name="M:Polenter.Serialization.Advanced.BurstBinaryWriter.WriteNumber(System.Int32)">
-            <summary>
-              Writes an integer. It saves the number with the least required bytes
-            </summary>
-            <param name = "number"></param>
-        </member>
-        <member name="M:Polenter.Serialization.Advanced.BurstBinaryWriter.WriteNumbers(System.Int32[])">
-            <summary>
-              Writes an array of numbers. It saves numbers with the least required bytes
-            </summary>
-            <param name = "numbers"></param>
-        </member>
-        <member name="M:Polenter.Serialization.Advanced.BurstBinaryWriter.WriteType(System.Type)">
-            <summary>
-              Writes type
-            </summary>
-            <param name = "type"></param>
-        </member>
-        <member name="M:Polenter.Serialization.Advanced.BurstBinaryWriter.WriteName(System.String)">
-            <summary>
-              Writes property name
-            </summary>
-            <param name = "name"></param>
-        </member>
-        <member name="M:Polenter.Serialization.Advanced.BurstBinaryWriter.WriteValue(System.Object)">
-            <summary>
-              Writes a simple value (value of a simple property)
-            </summary>
-            <param name = "value"></param>
-        </member>
-        <member name="M:Polenter.Serialization.Advanced.BurstBinaryWriter.Open(System.IO.Stream)">
-            <summary>
-              Opens the stream for writing
-            </summary>
-            <param name = "stream"></param>
-        </member>
-        <member name="M:Polenter.Serialization.Advanced.BurstBinaryWriter.Close">
-            <summary>
-              Saves the data to the stream, the stream is not closed and can be further used
-            </summary>
-        </member>
         <member name="T:Polenter.Serialization.Core.DefaultInitializer">
             <summary>
               Gives standard settings for the framework. Is used only internally.
@@ -1405,6 +1269,119 @@
             </summary>
             <param name = "value"></param>
             <returns></returns>
+        </member>
+        <member name="T:Polenter.Serialization.Advanced.BurstBinaryWriter">
+            <summary>
+              Stores data in a binary format. All types and property names which describe an object are stored together with the object.
+              If there are more objects to store, their types are multiple stored, what increases the file size. 
+              This format is simple and has small overhead.
+            </summary>
+        </member>
+        <member name="T:Polenter.Serialization.Advanced.Binary.IBinaryWriter">
+            <summary>
+              Writes in a binary format
+            </summary>
+        </member>
+        <member name="M:Polenter.Serialization.Advanced.Binary.IBinaryWriter.WriteElementId(System.Byte)">
+            <summary>
+              Writes Element Id
+            </summary>
+            <param name = "id"></param>
+        </member>
+        <member name="M:Polenter.Serialization.Advanced.Binary.IBinaryWriter.WriteType(System.Type)">
+            <summary>
+              Writes type
+            </summary>
+            <param name = "type"></param>
+        </member>
+        <member name="M:Polenter.Serialization.Advanced.Binary.IBinaryWriter.WriteName(System.String)">
+            <summary>
+              Writes property name
+            </summary>
+            <param name = "name"></param>
+        </member>
+        <member name="M:Polenter.Serialization.Advanced.Binary.IBinaryWriter.WriteValue(System.Object)">
+            <summary>
+              Writes a simple value (value of a simple property)
+            </summary>
+            <param name = "value"></param>
+        </member>
+        <member name="M:Polenter.Serialization.Advanced.Binary.IBinaryWriter.WriteNumber(System.Int32)">
+            <summary>
+              Writes an integer. It saves the number with the least required bytes
+            </summary>
+            <param name = "number"></param>
+        </member>
+        <member name="M:Polenter.Serialization.Advanced.Binary.IBinaryWriter.WriteNumbers(System.Int32[])">
+            <summary>
+              Writes an array of numbers. It saves numbers with the least required bytes
+            </summary>
+            <param name = "numbers"></param>
+        </member>
+        <member name="M:Polenter.Serialization.Advanced.Binary.IBinaryWriter.Open(System.IO.Stream)">
+            <summary>
+              Opens the stream for writing
+            </summary>
+            <param name = "stream"></param>
+        </member>
+        <member name="M:Polenter.Serialization.Advanced.Binary.IBinaryWriter.Close">
+            <summary>
+              Saves the data to the stream, the stream is not closed and can be further used
+            </summary>
+        </member>
+        <member name="M:Polenter.Serialization.Advanced.BurstBinaryWriter.#ctor(Polenter.Serialization.Advanced.Serializing.ITypeNameConverter,System.Text.Encoding)">
+            <summary>
+            </summary>
+            <param name="typeNameConverter"></param>
+            <param name="encoding"></param>
+            <exception cref="T:System.ArgumentNullException"></exception>
+        </member>
+        <member name="M:Polenter.Serialization.Advanced.BurstBinaryWriter.WriteElementId(System.Byte)">
+            <summary>
+              Writes Element Id
+            </summary>
+            <param name = "id"></param>
+        </member>
+        <member name="M:Polenter.Serialization.Advanced.BurstBinaryWriter.WriteNumber(System.Int32)">
+            <summary>
+              Writes an integer. It saves the number with the least required bytes
+            </summary>
+            <param name = "number"></param>
+        </member>
+        <member name="M:Polenter.Serialization.Advanced.BurstBinaryWriter.WriteNumbers(System.Int32[])">
+            <summary>
+              Writes an array of numbers. It saves numbers with the least required bytes
+            </summary>
+            <param name = "numbers"></param>
+        </member>
+        <member name="M:Polenter.Serialization.Advanced.BurstBinaryWriter.WriteType(System.Type)">
+            <summary>
+              Writes type
+            </summary>
+            <param name = "type"></param>
+        </member>
+        <member name="M:Polenter.Serialization.Advanced.BurstBinaryWriter.WriteName(System.String)">
+            <summary>
+              Writes property name
+            </summary>
+            <param name = "name"></param>
+        </member>
+        <member name="M:Polenter.Serialization.Advanced.BurstBinaryWriter.WriteValue(System.Object)">
+            <summary>
+              Writes a simple value (value of a simple property)
+            </summary>
+            <param name = "value"></param>
+        </member>
+        <member name="M:Polenter.Serialization.Advanced.BurstBinaryWriter.Open(System.IO.Stream)">
+            <summary>
+              Opens the stream for writing
+            </summary>
+            <param name = "stream"></param>
+        </member>
+        <member name="M:Polenter.Serialization.Advanced.BurstBinaryWriter.Close">
+            <summary>
+              Saves the data to the stream, the stream is not closed and can be further used
+            </summary>
         </member>
         <member name="T:Polenter.Serialization.Core.Property">
             <summary>
@@ -1944,6 +1921,55 @@
               Close the Write, but do not close the stream
             </summary>
         </member>
+        <member name="T:Polenter.Serialization.Serializing.TypeInfoCollection">
+            <summary>
+             On the contrary to the full framework and Silverlight version,
+             this Collection supports multithreading. It makes the item managing
+             slower, but this is the price of lacking ThreadStaticAttribute in
+             Portable Framework.
+            </summary>
+        </member>
+        <member name="M:Polenter.Serialization.Serializing.TypeInfoCollection.TryGetTypeInfo(System.Type)">
+            <summary>
+            </summary>
+            <returns>null if the key was not found</returns>
+        </member>
+        <member name="M:Polenter.Serialization.Serializing.TypeInfoCollection.AddIfNotExists(Polenter.Serialization.Serializing.TypeInfo)">
+            <summary>
+            </summary>
+            <param name="item"></param>
+        </member>
+        <member name="M:Polenter.Serialization.Serializing.TypeInfoCollection.ClearItems">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Polenter.Serialization.Serializing.TypeInfoCollection.InsertItem(System.Int32,Polenter.Serialization.Serializing.TypeInfo)">
+            <summary>
+            
+            </summary>
+            <param name="index"></param>
+            <param name="item"></param>
+        </member>
+        <member name="M:Polenter.Serialization.Serializing.TypeInfoCollection.RemoveItem(System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="index"></param>
+        </member>
+        <member name="M:Polenter.Serialization.Serializing.TypeInfoCollection.SetItem(System.Int32,Polenter.Serialization.Serializing.TypeInfo)">
+            <summary>
+            
+            </summary>
+            <param name="index"></param>
+            <param name="item"></param>
+        </member>
+        <member name="M:Polenter.Serialization.Serializing.TypeInfoCollection.GetKeyForItem(Polenter.Serialization.Serializing.TypeInfo)">
+            <summary>
+            </summary>
+            <param name = "item"></param>
+            <returns></returns>
+        </member>
         <member name="T:Polenter.Serialization.Core.ArrayAnalyzer">
             <summary>
               Gives information about actually analysed array (from the constructor)
@@ -2033,12 +2059,6 @@
             </summary>
             <param name = "message"></param>
             <param name = "innerException"></param>
-        </member>
-        <member name="M:Polenter.Serialization.Core.CreatingInstanceException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
-            <summary>
-            </summary>
-            <param name = "info"></param>
-            <param name = "context"></param>
         </member>
         <member name="T:Polenter.Serialization.Advanced.BinaryPropertyDeserializer">
             <summary>
@@ -2225,6 +2245,73 @@
               Does nothing, the stream can be further used and has to be manually closed
             </summary>
         </member>
+        <member name="T:Polenter.Serialization.SharpSerializerXmlSettings">
+            <summary>
+              All the most important settings for xml serialization
+            </summary>
+        </member>
+        <member name="T:Polenter.Serialization.Core.SharpSerializerSettings`1">
+            <summary>
+              Base class for the settings of the SharpSerializer. Is passed to its constructor.
+            </summary>
+            <typeparam name = "T"></typeparam>
+        </member>
+        <member name="M:Polenter.Serialization.Core.SharpSerializerSettings`1.#ctor">
+            <summary>
+            IncludeAssemblyVersionInTypeName, IncludeCultureInTypeName and IncludePublicKeyTokenInTypeName are true
+            </summary>
+        </member>
+        <member name="P:Polenter.Serialization.Core.SharpSerializerSettings`1.AdvancedSettings">
+            <summary>
+              Contains mostly classes from the namespace Polenter.Serialization.Advanced
+            </summary>
+        </member>
+        <member name="P:Polenter.Serialization.Core.SharpSerializerSettings`1.IncludeAssemblyVersionInTypeName">
+            <summary>
+              Version=x.x.x.x will be inserted to the type name
+            </summary>
+        </member>
+        <member name="P:Polenter.Serialization.Core.SharpSerializerSettings`1.IncludeCultureInTypeName">
+            <summary>
+              Culture=.... will be inserted to the type name
+            </summary>
+        </member>
+        <member name="P:Polenter.Serialization.Core.SharpSerializerSettings`1.IncludePublicKeyTokenInTypeName">
+            <summary>
+              PublicKeyToken=.... will be inserted to the type name
+            </summary>
+        </member>
+        <member name="M:Polenter.Serialization.SharpSerializerXmlSettings.#ctor">
+            <summary>
+              Standard constructor with Culture=InvariantCulture and Encoding=UTF8
+            </summary>
+        </member>
+        <member name="P:Polenter.Serialization.SharpSerializerXmlSettings.Culture">
+            <summary>
+              All float numbers and date/time values are stored as text according to the Culture. Default is CultureInfo.InvariantCulture.
+              This setting is overridden if you set AdvancedSettings.SimpleValueConverter
+            </summary>
+        </member>
+        <member name="P:Polenter.Serialization.SharpSerializerXmlSettings.Encoding">
+            <summary>
+              Describes format in which the xml file is stored. Default is UTF-8.
+              This setting is overridden if you set AdvancedSettings.XmlWriterSettings
+            </summary>
+        </member>
+        <member name="T:Polenter.Serialization.Core.Binary.IndexGenerator`1">
+            <summary>
+              Is used to store types and property names in lists. Contains only unique elements and gives index of the item back.
+              During deserialization this index is read from stream and then replaced with an appropriate value from the list.
+            </summary>
+            <typeparam name = "T"></typeparam>
+        </member>
+        <member name="M:Polenter.Serialization.Core.Binary.IndexGenerator`1.GetIndexOfItem(`0)">
+            <summary>
+              if the item exist, it gives its index back, otherweise the item is added and its new index is given back
+            </summary>
+            <param name = "item"></param>
+            <returns></returns>
+        </member>
         <member name="T:Polenter.Serialization.Advanced.PropertyProvider">
             <summary>
             Provides properties to serialize from source object. Implements the strategy 
@@ -2318,72 +2405,31 @@
             <param name = "propertyName"></param>
             <returns></returns>
         </member>
-        <member name="T:Polenter.Serialization.SharpSerializerXmlSettings">
+        <member name="T:Polenter.Serialization.SharpSerializerBinarySettings">
             <summary>
-              All the most important settings for xml serialization
+              All the most important settings for binary serialization
             </summary>
         </member>
-        <member name="T:Polenter.Serialization.Core.SharpSerializerSettings`1">
+        <member name="M:Polenter.Serialization.SharpSerializerBinarySettings.#ctor">
             <summary>
-              Base class for the settings of the SharpSerializer. Is passed to its constructor.
-            </summary>
-            <typeparam name = "T"></typeparam>
-        </member>
-        <member name="M:Polenter.Serialization.Core.SharpSerializerSettings`1.#ctor">
-            <summary>
-            IncludeAssemblyVersionInTypeName, IncludeCultureInTypeName and IncludePublicKeyTokenInTypeName are true
+              Default constructor. Serialization in SizeOptimized mode. For other modes choose an overloaded constructor
             </summary>
         </member>
-        <member name="P:Polenter.Serialization.Core.SharpSerializerSettings`1.AdvancedSettings">
+        <member name="M:Polenter.Serialization.SharpSerializerBinarySettings.#ctor(Polenter.Serialization.BinarySerializationMode)">
             <summary>
-              Contains mostly classes from the namespace Polenter.Serialization.Advanced
+              Overloaded constructor. Chooses mode in which the data is serialized.
+            </summary>
+            <param name = "mode">SizeOptimized - all types are stored in a header, objects only reference these types (better for collections). Burst - all types are serialized with their objects (better for serializing of single objects).</param>
+        </member>
+        <member name="P:Polenter.Serialization.SharpSerializerBinarySettings.Encoding">
+            <summary>
+              How are strings serialized. Default is UTF-8.
             </summary>
         </member>
-        <member name="P:Polenter.Serialization.Core.SharpSerializerSettings`1.IncludeAssemblyVersionInTypeName">
+        <member name="P:Polenter.Serialization.SharpSerializerBinarySettings.Mode">
             <summary>
-              Version=x.x.x.x will be inserted to the type name
+              Default is SizeOptimized - Types and property names are stored in a header. The opposite is Burst mode when all types are serialized with their objects.
             </summary>
-        </member>
-        <member name="P:Polenter.Serialization.Core.SharpSerializerSettings`1.IncludeCultureInTypeName">
-            <summary>
-              Culture=.... will be inserted to the type name
-            </summary>
-        </member>
-        <member name="P:Polenter.Serialization.Core.SharpSerializerSettings`1.IncludePublicKeyTokenInTypeName">
-            <summary>
-              PublicKeyToken=.... will be inserted to the type name
-            </summary>
-        </member>
-        <member name="M:Polenter.Serialization.SharpSerializerXmlSettings.#ctor">
-            <summary>
-              Standard constructor with Culture=InvariantCulture and Encoding=UTF8
-            </summary>
-        </member>
-        <member name="P:Polenter.Serialization.SharpSerializerXmlSettings.Culture">
-            <summary>
-              All float numbers and date/time values are stored as text according to the Culture. Default is CultureInfo.InvariantCulture.
-              This setting is overridden if you set AdvancedSettings.SimpleValueConverter
-            </summary>
-        </member>
-        <member name="P:Polenter.Serialization.SharpSerializerXmlSettings.Encoding">
-            <summary>
-              Describes format in which the xml file is stored. Default is UTF-8.
-              This setting is overridden if you set AdvancedSettings.XmlWriterSettings
-            </summary>
-        </member>
-        <member name="T:Polenter.Serialization.Core.Binary.IndexGenerator`1">
-            <summary>
-              Is used to store types and property names in lists. Contains only unique elements and gives index of the item back.
-              During deserialization this index is read from stream and then replaced with an appropriate value from the list.
-            </summary>
-            <typeparam name = "T"></typeparam>
-        </member>
-        <member name="M:Polenter.Serialization.Core.Binary.IndexGenerator`1.GetIndexOfItem(`0)">
-            <summary>
-              if the item exist, it gives its index back, otherweise the item is added and its new index is given back
-            </summary>
-            <param name = "item"></param>
-            <returns></returns>
         </member>
         <member name="T:Polenter.Serialization.Core.AdvancedSharpSerializerXmlSettings">
             <summary>
@@ -2505,41 +2551,6 @@
             <summary>
               PublicKeyToken=.... will be inserted to the type name
             </summary>
-        </member>
-        <member name="T:Polenter.Serialization.SharpSerializerBinarySettings">
-            <summary>
-              All the most important settings for binary serialization
-            </summary>
-        </member>
-        <member name="M:Polenter.Serialization.SharpSerializerBinarySettings.#ctor">
-            <summary>
-              Default constructor. Serialization in SizeOptimized mode. For other modes choose an overloaded constructor
-            </summary>
-        </member>
-        <member name="M:Polenter.Serialization.SharpSerializerBinarySettings.#ctor(Polenter.Serialization.BinarySerializationMode)">
-            <summary>
-              Overloaded constructor. Chooses mode in which the data is serialized.
-            </summary>
-            <param name = "mode">SizeOptimized - all types are stored in a header, objects only reference these types (better for collections). Burst - all types are serialized with their objects (better for serializing of single objects).</param>
-        </member>
-        <member name="P:Polenter.Serialization.SharpSerializerBinarySettings.Encoding">
-            <summary>
-              How are strings serialized. Default is UTF-8.
-            </summary>
-        </member>
-        <member name="P:Polenter.Serialization.SharpSerializerBinarySettings.Mode">
-            <summary>
-              Default is SizeOptimized - Types and property names are stored in a header. The opposite is Burst mode when all types are serialized with their objects.
-            </summary>
-        </member>
-        <member name="T:Polenter.Serialization.Advanced.PropertyCache">
-            <summary>
-            </summary>
-        </member>
-        <member name="M:Polenter.Serialization.Advanced.PropertyCache.TryGetPropertyInfos(System.Type)">
-            <summary>
-            </summary>
-            <returns>null if the key was not found</returns>
         </member>
         <member name="T:Polenter.Serialization.ExcludeFromSerializationAttribute">
             <summary>
