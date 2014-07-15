@@ -219,7 +219,7 @@ namespace FastMove
             // toolStripStatusLabel4
             // 
             this.toolStripStatusLabel4.Name = "toolStripStatusLabel4";
-            this.toolStripStatusLabel4.Size = new System.Drawing.Size(557, 20);
+            this.toolStripStatusLabel4.Size = new System.Drawing.Size(588, 20);
             this.toolStripStatusLabel4.Spring = true;
             // 
             // toolStripStatusLabel3

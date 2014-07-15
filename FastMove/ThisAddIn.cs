@@ -671,7 +671,7 @@ namespace FastMove
             if (myInspector.CurrentItem is Outlook.MailItem)
             {
                 countMail(myInspector.CurrentItem);
-                MessageBox.Show("Inspector!");
+                //MessageBox.Show("Inspector!");
             }
         }
 
