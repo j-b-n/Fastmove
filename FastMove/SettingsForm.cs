@@ -11,6 +11,11 @@ namespace FastMove
 {
     public partial class SettingsForm : Form
     {
+        /// <summary>
+        /// Intervals for online check 1 hr, 2 hrs, 1 day, 1 week
+        /// </summary>
+        private int[] OnlineCheckIntervalValues = new int[] { 60, 120, 1440, 10080 };
+
         private BindingList<string> _ignoreL = new BindingList<string>();
         private BindingList<string> _FolderLevel1L = new BindingList<string>();
         List<string> _originalIgnoreList = new List<string>(); 
@@ -90,6 +95,17 @@ namespace FastMove
             toolStripStatusLabel2.Text = string.Format("Last week: {0}", count);
             toolStripStatusLabel4.Text = string.Format("Version: {0}", Globals.ThisAddIn.publishedVersion);
             statusStrip1.Refresh();
+
+            /// Online Check Interval Drop-Down list
+            TimeSpan ts = Globals.ThisAddIn._OnlineCheckInterval;
+            comboBox1.SelectedIndex = 0;
+            for (int i = 0; i < OnlineCheckIntervalValues.Length; i++ )
+            {
+                if (TimeSpan.FromMinutes(OnlineCheckIntervalValues[i]) == ts)
+                {
+                    comboBox1.SelectedIndex = i;                    
+                }
+            }            
         }
 
         public void AddItem(object sender, EventArgs e)
@@ -184,6 +200,15 @@ namespace FastMove
         {            
             Globals.ThisAddIn._ignoreList = _originalIgnoreList;
             this.Close();
+        }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {            
+            int selectedIndex = comboBox1.SelectedIndex;
+            if (selectedIndex < OnlineCheckIntervalValues.Length)
+            {
+                Globals.ThisAddIn._OnlineCheckInterval = TimeSpan.FromMinutes(OnlineCheckIntervalValues[selectedIndex]);
+            } 
         }
        
     }
