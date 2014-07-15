@@ -38,9 +38,20 @@ namespace FastMove
         public DateTime _LastMailReceived;
         public bool _LostConnection = true;
 
+        /// <summary>
+        /// When Add-In last checked for updates
+        /// </summary>
+        public DateTime _LastOnlineCheck;
+        
+        /// <summary>
+        /// Interval to check for updates online
+        /// </summary>
+        public TimeSpan _OnlineCheckInterval = TimeSpan.FromMinutes(60);
+
         Timer timer = new Timer();
         int timerCounter = 0;
 
+        public int AddinUpdateAvailable = 0;
         private Outlook.Inspector myInspector = null;
 
 
@@ -129,6 +140,8 @@ namespace FastMove
                 _avgTimeBeforeMove = up._avgTimeBeforeMove;
                 _MailsPerDay = up.MailsPerDay;
                 _LastMailReceived = up.LastMailReceived;
+                _LastOnlineCheck = up.LastOnlineCheck;  
+                _OnlineCheckInterval = up.OnlineCheckInterval;
                 _CountedNewMails = up.CountedNewMails;
                 _MailsFromWho = up.MailsFromWho;
             }
@@ -173,6 +186,8 @@ namespace FastMove
                 up._avgTimeBeforeMove = _avgTimeBeforeMove;
                 up.MailsPerDay = _MailsPerDay;
                 up.LastMailReceived = _LastMailReceived;
+                up.LastOnlineCheck = _LastOnlineCheck;
+                up.OnlineCheckInterval = _OnlineCheckInterval;
                 up._CountedNewMails = _CountedNewMails;
                 up.MailsFromWho = _MailsFromWho;
 
@@ -688,6 +703,13 @@ namespace FastMove
             loadVariables();            
             CalculateMeanInboxTime();
             GetRunningVersion();
+
+            if(_LastOnlineCheck.Add(_OnlineCheckInterval) < DateTime.Now)
+            {
+                AddinUpdateAvailable = (new UpdateInfo()).CheckForUpdate();
+                _LastOnlineCheck = DateTime.Now;
+            }                        
+            
             if (_items.Count < 1)
                 EnumerateFoldersInDefaultStore();
 

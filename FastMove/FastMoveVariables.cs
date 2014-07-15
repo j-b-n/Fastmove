@@ -60,6 +60,20 @@ namespace FastMove
             set { _LastMailReceived = value; }
         }
 
+        public DateTime _LastOnlineCheck;
+        public DateTime LastOnlineCheck
+        {
+            get { return _LastOnlineCheck; }
+            set { _LastOnlineCheck = value; }
+        }
+
+        public TimeSpan _OnlineCheckInterval;
+        public TimeSpan OnlineCheckInterval
+        {
+            get { return _OnlineCheckInterval; }
+            set { _OnlineCheckInterval = value; }
+        }
+
         public Dictionary<DateTime, int> _MailsPerDay = new Dictionary<DateTime, int>();
         public Dictionary<DateTime, int> MailsPerDay
         {

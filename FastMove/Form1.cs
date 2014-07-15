@@ -5,6 +5,7 @@ using Outlook = Microsoft.Office.Interop.Outlook;
 using System.Web;
 using System.Net;
 using System.IO;
+using System.Diagnostics;
 
 
 namespace FastMove
@@ -96,6 +97,18 @@ namespace FastMove
             toolStripStatusLabel3.Text = string.Format("Version: {0}", Globals.ThisAddIn.publishedVersion);
             
             statusStrip1.Refresh();
+
+            ///Check for updates!
+            if (Globals.ThisAddIn.AddinUpdateAvailable > 0)
+            {
+                pictureBox1.Visible = true;
+                linkLabel1.Visible = true;
+            } else
+            {
+                pictureBox1.Visible = false;
+                linkLabel1.Visible = false;
+            }
+
         }
 
         private bool compare(string s)
@@ -206,6 +219,12 @@ namespace FastMove
                 // Let the user know what went wrong.
                 MessageBox.Show("The form could not be loaded: " + ee.Message);
             }
+        }
+
+        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            ProcessStartInfo sInfo = new ProcessStartInfo("https://github.com/j-b-n/Fastmove");
+            Process.Start(sInfo);
         }
      
     }

@@ -41,14 +41,14 @@
     <PublishUrl>publish\</PublishUrl>
     <InstallUrl />
     <TargetCulture>en</TargetCulture>
-    <ApplicationVersion>1.0.1.4</ApplicationVersion>
-    <AutoIncrementApplicationRevision>true</AutoIncrementApplicationRevision>
+    <ApplicationVersion>1.0.1.5</ApplicationVersion>
+    <AutoIncrementApplicationRevision>false</AutoIncrementApplicationRevision>
     <UpdateEnabled>false</UpdateEnabled>
     <UpdateInterval>0</UpdateInterval>
     <UpdateIntervalUnits>days</UpdateIntervalUnits>
     <ProductName>FastMove</ProductName>
-    <PublisherName>Joakim Nejdeby</PublisherName>
-    <SupportUrl>http://www.nejdeby.se</SupportUrl>
+    <PublisherName>j-b-n</PublisherName>
+    <SupportUrl>https://github.com/j-b-n/Fastmove</SupportUrl>
     <FriendlyName>FastMove</FriendlyName>
     <OfficeApplicationDescription />
     <LoadBehavior>3</LoadBehavior>
@@ -79,9 +79,9 @@
       <ProductName>Microsoft Visual Studio 2010 Tools for Office Runtime %28x86 and x64%29</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.4.5">
       <Visible>False</Visible>
-      <ProductName>Windows Installer 3.1</ProductName>
+      <ProductName>Windows Installer 4.5</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
@@ -155,10 +155,10 @@
     <SignManifests>true</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>FastMove_1_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestKeyFile>FastMove_2_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>068F540A31D97487B55ADADA0ED53CA8FDFEAE28</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>1B073DBCC51DF8E1B7CA4DCAAA1525ADB59B5D1F</ManifestCertificateThumbprint>
   </PropertyGroup>
   <!--
     This section specifies references for the project.
@@ -230,6 +230,7 @@
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="UpdateInfo.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
@@ -251,6 +252,7 @@
     </EmbeddedResource>
     <None Include="app.config" />
     <None Include="FastMove_1_TemporaryKey.pfx" />
+    <None Include="FastMove_2_TemporaryKey.pfx" />
     <None Include="FastMove_TemporaryKey.pfx" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
