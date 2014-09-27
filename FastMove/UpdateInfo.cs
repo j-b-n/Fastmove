@@ -70,7 +70,7 @@ namespace FastMove
                 var serializer = new SharpSerializer();
                 serializer.Serialize(UpdateVariables, path);
             }
-            catch (Exception e)
+            catch (Exception)
             {                
             }
         }

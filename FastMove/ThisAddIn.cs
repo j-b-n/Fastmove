@@ -12,6 +12,7 @@ using System.Xml.Serialization;
 using Outlook = Microsoft.Office.Interop.Outlook;
 using Office = Microsoft.Office.Core;
 using Polenter.Serialization;
+using Microsoft.Office.Interop.Outlook;
 
 namespace FastMove
 {
@@ -108,7 +109,7 @@ namespace FastMove
                     Directory.CreateDirectory(path);
                 }
             }
-            catch (Exception)
+            catch (System.Exception)
             {
                 // Fail silently
             }
@@ -121,7 +122,7 @@ namespace FastMove
                     writeVariables();
                 }
             }
-            catch (Exception)
+            catch (System.Exception)
             {
                 // Fail silently
             }
@@ -145,7 +146,7 @@ namespace FastMove
                 _CountedNewMails = up.CountedNewMails;
                 _MailsFromWho = up.MailsFromWho;
             }
-            catch (Exception e)
+            catch (System.Exception e)
             {
                 // Let the user know what went wrong.
                MessageBox.Show("The file could not be read: "+e.Message);
@@ -165,9 +166,11 @@ namespace FastMove
                     Directory.CreateDirectory(path);
                 }
             }
-            catch (Exception)
+            catch (System.Exception e)
             {
                 // Fail silently
+                // Let the user know what went wrong.
+                MessageBox.Show("Error: " + e.Message);
             }
 
             path += "\\FastMove.xml";
@@ -194,7 +197,7 @@ namespace FastMove
                 var serializer = new SharpSerializer();
                 serializer.Serialize(up, path);
             }
-            catch (Exception e)
+            catch (System.Exception e)
             {
                 // Let the user know what went wrong.
                 MessageBox.Show("The file could not be written: " + e.Message);
@@ -239,7 +242,7 @@ namespace FastMove
             }
             _InboxAvg = avg;
               }
-             catch (Exception ex)
+             catch (System.Exception ex)
              {
                  string expMessage = ex.Message;
                  MessageBox.Show(expMessage);
@@ -434,7 +437,7 @@ namespace FastMove
                 }
 
             }
-            catch (Exception ex)
+            catch (System.Exception ex)
             {
                 itemMessage = ex.Message;
                 MessageBox.Show(itemMessage);
@@ -546,7 +549,7 @@ namespace FastMove
                 }
 
             }
-            catch (Exception ex)
+            catch (System.Exception ex)
             {
                 string itemMessage = ex.Message;
                 MessageBox.Show(itemMessage);
@@ -622,6 +625,55 @@ namespace FastMove
             {
                 countMail((Outlook.MailItem)item);
             }
+        }
+
+        public static DateTime GetNextWeekday(DateTime start, DayOfWeek day)
+        {
+            // The (... + 7) % 7 ensures we end up with a value in the range [0, 6]
+            int daysToAdd = ((int)day - (int)start.DayOfWeek + 7) % 7;
+            return start.AddDays(daysToAdd);
+        }
+
+        private void deferEmail(object Item, ref bool Cancel)
+        {
+            var msg = Item as Outlook.MailItem;
+            DateTime sendTime = DateTime.Now;
+            DateTime deferTime = DateTime.Now;
+
+            /* Business rules
+             Only send during working hours - ie 07.00 - 19.00 and not weekends
+             */
+
+            if(sendTime.DayOfWeek == DayOfWeek.Saturday ||
+                sendTime.DayOfWeek == DayOfWeek.Sunday)
+            {
+                deferTime = GetNextWeekday(sendTime, DayOfWeek.Monday);
+                TimeSpan ts = new TimeSpan(8, 0, 0);
+                deferTime = deferTime.Date + ts;                
+            }
+
+            if (sendTime.DayOfWeek == DayOfWeek.Monday ||
+                sendTime.DayOfWeek == DayOfWeek.Tuesday ||
+                sendTime.DayOfWeek == DayOfWeek.Wednesday ||
+                sendTime.DayOfWeek == DayOfWeek.Thursday ||
+                sendTime.DayOfWeek == DayOfWeek.Friday)
+            {
+                if(sendTime.Hour > 16)
+                {
+                    //defer to next morning
+                    deferTime = GetNextWeekday(sendTime, sendTime.DayOfWeek);
+                    TimeSpan ts = new TimeSpan(8, 0, 0);
+                    deferTime = deferTime.Date + ts;
+                }
+                if (sendTime.Hour < 8)
+                {
+                    //defer to 08.00                  
+                    TimeSpan ts = new TimeSpan(8, 0, 0);
+                    deferTime = deferTime.Date + ts;
+                }
+            }
+            MessageBox.Show("Send mail at: "+ deferTime.ToString());
+            msg.DeferredDeliveryTime = deferTime;
         }
 
         void timer_Tick(object sender, EventArgs e)
@@ -739,6 +791,8 @@ namespace FastMove
             timer.Enabled = true;                       // Enable the timer
             timer.Start();                              // Start the timer
 
+            //Create an event handler for when items are sent
+            Application.ItemSend += new ApplicationEvents_11_ItemSendEventHandler(deferEmail);
 
 
             /*

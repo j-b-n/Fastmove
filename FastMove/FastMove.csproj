@@ -155,10 +155,10 @@
     <SignManifests>true</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>FastMove_2_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestKeyFile>FastMove_3_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>1B073DBCC51DF8E1B7CA4DCAAA1525ADB59B5D1F</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>3E1F0A1B7111E8BBF19DBB81C8D3D18377BF0226</ManifestCertificateThumbprint>
   </PropertyGroup>
   <!--
     This section specifies references for the project.
@@ -253,6 +253,7 @@
     <None Include="app.config" />
     <None Include="FastMove_1_TemporaryKey.pfx" />
     <None Include="FastMove_2_TemporaryKey.pfx" />
+    <None Include="FastMove_3_TemporaryKey.pfx" />
     <None Include="FastMove_TemporaryKey.pfx" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
