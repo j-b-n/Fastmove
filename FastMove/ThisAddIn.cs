@@ -39,6 +39,11 @@ namespace FastMove
         public DateTime _LastMailReceived;
         public bool _LostConnection = true;
 
+        //Defer email system
+        public bool _deferEmails = false;
+        public bool _deferEmailsAlwaysSendHighPriority = false;
+
+
         /// <summary>
         /// When Add-In last checked for updates
         /// </summary>
@@ -639,6 +644,17 @@ namespace FastMove
             var msg = Item as Outlook.MailItem;
             DateTime sendTime = DateTime.Now;
             DateTime deferTime = DateTime.Now;
+
+            if (_deferEmails == false)
+            {
+                return;
+            }
+
+            if(msg.Importance == Outlook.OlImportance.olImportanceHigh &&
+                _deferEmailsAlwaysSendHighPriority == true)
+            {
+                return;
+            }
 
             /* Business rules
              Only send during working hours - ie 07.00 - 19.00 and not weekends

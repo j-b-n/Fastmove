@@ -50,3 +50,5 @@ C:\Users\joabj85\Source\Repos\Fastmove\FastMove\obj\Debug\FastMove.StatisticsFor
 C:\Users\joabj85\Source\Repos\Fastmove\FastMove\obj\Debug\FastMove.csproj.GenerateResource.Cache
 C:\Users\joabj85\Source\Repos\Fastmove\FastMove\obj\Debug\FastMove.dll
 C:\Users\joabj85\Source\Repos\Fastmove\FastMove\obj\Debug\FastMove.pdb
+C:\Users\joabj85\Source\Repos\Fastmove\FastMove\obj\Debug\FastMove.DeferEmails.resources
+C:\Users\joabj85\Source\Repos\Fastmove\FastMove\obj\Debug\FastMove.csprojResolveAssemblyReference.cache

@@ -220,6 +220,12 @@
     can be found.
   -->
   <ItemGroup>
+    <Compile Include="DeferEmails.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DeferEmails.Designer.cs">
+      <DependentUpon>DeferEmails.cs</DependentUpon>
+    </Compile>
     <Compile Include="FastMoveVariables.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
@@ -231,6 +237,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="UpdateInfo.cs" />
+    <EmbeddedResource Include="DeferEmails.resx">
+      <DependentUpon>DeferEmails.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>

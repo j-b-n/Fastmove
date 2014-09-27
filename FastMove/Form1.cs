@@ -226,6 +226,21 @@ namespace FastMove
             ProcessStartInfo sInfo = new ProcessStartInfo("https://github.com/j-b-n/Fastmove");
             Process.Start(sInfo);
         }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                DeferEmails _Form = new DeferEmails();
+                _Form.Show();
+                this.Close();
+            }
+            catch (Exception ee)
+            {
+                // Let the user know what went wrong.
+                MessageBox.Show("The form could not be loaded: " + ee.Message);
+            }
+        }
      
     }
 }
