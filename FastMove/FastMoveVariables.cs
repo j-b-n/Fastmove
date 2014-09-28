@@ -97,5 +97,28 @@ namespace FastMove
             set { _CountedNewMails = value; }
         }
 
+        //Defer email variables
+
+        public bool _DeferEmailActive;
+
+        public bool DeferEmailActive
+        {
+            get { return _DeferEmailActive; }
+            set { _DeferEmailActive = value; }
+        }
+
+        public bool _deferEmailsAlwaysSendHighPriority;
+        public bool DeferEmailsAlwaysSendHighPriority
+        {
+            get { return _deferEmailsAlwaysSendHighPriority; }
+            set { _deferEmailsAlwaysSendHighPriority = value; }
+        }
+
+        public Dictionary<DayOfWeek, BetweenTime> _deferEmailsAllowedTime = new Dictionary<DayOfWeek, BetweenTime>();
+        public Dictionary<DayOfWeek, BetweenTime> DeferEmailsAllowedTime
+        {
+            get { return _deferEmailsAllowedTime; }
+            set { _deferEmailsAllowedTime = value; }
+        }
     }
 }

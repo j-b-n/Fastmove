@@ -16,6 +16,13 @@ using Microsoft.Office.Interop.Outlook;
 
 namespace FastMove
 {
+
+    public class BetweenTime
+    {
+        public TimeSpan StartTS {get; set;}
+        public TimeSpan StopTS {get; set;}
+    }
+
     public partial class ThisAddIn
     {
         #region Instance Variables
@@ -43,6 +50,7 @@ namespace FastMove
         public bool _deferEmails = false;
         public bool _deferEmailsAlwaysSendHighPriority = false;
 
+        public Dictionary<DayOfWeek, BetweenTime> _deferEmailsAllowedTime = new Dictionary<DayOfWeek, BetweenTime>();
 
         /// <summary>
         /// When Add-In last checked for updates
@@ -150,6 +158,11 @@ namespace FastMove
                 _OnlineCheckInterval = up.OnlineCheckInterval;
                 _CountedNewMails = up.CountedNewMails;
                 _MailsFromWho = up.MailsFromWho;
+
+                //Defer emails
+                _deferEmails = up.DeferEmailActive;
+                _deferEmailsAlwaysSendHighPriority = up.DeferEmailsAlwaysSendHighPriority;
+                _deferEmailsAllowedTime = up.DeferEmailsAllowedTime;
             }
             catch (System.Exception e)
             {
@@ -198,6 +211,10 @@ namespace FastMove
                 up.OnlineCheckInterval = _OnlineCheckInterval;
                 up._CountedNewMails = _CountedNewMails;
                 up.MailsFromWho = _MailsFromWho;
+                
+                up.DeferEmailActive = _deferEmails;
+                up.DeferEmailsAlwaysSendHighPriority = _deferEmailsAlwaysSendHighPriority;
+                up.DeferEmailsAllowedTime = _deferEmailsAllowedTime;
 
                 var serializer = new SharpSerializer();
                 serializer.Serialize(up, path);
@@ -639,6 +656,49 @@ namespace FastMove
             return start.AddDays(daysToAdd);
         }
 
+        public bool AllowedToSendDirectly(DateTime sendTime)
+        {
+            if (_deferEmailsAllowedTime.ContainsKey(sendTime.DayOfWeek))
+            {
+                BetweenTime BT = _deferEmailsAllowedTime[sendTime.DayOfWeek];
+                if (sendTime.TimeOfDay >= BT.StartTS && sendTime.TimeOfDay <= BT.StartTS)
+                {
+                    return true;
+                }
+
+            }
+            return false;
+        }
+
+        public DateTime NextPossibleSendTime()
+        {
+            DateTime Next = DateTime.Now;
+            bool _found = false;
+
+            while (_found == false)
+            {
+                if (_deferEmailsAllowedTime.ContainsKey(Next.DayOfWeek))
+                {
+                    BetweenTime BT = _deferEmailsAllowedTime[Next.DayOfWeek];
+
+                    DateTime DT = Next.Date + BT.StartTS;
+                    if (AllowedToSendDirectly(DT))
+                    {
+                        return DT;
+                    }
+
+                }
+
+                Next = Next.AddDays(1);
+
+                if(Next > DateTime.Now.AddDays(7))
+                {
+                    return DateTime.Now.AddMinutes(10);
+                }
+            }          
+            return Next;
+        }
+
         private void deferEmail(object Item, ref bool Cancel)
         {
             var msg = Item as Outlook.MailItem;
@@ -646,19 +706,24 @@ namespace FastMove
             DateTime deferTime = DateTime.Now;
 
             if (_deferEmails == false)
-            {
+            {                
                 return;
             }
 
             if(msg.Importance == Outlook.OlImportance.olImportanceHigh &&
                 _deferEmailsAlwaysSendHighPriority == true)
-            {
+            {                
+                return;
+            }            
+
+            if(AllowedToSendDirectly(DateTime.Now))
+            {             
                 return;
             }
-
+            
             /* Business rules
              Only send during working hours - ie 07.00 - 19.00 and not weekends
-             */
+             
 
             if(sendTime.DayOfWeek == DayOfWeek.Saturday ||
                 sendTime.DayOfWeek == DayOfWeek.Sunday)
@@ -688,6 +753,10 @@ namespace FastMove
                     deferTime = deferTime.Date + ts;
                 }
             }
+             */
+
+            deferTime = NextPossibleSendTime();
+            
             MessageBox.Show("Send mail at: "+ deferTime.ToString());
             msg.DeferredDeliveryTime = deferTime;
         }
