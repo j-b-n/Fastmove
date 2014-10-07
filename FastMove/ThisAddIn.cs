@@ -649,6 +649,7 @@ namespace FastMove
             }
         }
 
+        #region DeferEmails
         public static DateTime GetNextWeekday(DateTime start, DayOfWeek day)
         {
             // The (... + 7) % 7 ensures we end up with a value in the range [0, 6]
@@ -661,11 +662,14 @@ namespace FastMove
             if (_deferEmailsAllowedTime.ContainsKey(sendTime.DayOfWeek))
             {
                 BetweenTime BT = _deferEmailsAllowedTime[sendTime.DayOfWeek];
-                if (sendTime.TimeOfDay >= BT.StartTS && sendTime.TimeOfDay <= BT.StartTS)
+             
+
+                if((DateTime.Now.Date+BT.StartTS).CompareTo(sendTime)<0 &&
+                    (DateTime.Now.Date + BT.StopTS).CompareTo(sendTime) >= 0)
                 {
                     return true;
                 }
-
+              
             }
             return false;
         }
@@ -720,46 +724,15 @@ namespace FastMove
             {             
                 return;
             }
-            
-            /* Business rules
-             Only send during working hours - ie 07.00 - 19.00 and not weekends
-             
-
-            if(sendTime.DayOfWeek == DayOfWeek.Saturday ||
-                sendTime.DayOfWeek == DayOfWeek.Sunday)
-            {
-                deferTime = GetNextWeekday(sendTime, DayOfWeek.Monday);
-                TimeSpan ts = new TimeSpan(8, 0, 0);
-                deferTime = deferTime.Date + ts;                
-            }
-
-            if (sendTime.DayOfWeek == DayOfWeek.Monday ||
-                sendTime.DayOfWeek == DayOfWeek.Tuesday ||
-                sendTime.DayOfWeek == DayOfWeek.Wednesday ||
-                sendTime.DayOfWeek == DayOfWeek.Thursday ||
-                sendTime.DayOfWeek == DayOfWeek.Friday)
-            {
-                if(sendTime.Hour > 16)
-                {
-                    //defer to next morning
-                    deferTime = GetNextWeekday(sendTime, sendTime.DayOfWeek);
-                    TimeSpan ts = new TimeSpan(8, 0, 0);
-                    deferTime = deferTime.Date + ts;
-                }
-                if (sendTime.Hour < 8)
-                {
-                    //defer to 08.00                  
-                    TimeSpan ts = new TimeSpan(8, 0, 0);
-                    deferTime = deferTime.Date + ts;
-                }
-            }
-             */
-
+           
             deferTime = NextPossibleSendTime();
             
             MessageBox.Show("Send mail at: "+ deferTime.ToString());
             msg.DeferredDeliveryTime = deferTime;
         }
+
+        #endregion
+
 
         void timer_Tick(object sender, EventArgs e)
         {
