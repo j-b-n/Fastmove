@@ -194,12 +194,16 @@ namespace FastMove
             Globals.ThisAddIn.EnumerateFoldersInDefaultStore();
             Globals.ThisAddIn.writeVariables();
             this.Close();
+            var form1 = (Form1)Tag;
+            form1.Show();            
         }
 
         private void cancel_Click(object sender, EventArgs e)
         {            
             Globals.ThisAddIn._ignoreList = _originalIgnoreList;
             this.Close();
+            var form1 = (Form1)Tag;
+            form1.Show();
         }
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)

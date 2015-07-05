@@ -189,8 +189,9 @@ namespace FastMove
             try
             {                
                 SettingsForm _Form = new SettingsForm();
+                _Form.Tag = this;
                 _Form.Show();
-                this.Close();
+                this.Hide();
             }
             catch (Exception ee)
             {
@@ -211,8 +212,9 @@ namespace FastMove
             try
             {
                 StatisticsForm _Form = new StatisticsForm();
+                _Form.Tag = this;
                 _Form.Show();
-                this.Close();
+                this.Hide();
             }
             catch (Exception ee)
             {
@@ -232,8 +234,9 @@ namespace FastMove
             try
             {
                 DeferEmails _Form = new DeferEmails();
+                _Form.Tag = this;
                 _Form.Show();
-                this.Close();
+                this.Hide();
             }
             catch (Exception ee)
             {

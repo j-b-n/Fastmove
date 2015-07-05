@@ -233,6 +233,8 @@ namespace FastMove
         private void button1_Click(object sender, EventArgs e)
         {
             this.Close();
+            var form1 = (Form1)Tag;
+            form1.Show();            
         }
 
         private void StatisticsForm_Load(object sender, EventArgs e)

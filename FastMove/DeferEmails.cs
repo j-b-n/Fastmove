@@ -143,9 +143,11 @@ namespace FastMove
             }
 
             Globals.ThisAddIn._deferEmailsAllowedTime = AllowedTime;
-
             Globals.ThisAddIn.writeVariables();
+
             this.Close();
+            var form1 = (Form1)Tag;
+            form1.Show();            
         }
 
 

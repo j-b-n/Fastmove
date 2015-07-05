@@ -8,7 +8,6 @@ using System.Text;
 
 namespace FastMove
 {
-
     public class FastMoveUpdateInfoVariables
     {
         string _version = "";
