@@ -64,6 +64,7 @@ namespace FastMove
 
         Timer timer = new Timer();
         int timerCounter = 0;
+        Timer StartUpTimer = new Timer();
 
         public int AddinUpdateAvailable = 0;
         private Outlook.Inspector myInspector = null;
@@ -803,6 +804,31 @@ namespace FastMove
 
         #endregion
 
+
+
+        /// <summary>
+        /// Sometimes the initialization takes time and causes Outlook to disable the plugin. 
+        /// This is solved using a delayed startup sequence.
+        /// </summary>
+        void DelayedStartup(object sender, EventArgs e)
+        {
+            if (_items.Count < 1)
+                EnumerateFoldersInDefaultStore();
+
+            CalculateMeanInboxTime();
+
+            //Check if there is an update published!
+            GetRunningVersion();
+            if (_LastOnlineCheck.Add(_OnlineCheckInterval) < DateTime.Now)
+            {
+                AddinUpdateAvailable = (new UpdateInfo()).CheckForUpdate();
+                _LastOnlineCheck = DateTime.Now;
+            }
+
+            //Clean-up!
+            StartUpTimer.Stop();
+            StartUpTimer.Dispose();
+        }
         private void ThisAddIn_Startup(object sender, System.EventArgs e)
         {
             foreach (Outlook.Account account in Application.Session.Accounts)
@@ -811,18 +837,7 @@ namespace FastMove
             }
 
             loadVariables();            
-            CalculateMeanInboxTime();
-            GetRunningVersion();
-
-            if(_LastOnlineCheck.Add(_OnlineCheckInterval) < DateTime.Now)
-            {
-                AddinUpdateAvailable = (new UpdateInfo()).CheckForUpdate();
-                _LastOnlineCheck = DateTime.Now;
-            }                        
-            
-            if (_items.Count < 1)
-                EnumerateFoldersInDefaultStore();
-
+                                                                       
             Microsoft.Office.Interop.Outlook.Application app = this.Application;
 
             ((Microsoft.Office.Interop.Outlook.ApplicationEvents_11_Event)app).Quit +=
@@ -863,7 +878,12 @@ namespace FastMove
                   new Outlook.FoldersEvents_FolderRemoveEventHandler(Folders_FolderRemove);            
          */
 
+            StartUpTimer.Tick += new EventHandler(DelayedStartup);
+            StartUpTimer.Interval = 1000;
+            StartUpTimer.Enabled = true;
+            StartUpTimer.Start();                              
         }
+
 
         private void ThisAddIn_Shutdown(object sender, System.EventArgs e)
         {
