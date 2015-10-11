@@ -111,8 +111,62 @@ namespace FastMove
                 _recentItems.RemoveAt(10); 
         }
 
+        /*
+         Store variables in a StorageItem?
+        */
+
+        public string GetVariables()
+        {
+            try
+            {
+                Outlook.StorageItem storage =
+                    Application.Session.GetDefaultFolder(
+                    Outlook.OlDefaultFolders.olFolderInbox).GetStorage(
+                    "FastMove.Configuration.Variables",
+                    Outlook.OlStorageIdentifierType.olIdentifyBySubject);
+
+                Outlook.PropertyAccessor pa = storage.PropertyAccessor;
+                // PropertyAccessor will return a byte array for this property
+
+                MessageBox.Show("Vars:" + storage.Size);
+
+                return string.Empty;
+            }
+            catch
+            {
+                return string.Empty;
+            }
+        }
+
+        public string StoreVariables()
+        {
+            try
+            {
+                Outlook.StorageItem storage =
+                    Application.Session.GetDefaultFolder(
+                    Outlook.OlDefaultFolders.olFolderInbox).GetStorage(
+                    "FastMove.Configuration.Variables",
+                    Outlook.OlStorageIdentifierType.olIdentifyBySubject);
+
+                Outlook.PropertyAccessor pa = storage.PropertyAccessor;
+                // PropertyAccessor will return a byte array for this property
+
+                pa.SetProperty("_deferEmails", _deferEmails);
+                
+                storage.Save();
+
+                return string.Empty;
+            }
+            catch
+            {
+                return string.Empty;
+            }
+        }
+
+
         public void loadVariables()
         {
+            
             string path = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\FastMove";
 
             try
@@ -170,7 +224,8 @@ namespace FastMove
                 // Let the user know what went wrong.
                MessageBox.Show("The file could not be read: "+e.Message);
             }
-                        
+
+            //GetVariables();                        
         }
 
         public void writeVariables()
@@ -225,6 +280,8 @@ namespace FastMove
                 // Let the user know what went wrong.
                 MessageBox.Show("The file could not be written: " + e.Message);
             }
+
+            //StoreVariables();
         }
 
         #endregion
@@ -658,19 +715,24 @@ namespace FastMove
             return start.AddDays(daysToAdd);
         }
 
+        /// <summary>
+        /// Determines if a mail can be sent!
+        /// </summary>
+        /// <param name="sendTime"></param>
+        /// <returns></returns>
         public bool AllowedToSendDirectly(DateTime sendTime)
         {
             if (_deferEmailsAllowedTime.ContainsKey(sendTime.DayOfWeek))
             {
                 BetweenTime BT = _deferEmailsAllowedTime[sendTime.DayOfWeek];
              
-
-                if((DateTime.Now.Date+BT.StartTS).CompareTo(sendTime)<0 &&
-                    (DateTime.Now.Date + BT.StopTS).CompareTo(sendTime) >= 0)
+                if((sendTime.Date+BT.StartTS).CompareTo(sendTime)<=0 &&
+                    (sendTime.Date + BT.StopTS).CompareTo(sendTime) >= 0)
                 {
                     return true;
                 }
-              
+
+                return false;
             }
             return false;
         }
@@ -679,19 +741,18 @@ namespace FastMove
         {
             DateTime Next = DateTime.Now;
             bool _found = false;
-
+            
             while (_found == false)
             {
                 if (_deferEmailsAllowedTime.ContainsKey(Next.DayOfWeek))
                 {
                     BetweenTime BT = _deferEmailsAllowedTime[Next.DayOfWeek];
 
-                    DateTime DT = Next.Date + BT.StartTS;
-                    if (AllowedToSendDirectly(DT))
+                    DateTime DT = Next.Date + BT.StartTS;                                     
+                    if (DT > DateTime.Now && AllowedToSendDirectly(DT))
                     {
                         return DT;
                     }
-
                 }
 
                 Next = Next.AddDays(1);
@@ -700,6 +761,8 @@ namespace FastMove
                 {
                     return DateTime.Now.AddMinutes(10);
                 }
+
+                
             }          
             return Next;
         }
@@ -728,7 +791,8 @@ namespace FastMove
            
             deferTime = NextPossibleSendTime();
             
-            MessageBox.Show("Send mail at: "+ deferTime.ToString());
+            AutoClosingMessageBox.Show("Sending mail at: "+ deferTime.ToString(),"Defer time",600);
+            
             msg.DeferredDeliveryTime = deferTime;
         }
 
@@ -819,6 +883,7 @@ namespace FastMove
 
             //Check if there is an update published!
             GetRunningVersion();
+
             if (_LastOnlineCheck.Add(_OnlineCheckInterval) < DateTime.Now)
             {
                 AddinUpdateAvailable = (new UpdateInfo()).CheckForUpdate();
@@ -829,6 +894,12 @@ namespace FastMove
             StartUpTimer.Stop();
             StartUpTimer.Dispose();
         }
+
+        /// <summary>
+        /// ThisAddIn is called at startup of the plugin!
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ThisAddIn_Startup(object sender, System.EventArgs e)
         {
             foreach (Outlook.Account account in Application.Session.Accounts)

@@ -51,3 +51,10 @@ C:\Users\joabj85\Source\Repos\Fastmove\FastMove\obj\Debug\FastMove.StatisticsFor
 C:\Users\joabj85\Source\Repos\Fastmove\FastMove\obj\Debug\FastMove.csproj.GenerateResource.Cache
 C:\Users\joabj85\Source\Repos\Fastmove\FastMove\obj\Debug\FastMove.dll
 C:\Users\joabj85\Source\Repos\Fastmove\FastMove\obj\Debug\FastMove.pdb
+C:\Users\joabj85\Source\Repos\Fastmove\FastMove\bin\Debug\Microsoft.Office.Tools.Outlook.dll
+C:\Users\joabj85\Source\Repos\Fastmove\FastMove\bin\Debug\Microsoft.Office.Tools.v4.0.Framework.dll
+C:\Users\joabj85\Source\Repos\Fastmove\FastMove\bin\Debug\Microsoft.VisualStudio.Tools.Applications.Runtime.dll
+C:\Users\joabj85\Source\Repos\Fastmove\FastMove\bin\Debug\Microsoft.VisualStudio.Tools.Applications.Runtime.xml
+C:\Users\joabj85\Source\Repos\Fastmove\FastMove\bin\Debug\Microsoft.Office.Tools.v4.0.Framework.xml
+C:\Users\joabj85\Source\Repos\Fastmove\FastMove\bin\Debug\Microsoft.Office.Tools.Outlook.xml
+C:\Users\joabj85\Source\Repos\Fastmove\FastMove\obj\Debug\FastMove.csprojResolveAssemblyReference.cache

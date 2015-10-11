@@ -72,6 +72,9 @@ namespace FastMove
                 dateTimePickerSun1.Value = new DateTime(2014, 01, 01) + BT.StartTS;
                 dateTimePickerSun2.Value = new DateTime(2014, 01, 01) + BT.StopTS;
             }
+
+            DateTime next = Globals.ThisAddIn.NextPossibleSendTime();
+            label15.Text = "The next possible send time is: "+next.ToString();
         }
 
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
