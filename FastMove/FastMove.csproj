@@ -155,11 +155,10 @@
     <SignManifests>true</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>
-    </ManifestKeyFile>
+    <ManifestKeyFile>FastMove_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>4377A44503A7B3B4C113446CB31258C0353370CE</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>25C728F5F0DBE1E6BCEB2110AF0C0AD83790466C</ManifestCertificateThumbprint>
   </PropertyGroup>
   <!--
     This section specifies references for the project.
@@ -262,9 +261,6 @@
       <DependentUpon>StatisticsForm.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="app.config" />
-    <None Include="FastMove_1_TemporaryKey.pfx" />
-    <None Include="FastMove_2_TemporaryKey.pfx" />
-    <None Include="FastMove_3_TemporaryKey.pfx" />
     <None Include="FastMove_TemporaryKey.pfx" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
@@ -315,7 +311,8 @@
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>FastMove_1_TemporaryKey.pfx</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject />

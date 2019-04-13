@@ -41,8 +41,6 @@ C:\Users\joabj85\Source\Repos\Fastmove\FastMove\bin\Debug\Microsoft.Office.Tools
 C:\Users\joabj85\Source\Repos\Fastmove\FastMove\bin\Debug\Microsoft.Office.Tools.Outlook.v4.0.Utilities.dll
 C:\Users\joabj85\Source\Repos\Fastmove\FastMove\bin\Debug\Polenter.SharpSerializer.dll
 C:\Users\joabj85\Source\Repos\Fastmove\FastMove\bin\Debug\Polenter.SharpSerializer.xml
-C:\Users\joabj85\Source\Repos\Fastmove\FastMove\bin\Debug\Microsoft.Office.Tools.Common.v4.0.Utilities.xml
-C:\Users\joabj85\Source\Repos\Fastmove\FastMove\bin\Debug\Microsoft.Office.Tools.Outlook.v4.0.Utilities.xml
 C:\Users\joabj85\Source\Repos\Fastmove\FastMove\obj\Debug\FastMove.DeferEmails.resources
 C:\Users\joabj85\Source\Repos\Fastmove\FastMove\obj\Debug\FastMove.Form1.resources
 C:\Users\joabj85\Source\Repos\Fastmove\FastMove\obj\Debug\FastMove.Properties.Resources.resources
@@ -54,7 +52,6 @@ C:\Users\joabj85\Source\Repos\Fastmove\FastMove\obj\Debug\FastMove.pdb
 C:\Users\joabj85\Source\Repos\Fastmove\FastMove\bin\Debug\Microsoft.Office.Tools.Outlook.dll
 C:\Users\joabj85\Source\Repos\Fastmove\FastMove\bin\Debug\Microsoft.Office.Tools.v4.0.Framework.dll
 C:\Users\joabj85\Source\Repos\Fastmove\FastMove\bin\Debug\Microsoft.VisualStudio.Tools.Applications.Runtime.dll
-C:\Users\joabj85\Source\Repos\Fastmove\FastMove\bin\Debug\Microsoft.VisualStudio.Tools.Applications.Runtime.xml
-C:\Users\joabj85\Source\Repos\Fastmove\FastMove\bin\Debug\Microsoft.Office.Tools.v4.0.Framework.xml
-C:\Users\joabj85\Source\Repos\Fastmove\FastMove\bin\Debug\Microsoft.Office.Tools.Outlook.xml
-C:\Users\joabj85\Source\Repos\Fastmove\FastMove\obj\Debug\FastMove.csprojResolveAssemblyReference.cache
+C:\Users\joabj85\Source\Repos\Fastmove\FastMove\obj\Debug\FastMove.csprojAssemblyReference.cache
+C:\Users\joabj85\Source\Repos\Fastmove\FastMove\obj\Debug\FastMove.csproj.CoreCompileInputs.cache
+C:\Users\joabj85\Source\Repos\Fastmove\FastMove\obj\Debug\FastMove.csproj.CopyComplete
