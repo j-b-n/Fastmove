@@ -77,12 +77,12 @@ namespace FastMove
             label15.Text = "The next possible send time is: "+next.ToString();
         }
 
-        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        private void CheckBox1_CheckedChanged(object sender, EventArgs e)
         {
             Globals.ThisAddIn._deferEmails = checkBox1.Checked;
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void Button1_Click(object sender, EventArgs e)
         {
             //Dictionary Weekday with list of BetweenTime
             //BetweenTime struct timespanStart and timespanStop                        
@@ -90,63 +90,77 @@ namespace FastMove
             Dictionary<DayOfWeek, BetweenTime> AllowedTime = new Dictionary<DayOfWeek, BetweenTime>();
             
             if(checkBoxMon.Checked == true)
-            {                
-                BetweenTime bt = new BetweenTime();
-                bt.StartTS = dateTimePickerMon1.Value.TimeOfDay;
-                bt.StopTS = dateTimePickerMon2.Value.TimeOfDay;
+            {
+                BetweenTime bt = new BetweenTime
+                {
+                    StartTS = dateTimePickerMon1.Value.TimeOfDay,
+                    StopTS = dateTimePickerMon2.Value.TimeOfDay
+                };
                 AllowedTime.Add(DayOfWeek.Monday, bt);
             }
 
             if (checkBoxTue.Checked == true)
-            {             
-                BetweenTime bt = new BetweenTime();
-                bt.StartTS = dateTimePickerTue1.Value.TimeOfDay;
-                bt.StopTS = dateTimeTue2.Value.TimeOfDay;             
+            {
+                BetweenTime bt = new BetweenTime
+                {
+                    StartTS = dateTimePickerTue1.Value.TimeOfDay,
+                    StopTS = dateTimeTue2.Value.TimeOfDay
+                };
                 AllowedTime.Add(DayOfWeek.Tuesday, bt);
             }
 
             if (checkBoxWed.Checked == true)
-            {                
-                BetweenTime bt = new BetweenTime();
-                bt.StartTS = dateTimePickerWed1.Value.TimeOfDay;
-                bt.StopTS = dateTimeWed2.Value.TimeOfDay;             
+            {
+                BetweenTime bt = new BetweenTime
+                {
+                    StartTS = dateTimePickerWed1.Value.TimeOfDay,
+                    StopTS = dateTimeWed2.Value.TimeOfDay
+                };
                 AllowedTime.Add(DayOfWeek.Wednesday, bt);
             }
 
             if (checkBoxThurs.Checked == true)
-            {                
-                BetweenTime bt = new BetweenTime();
-                bt.StartTS = dateTimePickerThurs1.Value.TimeOfDay;
-                bt.StopTS = dateTimePickerThurs2.Value.TimeOfDay;              
+            {
+                BetweenTime bt = new BetweenTime
+                {
+                    StartTS = dateTimePickerThurs1.Value.TimeOfDay,
+                    StopTS = dateTimePickerThurs2.Value.TimeOfDay
+                };
                 AllowedTime.Add(DayOfWeek.Thursday, bt);
             }
 
             if (checkBoxFri.Checked == true)
-            {                
-                BetweenTime bt = new BetweenTime();
-                bt.StartTS = dateTimePickerFri1.Value.TimeOfDay;
-                bt.StopTS = dateTimePickerFri2.Value.TimeOfDay;             
+            {
+                BetweenTime bt = new BetweenTime
+                {
+                    StartTS = dateTimePickerFri1.Value.TimeOfDay,
+                    StopTS = dateTimePickerFri2.Value.TimeOfDay
+                };
                 AllowedTime.Add(DayOfWeek.Friday, bt);
             }
 
             if (checkBoxSat.Checked == true)
-            {                
-                BetweenTime bt = new BetweenTime();
-                bt.StartTS = dateTimePickerSat1.Value.TimeOfDay;
-                bt.StopTS = dateTimePickerSat2.Value.TimeOfDay;             
+            {
+                BetweenTime bt = new BetweenTime
+                {
+                    StartTS = dateTimePickerSat1.Value.TimeOfDay,
+                    StopTS = dateTimePickerSat2.Value.TimeOfDay
+                };
                 AllowedTime.Add(DayOfWeek.Saturday, bt);
             }
 
             if (checkBoxSun.Checked == true)
-            {                
-                BetweenTime bt = new BetweenTime();
-                bt.StartTS = dateTimePickerSun1.Value.TimeOfDay;
-                bt.StopTS = dateTimePickerSun2.Value.TimeOfDay;             
+            {
+                BetweenTime bt = new BetweenTime
+                {
+                    StartTS = dateTimePickerSun1.Value.TimeOfDay,
+                    StopTS = dateTimePickerSun2.Value.TimeOfDay
+                };
                 AllowedTime.Add(DayOfWeek.Sunday, bt);
             }
 
             Globals.ThisAddIn._deferEmailsAllowedTime = AllowedTime;
-            Globals.ThisAddIn.writeVariables();
+            Globals.ThisAddIn.WriteVariables();
 
             this.Close();
             var form1 = (Form1)Tag;
@@ -154,7 +168,7 @@ namespace FastMove
         }
 
 
-        private void checkBox16_CheckedChanged(object sender, EventArgs e)
+        private void CheckBox16_CheckedChanged(object sender, EventArgs e)
         {
             Globals.ThisAddIn._deferEmailsAlwaysSendHighPriority = checkBox16.Checked;            
         }

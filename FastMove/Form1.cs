@@ -11,13 +11,15 @@ using System.Diagnostics;
 namespace FastMove
 {
     public partial class Form1 : Form
-    {        
-        AutoCompleteStringCollection namesCollection = new AutoCompleteStringCollection();
-        List<string> _recentItems = new List<string>(); 
-        List<string> _items = new List<string>();
+    {
+        readonly AutoCompleteStringCollection namesCollection = new AutoCompleteStringCollection();
+        readonly List<string> _recentItems = new List<string>();
+        readonly List<string> _items = new List<string>();
         List<string> _Searchitems = new List<string>();
 
-        public string pad(int i)
+        public AutoCompleteStringCollection NamesCollection => namesCollection;
+
+        public string Pad(int i)
         {
             if (i < 10)
             {
@@ -34,9 +36,9 @@ namespace FastMove
             double seconds = Globals.ThisAddIn._InboxAvg;
             TimeSpan TS = TimeSpan.FromSeconds(seconds);                        
             string AvgText = TS.Days+ " days,"+
-                pad(TS.Hours)+ " hours, "+
-                pad(TS.Minutes)+ " minutes "+
-                pad(TS.Seconds) + " seconds";
+                Pad(TS.Hours)+ " hours, "+
+                Pad(TS.Minutes)+ " minutes "+
+                Pad(TS.Seconds) + " seconds";
 
             textBox1.Text = AvgText;
 
@@ -47,13 +49,13 @@ namespace FastMove
                 count++;
             }
             if(count>0) 
-             seconds = seconds / count;
+             seconds /= count;
            
             TS = TimeSpan.FromSeconds(seconds);
             AvgText = TS.Days + " days," +
-                pad(TS.Hours) + " hours, " +
-                pad(TS.Minutes) + " minutes " +
-                pad(TS.Seconds) + " seconds";
+                Pad(TS.Hours) + " hours, " +
+                Pad(TS.Minutes) + " minutes " +
+                Pad(TS.Seconds) + " seconds";
 
             textBox2.Text = AvgText;
    
@@ -111,7 +113,7 @@ namespace FastMove
 
         }
 
-        private bool compare(string s)
+        private bool Compare(string s)
         {
             string t = comboBox1.Text;
 
@@ -125,71 +127,73 @@ namespace FastMove
             return false;
         }
 
-        private void comboBox1_TextChanged(object sender, EventArgs e)
+        private void ComboBox1_TextChanged(object sender, EventArgs e)
         {
             if (comboBox1.Text.Length > 0)
             {
-                _Searchitems = _items.FindAll(compare);
+                _Searchitems = _items.FindAll(Compare);
                 listBox1.DataSource = _Searchitems;
             }
         }
 
-        private void comboBox1_Selected(object sender, EventArgs e)
+        private void ComboBox1_Selected(object sender, EventArgs e)
         {
-            string selected = comboBox1.SelectedText;
+            //string selected = comboBox1.SelectedText;
             object selectedItem = listBox1.SelectedItem;
 
-            Globals.ThisAddIn.moveMail(selectedItem.ToString());
+            Globals.ThisAddIn.MoveMail(selectedItem.ToString());
             this.Close();
         }
 
-        void comboBox1_KeyDown(object sender, KeyEventArgs e)
+        void ComboBox1_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
-                comboBox1_Selected(sender, EventArgs.Empty);           
+                ComboBox1_Selected(sender, EventArgs.Empty);           
         }
 
-        private void comboBox1_KeyPress(object sender, KeyPressEventArgs e)
+        private void ComboBox1_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (e.KeyChar == (char)Keys.Enter)
-                comboBox1_Selected(sender, EventArgs.Empty);
+                ComboBox1_Selected(sender, EventArgs.Empty);
         }        
 
-        private void listBox1_KeyPress(object sender, KeyPressEventArgs e)
+        private void ListBox1_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (e.KeyChar == (char)Keys.Return)
-                comboBox1_Selected(sender, EventArgs.Empty);
+                ComboBox1_Selected(sender, EventArgs.Empty);
         }
 
-        private void listBox1_MouseDoubleClick(object sender, EventArgs e)
+        private void ListBox1_MouseDoubleClick(object sender, EventArgs e)
         {            
-            comboBox1_Selected(sender, EventArgs.Empty);            
+            ComboBox1_Selected(sender, EventArgs.Empty);            
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void Button1_Click(object sender, EventArgs e)
         {
             //Ok
-            comboBox1_Selected(sender, EventArgs.Empty);   
+            ComboBox1_Selected(sender, EventArgs.Empty);   
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void Button2_Click(object sender, EventArgs e)
         {
             this.Close();                
         }
 
-        private void listBox2_MouseDoubleClick(object sender, EventArgs e)
+        private void ListBox2_MouseDoubleClick(object sender, EventArgs e)
         {
             object selectedItem = listBox2.SelectedItem;
-            Globals.ThisAddIn.moveMail(selectedItem.ToString());
+            Globals.ThisAddIn.MoveMail(selectedItem.ToString());
             this.Close();
         }
 
-        private void button3_Click(object sender, EventArgs e)
+        private void Button3_Click(object sender, EventArgs e)
         {
             try
-            {                
-                SettingsForm _Form = new SettingsForm();
-                _Form.Tag = this;
+            {
+                SettingsForm _Form = new SettingsForm
+                {
+                    Tag = this
+                };
                 _Form.Show();
                 this.Hide();
             }
@@ -200,7 +204,7 @@ namespace FastMove
             } 
         }
 
-        private void button4_Click(object sender, EventArgs e)
+        private void Button4_Click(object sender, EventArgs e)
         {
             Globals.ThisAddIn.EnumerateFoldersInDefaultStore();
             Globals.ThisAddIn.CalculateMeanInboxTime();
@@ -211,8 +215,10 @@ namespace FastMove
         {
             try
             {
-                StatisticsForm _Form = new StatisticsForm();
-                _Form.Tag = this;
+                StatisticsForm _Form = new StatisticsForm
+                {
+                    Tag = this
+                };
                 _Form.Show();
                 this.Hide();
             }
@@ -223,18 +229,20 @@ namespace FastMove
             }
         }
 
-        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        private void LinkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             ProcessStartInfo sInfo = new ProcessStartInfo("https://github.com/j-b-n/Fastmove");
             Process.Start(sInfo);
         }
 
-        private void button5_Click(object sender, EventArgs e)
+        private void Button5_Click(object sender, EventArgs e)
         {
             try
             {
-                DeferEmails _Form = new DeferEmails();
-                _Form.Tag = this;
+                DeferEmails _Form = new DeferEmails
+                {
+                    Tag = this
+                };
                 _Form.Show();
                 this.Hide();
             }

@@ -16,7 +16,7 @@ namespace FastMove
     public partial class StatisticsForm : Form
     {
 
-        public string pad(int i)
+        public string Pad(int i)
         {
             if (i < 10)
             {
@@ -25,7 +25,7 @@ namespace FastMove
             return i + "";
         }
 
-        public void drawChart1()
+        public void DrawChart1()
         {
             /* 
           * Chart 1
@@ -69,7 +69,7 @@ namespace FastMove
             chart1.Invalidate();
         }
 
-        public void drawChart2()
+        public void DrawChart2()
         {
 
             /*
@@ -102,7 +102,7 @@ namespace FastMove
 
             DateTimeFormatInfo dfi = DateTimeFormatInfo.CurrentInfo;
             Calendar cal = dfi.Calendar;
-            string weekNr = "";
+            string weekNr;
 
             List<DateTime> list2 = _MailsPerDay.Keys.ToList();
             list2.Sort();
@@ -147,9 +147,9 @@ namespace FastMove
             double seconds = Globals.ThisAddIn._InboxAvg;
             TimeSpan TS = TimeSpan.FromSeconds(seconds);
             string AvgText = TS.Days + " days," +
-                pad(TS.Hours) + " hours, " +
-                pad(TS.Minutes) + " minutes " +
-                pad(TS.Seconds) + " seconds";
+                Pad(TS.Hours) + " hours, " +
+                Pad(TS.Minutes) + " minutes " +
+                Pad(TS.Seconds) + " seconds";
 
             textBox1.Text = AvgText;
 
@@ -161,18 +161,18 @@ namespace FastMove
                 count++;
             }
             if (count > 0)
-                seconds = seconds / count;
+                seconds /= count;
 
             TS = TimeSpan.FromSeconds(seconds);
             AvgText = TS.Days + " days," +
-                pad(TS.Hours) + " hours, " +
-                pad(TS.Minutes) + " minutes " +
-                pad(TS.Seconds) + " seconds";
+                Pad(TS.Hours) + " hours, " +
+                Pad(TS.Minutes) + " minutes " +
+                Pad(TS.Seconds) + " seconds";
 
             textBox2.Text = AvgText;
 
-            drawChart1();
-            drawChart2();
+            DrawChart1();
+            DrawChart2();
 
          
             /*
@@ -230,7 +230,7 @@ namespace FastMove
             toolStripStatusLabel4.Text = string.Format("Version: {0}", Globals.ThisAddIn.publishedVersion);
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void Button1_Click(object sender, EventArgs e)
         {
             this.Close();
             var form1 = (Form1)Tag;

@@ -8,7 +8,7 @@ namespace FastMove
     public class FastMoveVariables
     {
         internal List<string> _ignoreList = new List<string>();                 
-        public List<string> ignoreList
+        public List<string> IgnoreList
         {
             get { return _ignoreList; }
             set { _ignoreList = value; }
@@ -23,7 +23,7 @@ namespace FastMove
 
         internal List<string> _recentItems = new List<string>();
 
-        public List<string> recentItems
+        public List<string> RecentItems
         {
             get { return _recentItems; }
             set { _recentItems = value; }
@@ -31,7 +31,7 @@ namespace FastMove
 
         internal List<string> _folderItems = new List<string>();
 
-        public List<string> folderItems
+        public List<string> FolderItems
         {
             get { return _folderItems; }
             set { _folderItems = value; }
@@ -47,7 +47,7 @@ namespace FastMove
         
         internal List<double> _avgTimeBeforeMove = new List<double>();
 
-        public List<double> avgTimeBeforeMove
+        public List<double> AvgTimeBeforeMove
         {
             get { return _avgTimeBeforeMove; }
             set { _avgTimeBeforeMove = value; }

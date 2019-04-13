@@ -61,10 +61,9 @@ namespace FastMove
         /// Interval to check for updates online
         /// </summary>
         public TimeSpan _OnlineCheckInterval = TimeSpan.FromMinutes(60);
-
-        Timer timer = new Timer();
+        readonly Timer timer = new Timer();
         int timerCounter = 0;
-        Timer StartUpTimer = new Timer();
+        readonly Timer StartUpTimer = new Timer();
 
         public int AddinUpdateAvailable = 0;
         private Outlook.Inspector myInspector = null;
@@ -92,7 +91,7 @@ namespace FastMove
 
         #region CacheData
 
-        public void addRecentItem(string item)
+        public void AddRecentItem(string item)
         {
             string folderStr = item;
             foreach (string str in _accounts)
@@ -164,7 +163,7 @@ namespace FastMove
         }
 
 
-        public void loadVariables()
+        public void LoadVariables()
         {
             
             string path = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\FastMove";
@@ -187,7 +186,7 @@ namespace FastMove
                 // If the directory doesn't exist, create it.
                 if (!File.Exists(path))
                 {
-                    writeVariables();
+                    WriteVariables();
                 }
             }
             catch (System.Exception)
@@ -228,7 +227,7 @@ namespace FastMove
             //GetVariables();                        
         }
 
-        public void writeVariables()
+        public void WriteVariables()
         {
             string path = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\FastMove";
 
@@ -251,26 +250,27 @@ namespace FastMove
 
             try
             {
-                purgeCountedMails();
+                PurgeCountedMails();
 
-                FastMoveVariables up = new FastMoveVariables();
+                FastMoveVariables up = new FastMoveVariables
+                {
+                    _FoldersLevel1 = _FoldersLevel1,
+                    _ignoreList = _ignoreList,
+                    _recentItems = _recentItems,
+                    _folderItems = _items,
+                    _InboxAvg = _InboxAvg,
+                    _avgTimeBeforeMove = _avgTimeBeforeMove,
+                    MailsPerDay = _MailsPerDay,
+                    LastMailReceived = _LastMailReceived,
+                    LastOnlineCheck = _LastOnlineCheck,
+                    OnlineCheckInterval = _OnlineCheckInterval,
+                    _CountedNewMails = _CountedNewMails,
+                    MailsFromWho = _MailsFromWho,
 
-                up._FoldersLevel1 = _FoldersLevel1;
-                up._ignoreList = _ignoreList;
-                up._recentItems = _recentItems;
-                up._folderItems = _items;
-                up._InboxAvg = _InboxAvg;
-                up._avgTimeBeforeMove = _avgTimeBeforeMove;
-                up.MailsPerDay = _MailsPerDay;
-                up.LastMailReceived = _LastMailReceived;
-                up.LastOnlineCheck = _LastOnlineCheck;
-                up.OnlineCheckInterval = _OnlineCheckInterval;
-                up._CountedNewMails = _CountedNewMails;
-                up.MailsFromWho = _MailsFromWho;
-                
-                up.DeferEmailActive = _deferEmails;
-                up.DeferEmailsAlwaysSendHighPriority = _deferEmailsAlwaysSendHighPriority;
-                up.DeferEmailsAllowedTime = _deferEmailsAllowedTime;
+                    DeferEmailActive = _deferEmails,
+                    DeferEmailsAlwaysSendHighPriority = _deferEmailsAlwaysSendHighPriority,
+                    DeferEmailsAllowedTime = _deferEmailsAllowedTime
+                };
 
                 var serializer = new SharpSerializer();
                 serializer.Serialize(up, path);
@@ -303,18 +303,17 @@ namespace FastMove
             
             foreach (Object selObject in folder.Items)
             {
-                if (selObject is Outlook.MailItem)
-                {
-                    Outlook.MailItem mail = (Outlook.MailItem)selObject;
-                    TimeSpan span = _now.Subtract(mail.ReceivedTime);
-                    avg += span.TotalSeconds;
-                    avgCount += 1;
+                    if (selObject is Outlook.MailItem mail)
+                    {
+                        TimeSpan span = _now.Subtract(mail.ReceivedTime);
+                        avg += span.TotalSeconds;
+                        avgCount += 1;
+                    }
                 }
-            }
 
             if (avgCount > 0)
             {
-                avg = avg / avgCount;
+                avg /= avgCount;
             }
             else
             {
@@ -350,8 +349,8 @@ namespace FastMove
         // Uses recursion to enumerate Outlook subfolders.
         private void EnumerateFolders(Outlook.Folder folder, int level)
         {
-            bool ignore = false;
-            string folderStr = "";
+            bool ignore;
+            string folderStr;
             Outlook.Folders childFolders = folder.Folders;
             if (childFolders.Count > 0)
             {
@@ -437,9 +436,9 @@ namespace FastMove
         }        
 
 
-        public void moveMail(string selectedFolderPath)
+        public void MoveMail(string selectedFolderPath)
         {
-            Outlook.MAPIFolder destFolder = null;
+            Outlook.MAPIFolder destFolder;
             bool movedMail = false;
             string itemMessage = "";
 
@@ -491,14 +490,14 @@ namespace FastMove
                                     " The subject is " + mailItem.Subject + ".";
                                 //mailItem.Display(false);
 
-                                countMail(mailItem);
+                                CountMail(mailItem);
 
                                 mailItem.UnRead = false;                                
                                 mailItem.Move(destFolder);                              
 
                                 itemMessage += "Moved mail!\n";
                                 movedMail = true;
-                                addRecentItem(Uri.UnescapeDataString(destFolder.FolderPath));
+                                AddRecentItem(Uri.UnescapeDataString(destFolder.FolderPath));
                                 //MessageBox.Show(itemMessage);
                                 itemMessage = "";
 
@@ -543,22 +542,14 @@ namespace FastMove
             return new Ribbon1();
         }
 
-  
+
         // In case of trapping the Folder change event
         //http://msdn.microsoft.com/en-us/library/microsoft.office.interop.outlook.foldersevents_event.folderchange.aspx
-        
-        
-        public void Folders_FolderAdd(object Folder)
-        {
-        }
 
-        public void Folders_FolderRemove(object Folder)
-        {
-        }
 
         public void HandlerQuit()
         {
-            writeVariables();
+            WriteVariables();
         }
 
         #region NewMail
@@ -567,7 +558,7 @@ namespace FastMove
          */
         public string GetEmailAdress (Outlook._MailItem MailMessage)
         {
-            string SMTPAddress =  "";
+            string SMTPAddress;
 
             //Issue a reply on the mail message to create a recipient object that is the sender address.
 
@@ -606,9 +597,9 @@ namespace FastMove
             }
         }
 
-        void purgeCountedMails()
+        void PurgeCountedMails()
         {
-            object item = null;
+            object item;
             List<string> list = new List<string>(); 
             
             try
@@ -636,7 +627,7 @@ namespace FastMove
             }
         }
 
-        void countMail(Outlook.MailItem item)
+        void CountMail(Outlook.MailItem item)
         {
             if (item == null)
             {
@@ -680,7 +671,7 @@ namespace FastMove
 
         void HandlerNewMailEx(string entryIDCollection)
         {
-            countMail(((Outlook.MailItem)this.Application.Session.GetItemFromID(entryIDCollection, missing)));
+            CountMail(((Outlook.MailItem)this.Application.Session.GetItemFromID(entryIDCollection, missing)));
         }
                 
         /*
@@ -695,7 +686,7 @@ namespace FastMove
         {
             if (item is Outlook.MailItem)
             {
-                countMail((Outlook.MailItem)item);
+                CountMail((Outlook.MailItem)item);
             }            
         }
 
@@ -703,7 +694,7 @@ namespace FastMove
         {
             if (item is Outlook.MailItem)
             {
-                countMail((Outlook.MailItem)item);
+                CountMail((Outlook.MailItem)item);
             }
         }
 
@@ -767,11 +758,11 @@ namespace FastMove
             return Next;
         }
 
-        private void deferEmail(object Item, ref bool Cancel)
+        private void DeferEmail(object Item, ref bool Cancel)
         {
             var msg = Item as Outlook.MailItem;
-            DateTime sendTime = DateTime.Now;
-            DateTime deferTime = DateTime.Now;
+            //DateTime sendTime;
+            DateTime deferTime;
 
             if (_deferEmails == false)
             {                
@@ -799,7 +790,7 @@ namespace FastMove
         #endregion
 
 
-        void timer_Tick(object sender, EventArgs e)
+        void Timer_Tick(object sender, EventArgs e)
         {
             if (Application.Session.ExchangeConnectionMode == Outlook.OlExchangeConnectionMode.olCachedDisconnected
                 ||
@@ -847,7 +838,7 @@ namespace FastMove
                 {
                     if (item is Outlook.MailItem)
                     {
-                        countMail((Outlook.MailItem)item);
+                        CountMail((Outlook.MailItem)item);
                     }
                 }
             }
@@ -860,7 +851,7 @@ namespace FastMove
             myInspector = Inspector;
             if (myInspector.CurrentItem is Outlook.MailItem)
             {
-                countMail(myInspector.CurrentItem);
+                CountMail(myInspector.CurrentItem);
                 //MessageBox.Show("Inspector!");
             }
         }
@@ -907,7 +898,7 @@ namespace FastMove
                 _accounts.Add(account.SmtpAddress);
             }
 
-            loadVariables();            
+            LoadVariables();            
                                                                        
             Microsoft.Office.Interop.Outlook.Application app = this.Application;
 
@@ -930,13 +921,13 @@ namespace FastMove
             
             Application.Inspectors.NewInspector += new Outlook.InspectorsEvents_NewInspectorEventHandler(Inspectors_NewInspector);
 
-            timer.Tick += new EventHandler(timer_Tick); // Everytime timer ticks, timer_Tick will be called
+            timer.Tick += new EventHandler(Timer_Tick); // Everytime timer ticks, timer_Tick will be called
             timer.Interval = (1000) * (60);              // Timer will tick X second
             timer.Enabled = true;                       // Enable the timer
             timer.Start();                              // Start the timer
 
             //Create an event handler for when items are sent
-            Application.ItemSend += new ApplicationEvents_11_ItemSendEventHandler(deferEmail);
+            Application.ItemSend += new ApplicationEvents_11_ItemSendEventHandler(DeferEmail);
 
 
             /*
@@ -958,7 +949,7 @@ namespace FastMove
 
         private void ThisAddIn_Shutdown(object sender, System.EventArgs e)
         {
-            writeVariables();
+            WriteVariables();
         }
 
         #region VSTO generated code

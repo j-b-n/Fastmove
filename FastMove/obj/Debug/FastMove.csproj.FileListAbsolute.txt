@@ -52,6 +52,7 @@ C:\Users\joabj85\Source\Repos\Fastmove\FastMove\obj\Debug\FastMove.pdb
 C:\Users\joabj85\Source\Repos\Fastmove\FastMove\bin\Debug\Microsoft.Office.Tools.Outlook.dll
 C:\Users\joabj85\Source\Repos\Fastmove\FastMove\bin\Debug\Microsoft.Office.Tools.v4.0.Framework.dll
 C:\Users\joabj85\Source\Repos\Fastmove\FastMove\bin\Debug\Microsoft.VisualStudio.Tools.Applications.Runtime.dll
-C:\Users\joabj85\Source\Repos\Fastmove\FastMove\obj\Debug\FastMove.csprojAssemblyReference.cache
 C:\Users\joabj85\Source\Repos\Fastmove\FastMove\obj\Debug\FastMove.csproj.CoreCompileInputs.cache
 C:\Users\joabj85\Source\Repos\Fastmove\FastMove\obj\Debug\FastMove.csproj.CopyComplete
+C:\Users\joabj85\Source\Repos\Fastmove\FastMove\bin\Debug\Microsoft.Office.Tools.Common.dll
+C:\Users\joabj85\Source\Repos\Fastmove\FastMove\bin\Debug\Microsoft.Office.Tools.dll

@@ -33,7 +33,7 @@ namespace FastMove
     public class Ribbon1 : Office.IRibbonExtensibility
     {        
         private Office.IRibbonUI ribbon;
-        List<string> lastList = new List<string>(); // <-- Add this
+        //readonly List<string> lastList = new List<string>(); // <-- Add this
 
 
         public Ribbon1()
@@ -57,9 +57,14 @@ namespace FastMove
             this.ribbon = ribbonUI;
         }
 
-        public string menu1_GetContent(Office.IRibbonControl control)
+        public string Menu1_GetContent(Office.IRibbonControl control)
         {
-            string tmp = "";
+            if (control == null)
+            {
+                throw new ArgumentNullException(nameof(control));
+            }
+
+            string tmp;
             int count = 0;
             StringBuilder MyStringBuilder = new StringBuilder(@"<menu xmlns=""http://schemas.microsoft.com/office/2006/01/customui"" >");
             foreach (string item in Globals.ThisAddIn._recentItems)
@@ -80,76 +85,131 @@ namespace FastMove
 
         public void FastMoveMail_btn0(Office.IRibbonControl control)
         {
-            if(Globals.ThisAddIn._recentItems.Count >= 0) 
-             Globals.ThisAddIn.moveMail(Globals.ThisAddIn._recentItems[0].ToString());
+            if (control == null)
+            {
+                throw new ArgumentNullException(nameof(control));
+            }
+
+            if (Globals.ThisAddIn._recentItems.Count >= 0) 
+             Globals.ThisAddIn.MoveMail(Globals.ThisAddIn._recentItems[0].ToString());
             this.ribbon.Invalidate();
         }
 
         public void FastMoveMail_btn1(Office.IRibbonControl control)
         {
+            if (control == null)
+            {
+                throw new ArgumentNullException(nameof(control));
+            }
+
             if (Globals.ThisAddIn._recentItems.Count >= 1)
-                Globals.ThisAddIn.moveMail(Globals.ThisAddIn._recentItems[1].ToString());
+                Globals.ThisAddIn.MoveMail(Globals.ThisAddIn._recentItems[1].ToString());
             this.ribbon.Invalidate();
         }
         
         public void FastMoveMail_btn2(Office.IRibbonControl control)
         {
+            if (control == null)
+            {
+                throw new ArgumentNullException(nameof(control));
+            }
+
             if (Globals.ThisAddIn._recentItems.Count >= 2)
-                Globals.ThisAddIn.moveMail(Globals.ThisAddIn._recentItems[2].ToString());
+                Globals.ThisAddIn.MoveMail(Globals.ThisAddIn._recentItems[2].ToString());
             this.ribbon.Invalidate();
         }
         
         public void FastMoveMail_btn3(Office.IRibbonControl control)
         {
+            if (control == null)
+            {
+                throw new ArgumentNullException(nameof(control));
+            }
+
             if (Globals.ThisAddIn._recentItems.Count >= 3)
-                Globals.ThisAddIn.moveMail(Globals.ThisAddIn._recentItems[3].ToString());
+                Globals.ThisAddIn.MoveMail(Globals.ThisAddIn._recentItems[3].ToString());
             this.ribbon.Invalidate();
         }
 
         public void FastMoveMail_btn4(Office.IRibbonControl control)
         {
+            if (control == null)
+            {
+                throw new ArgumentNullException(nameof(control));
+            }
+
             if (Globals.ThisAddIn._recentItems.Count >= 4)
-                Globals.ThisAddIn.moveMail(Globals.ThisAddIn._recentItems[4].ToString());
+                Globals.ThisAddIn.MoveMail(Globals.ThisAddIn._recentItems[4].ToString());
             this.ribbon.Invalidate();
         }
 
         public void FastMoveMail_btn5(Office.IRibbonControl control)
         {
+            if (control == null)
+            {
+                throw new ArgumentNullException(nameof(control));
+            }
+
             if (Globals.ThisAddIn._recentItems.Count >= 5)
-                Globals.ThisAddIn.moveMail(Globals.ThisAddIn._recentItems[5].ToString());
+                Globals.ThisAddIn.MoveMail(Globals.ThisAddIn._recentItems[5].ToString());
             this.ribbon.Invalidate();
         }
 
         public void FastMoveMail_btn6(Office.IRibbonControl control)
         {
+            if (control == null)
+            {
+                throw new ArgumentNullException(nameof(control));
+            }
+
             if (Globals.ThisAddIn._recentItems.Count >= 6)
-                Globals.ThisAddIn.moveMail(Globals.ThisAddIn._recentItems[6].ToString());
+                Globals.ThisAddIn.MoveMail(Globals.ThisAddIn._recentItems[6].ToString());
             this.ribbon.Invalidate();
         }
 
         public void FastMoveMail_btn7(Office.IRibbonControl control)
         {
+            if (control == null)
+            {
+                throw new ArgumentNullException(nameof(control));
+            }
+
             if (Globals.ThisAddIn._recentItems.Count >= 7)
-                Globals.ThisAddIn.moveMail(Globals.ThisAddIn._recentItems[7].ToString());
+                Globals.ThisAddIn.MoveMail(Globals.ThisAddIn._recentItems[7].ToString());
             this.ribbon.Invalidate();
         }
 
         public void FastMoveMail_btn8(Office.IRibbonControl control)
         {
+            if (control == null)
+            {
+                throw new ArgumentNullException(nameof(control));
+            }
+
             if (Globals.ThisAddIn._recentItems.Count >= 8)
-                Globals.ThisAddIn.moveMail(Globals.ThisAddIn._recentItems[8].ToString());
+                Globals.ThisAddIn.MoveMail(Globals.ThisAddIn._recentItems[8].ToString());
             this.ribbon.Invalidate();
         }
 
         public void FastMoveMail_btn9(Office.IRibbonControl control)
         {
+            if (control == null)
+            {
+                throw new ArgumentNullException(nameof(control));
+            }
+
             if (Globals.ThisAddIn._recentItems.Count >= 9)
-                Globals.ThisAddIn.moveMail(Globals.ThisAddIn._recentItems[9].ToString());
+                Globals.ThisAddIn.MoveMail(Globals.ThisAddIn._recentItems[9].ToString());
             this.ribbon.Invalidate();
         }
 
         public void FastMoveMail(Office.IRibbonControl control)
         {
+            if (control == null)
+            {
+                throw new ArgumentNullException(nameof(control));
+            }
+
             try
             {
                 this.ribbon.Invalidate();

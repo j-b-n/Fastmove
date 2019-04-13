@@ -2542,26 +2542,12 @@
               What name should have the root property. Default is "Root".
             </summary>
         </member>
-        <member name="M:Polenter.Serialization.SharpSerializer.Serialize(System.Object,System.String)">
-            <summary>
-              Serializing to a file. File will be always new created and closed after the serialization.
-            </summary>
-            <param name = "data"></param>
-            <param name = "filename"></param>
-        </member>
         <member name="M:Polenter.Serialization.SharpSerializer.Serialize(System.Object,System.IO.Stream)">
             <summary>
               Serializing to the stream. After serialization the stream will NOT be closed.
             </summary>
             <param name = "data"></param>
             <param name = "stream"></param>
-        </member>
-        <member name="M:Polenter.Serialization.SharpSerializer.Deserialize(System.String)">
-            <summary>
-              Deserializing from the file. After deserialization the file will be closed.
-            </summary>
-            <param name = "filename"></param>
-            <returns></returns>
         </member>
         <member name="M:Polenter.Serialization.SharpSerializer.Deserialize(System.IO.Stream)">
             <summary>

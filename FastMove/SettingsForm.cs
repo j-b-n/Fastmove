@@ -14,10 +14,10 @@ namespace FastMove
         /// <summary>
         /// Intervals for online check 1 hr, 2 hrs, 1 day, 1 week
         /// </summary>
-        private int[] OnlineCheckIntervalValues = new int[] { 60, 120, 1440, 10080 };
+        private readonly int[] OnlineCheckIntervalValues = new int[] { 60, 120, 1440, 10080 };
 
-        private BindingList<string> _ignoreL = new BindingList<string>();
-        private BindingList<string> _FolderLevel1L = new BindingList<string>();
+        private readonly BindingList<string> _ignoreL = new BindingList<string>();
+        private readonly BindingList<string> _FolderLevel1L = new BindingList<string>();
         List<string> _originalIgnoreList = new List<string>(); 
 
         public SettingsForm()
@@ -27,10 +27,9 @@ namespace FastMove
         
         private void SettingsForm_Load(object sender, EventArgs e)
         {   
-            List<string> _List = new List<string>();
-            List<string> _FolderLevel1List = new List<string>();
-
-            _List = null;
+            List<string> _List ;
+            List<string> _FolderLevel1List;
+            
             _List = Globals.ThisAddIn._ignoreList;
             _List.Sort();
             _originalIgnoreList = _List;
@@ -52,8 +51,7 @@ namespace FastMove
                 Globals.ThisAddIn.EnumerateFoldersInDefaultStore();
             }
 
-            _FolderLevel1L.Clear();
-            _FolderLevel1List = null;
+            _FolderLevel1L.Clear();            
             _FolderLevel1List = Globals.ThisAddIn._FoldersLevel1;
 
             _FolderLevel1List.Sort();
@@ -110,8 +108,8 @@ namespace FastMove
 
         public void AddItem(object sender, EventArgs e)
         {
-            List<string> _ignoreList = new List<string>();
-            List<string> _FolderLevel1List = new List<string>();
+            List<string> _ignoreList;
+            List<string> _FolderLevel1List;
 
 
             _ignoreList = Globals.ThisAddIn._ignoreList;
@@ -128,8 +126,7 @@ namespace FastMove
                 _ignoreL.Add(str);
             }
 
-            _FolderLevel1L.Clear();
-            _FolderLevel1List = null;
+            _FolderLevel1L.Clear();            
             _FolderLevel1List = Globals.ThisAddIn._FoldersLevel1;
             _FolderLevel1List.Sort();
             foreach (string str in _FolderLevel1List)
@@ -144,15 +141,15 @@ namespace FastMove
 
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void Button1_Click(object sender, EventArgs e)
         {
             AddItem(sender, e);
         }
 
         public void RemoveItem(object sender, EventArgs e)        
         {
-            List<string> _FolderLevel1List = new List<string>();
-            List<string> _ignoreList = new List<string>();
+            List<string> _FolderLevel1List;
+            List<string> _ignoreList;
             _ignoreList = Globals.ThisAddIn._ignoreList;
             foreach (string selected in listBox1.SelectedItems)
             {
@@ -169,7 +166,7 @@ namespace FastMove
             }
 
             _FolderLevel1L.Clear();
-            _FolderLevel1List = null;
+            
             _FolderLevel1List = Globals.ThisAddIn._FoldersLevel1;
             _FolderLevel1List.Sort();
             foreach (string str in _FolderLevel1List)
@@ -184,21 +181,21 @@ namespace FastMove
         }
 
 
-        private void button2_Click(object sender, EventArgs e)
+        private void Button2_Click(object sender, EventArgs e)
         {
             RemoveItem(sender, e);
         }
 
-        private void button3_Click(object sender, EventArgs e)
+        private void Button3_Click(object sender, EventArgs e)
         {
             Globals.ThisAddIn.EnumerateFoldersInDefaultStore();
-            Globals.ThisAddIn.writeVariables();
+            Globals.ThisAddIn.WriteVariables();
             this.Close();
             var form1 = (Form1)Tag;
             form1.Show();            
         }
 
-        private void cancel_Click(object sender, EventArgs e)
+        private void Cancel_Click(object sender, EventArgs e)
         {            
             Globals.ThisAddIn._ignoreList = _originalIgnoreList;
             this.Close();
@@ -206,7 +203,7 @@ namespace FastMove
             form1.Show();
         }
 
-        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        private void ComboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {            
             int selectedIndex = comboBox1.SelectedIndex;
             if (selectedIndex < OnlineCheckIntervalValues.Length)

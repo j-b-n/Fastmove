@@ -8,8 +8,8 @@ namespace FastMove
 {
     public class AutoClosingMessageBox
     {
-        System.Threading.Timer _timeoutTimer;
-        string _caption;
+        readonly System.Threading.Timer _timeoutTimer;
+        readonly string _caption;
 
         /// <summary>
         /// Auto Closing Messagebox

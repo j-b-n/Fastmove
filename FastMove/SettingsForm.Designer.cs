@@ -76,7 +76,7 @@
             this.AddBtn.TabIndex = 3;
             this.AddBtn.Text = "Add -->";
             this.AddBtn.UseVisualStyleBackColor = false;
-            this.AddBtn.Click += new System.EventHandler(this.button1_Click);
+            this.AddBtn.Click += new System.EventHandler(this.Button1_Click);
             // 
             // button2
             // 
@@ -87,7 +87,7 @@
             this.button2.TabIndex = 4;
             this.button2.Text = "<-- Remove";
             this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.button2.Click += new System.EventHandler(this.Button2_Click);
             // 
             // button3
             // 
@@ -99,7 +99,7 @@
             this.button3.TabIndex = 5;
             this.button3.Text = "Save";
             this.button3.UseVisualStyleBackColor = false;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
+            this.button3.Click += new System.EventHandler(this.Button3_Click);
             // 
             // cancel
             // 
@@ -111,7 +111,7 @@
             this.cancel.TabIndex = 6;
             this.cancel.Text = "Cancel";
             this.cancel.UseVisualStyleBackColor = false;
-            this.cancel.Click += new System.EventHandler(this.cancel_Click);
+            this.cancel.Click += new System.EventHandler(this.Cancel_Click);
             // 
             // listBox2
             // 
@@ -184,7 +184,7 @@
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(291, 28);
             this.comboBox1.TabIndex = 11;
-            this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
+            this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.ComboBox1_SelectedIndexChanged);
             // 
             // label3
             // 

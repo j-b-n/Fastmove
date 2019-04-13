@@ -64,9 +64,9 @@ namespace FastMove
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(706, 28);
             this.comboBox1.TabIndex = 1;
-            this.comboBox1.TextChanged += new System.EventHandler(this.comboBox1_TextChanged);
-            this.comboBox1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.comboBox1_KeyDown);
-            this.comboBox1.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.comboBox1_KeyPress);
+            this.comboBox1.TextChanged += new System.EventHandler(this.ComboBox1_TextChanged);
+            this.comboBox1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.ComboBox1_KeyDown);
+            this.comboBox1.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.ComboBox1_KeyPress);
             // 
             // listBox1
             // 
@@ -77,8 +77,8 @@ namespace FastMove
             this.listBox1.Name = "listBox1";
             this.listBox1.Size = new System.Drawing.Size(707, 244);
             this.listBox1.TabIndex = 2;
-            this.listBox1.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.listBox1_KeyPress);
-            this.listBox1.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.listBox1_MouseDoubleClick);
+            this.listBox1.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.ListBox1_KeyPress);
+            this.listBox1.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.ListBox1_MouseDoubleClick);
             // 
             // button1
             // 
@@ -90,7 +90,7 @@ namespace FastMove
             this.button1.TabIndex = 3;
             this.button1.Text = "OK";
             this.button1.UseVisualStyleBackColor = false;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.button1.Click += new System.EventHandler(this.Button1_Click);
             // 
             // button2
             // 
@@ -103,7 +103,7 @@ namespace FastMove
             this.button2.TabIndex = 4;
             this.button2.Text = "Cancel";
             this.button2.UseVisualStyleBackColor = false;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.button2.Click += new System.EventHandler(this.Button2_Click);
             // 
             // label1
             // 
@@ -125,7 +125,7 @@ namespace FastMove
             this.listBox2.Name = "listBox2";
             this.listBox2.Size = new System.Drawing.Size(702, 244);
             this.listBox2.TabIndex = 6;
-            this.listBox2.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.listBox2_MouseDoubleClick);
+            this.listBox2.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.ListBox2_MouseDoubleClick);
             // 
             // button3
             // 
@@ -136,7 +136,7 @@ namespace FastMove
             this.button3.TabIndex = 7;
             this.button3.Text = "Settings";
             this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
+            this.button3.Click += new System.EventHandler(this.Button3_Click);
             // 
             // button4
             // 
@@ -147,7 +147,7 @@ namespace FastMove
             this.button4.TabIndex = 8;
             this.button4.Text = "Refresh folders";
             this.button4.UseVisualStyleBackColor = true;
-            this.button4.Click += new System.EventHandler(this.button4_Click);
+            this.button4.Click += new System.EventHandler(this.Button4_Click);
             // 
             // label2
             // 
@@ -256,7 +256,7 @@ namespace FastMove
             this.linkLabel1.TabStop = true;
             this.linkLabel1.Text = "Update availabe!";
             this.linkLabel1.Visible = false;
-            this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
+            this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.LinkLabel1_LinkClicked);
             // 
             // button5
             // 
@@ -266,7 +266,7 @@ namespace FastMove
             this.button5.TabIndex = 18;
             this.button5.Text = "Defer emails";
             this.button5.UseVisualStyleBackColor = true;
-            this.button5.Click += new System.EventHandler(this.button5_Click);
+            this.button5.Click += new System.EventHandler(this.Button5_Click);
             // 
             // Form1
             // 

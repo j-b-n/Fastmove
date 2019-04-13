@@ -80,7 +80,7 @@
             this.checkBox1.TabIndex = 0;
             this.checkBox1.Text = "Defer emails";
             this.checkBox1.UseVisualStyleBackColor = true;
-            this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
+            this.checkBox1.CheckedChanged += new System.EventHandler(this.CheckBox1_CheckedChanged);
             // 
             // button1
             // 
@@ -90,7 +90,7 @@
             this.button1.TabIndex = 3;
             this.button1.Text = "Ok";
             this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.button1.Click += new System.EventHandler(this.Button1_Click);
             // 
             // dateTimePickerMon1
             // 
@@ -482,7 +482,7 @@
             this.checkBox16.TabIndex = 10;
             this.checkBox16.Text = "Always send high priority emails directly";
             this.checkBox16.UseVisualStyleBackColor = true;
-            this.checkBox16.CheckedChanged += new System.EventHandler(this.checkBox16_CheckedChanged);
+            this.checkBox16.CheckedChanged += new System.EventHandler(this.CheckBox16_CheckedChanged);
             // 
             // label15
             // 
