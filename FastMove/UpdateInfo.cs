@@ -1,10 +1,7 @@
 ﻿using Polenter.Serialization;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net;
-using System.Text;
 
 namespace FastMove
 {
@@ -24,22 +21,12 @@ namespace FastMove
     /// 
 
     class UpdateInfo
-    {
-        private string publishedVersion = "0.0.0.0";
+    {        
 
-        private string GetRunningVersion()
+        public FastMoveUpdateInfoVariables UpdateVariables = new FastMoveUpdateInfoVariables
         {
-            publishedVersion = "0.0.0.0";
-            if (System.Deployment.Application.ApplicationDeployment.IsNetworkDeployed)
-            {
-                System.Deployment.Application.ApplicationDeployment currDeploy = System.Deployment.Application.ApplicationDeployment.CurrentDeployment;
-                Version pubVer = currDeploy.CurrentVersion;
-                publishedVersion = pubVer.Major.ToString() + "." + pubVer.Minor.ToString() + "." +
-                    pubVer.Build.ToString() + "." + pubVer.Revision.ToString();
-                return publishedVersion;
-            }            
-            return publishedVersion;
-        }
+            Version = "0.0.0.0"
+        };       
 
 
         public void WriteOnlineUpdateInfo()
@@ -62,17 +49,13 @@ namespace FastMove
             path += "\\FastMoveOnlineVersion.xml";
 
             try
-            {
-                FastMoveUpdateInfoVariables UpdateVariables = new FastMoveUpdateInfoVariables
-                {
-                    Version = "0.0.0.0"
-                };
+            {                
                 var serializer = new SharpSerializer();
-                serializer.Serialize(UpdateVariables, path);
+                serializer.Serialize(UpdateVariables, path);                
             }
             catch (Exception)
             {                
-            }
+            }            
         }
 
         public Stream GenerateStreamFromString(string s)
@@ -85,6 +68,50 @@ namespace FastMove
             return stream;
         }
 
+        private bool UpdateCache()
+        {
+            bool update = false;
+            string path = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\FastMove";
+
+            try
+            {
+                // If the directory doesn't exist, create it.
+                if (!Directory.Exists(path))
+                {
+                    Directory.CreateDirectory(path);
+                }
+            }
+            catch
+            {
+                // Fail silently
+            }
+
+            path += "\\OnlineVersion.xml";
+
+            if (File.Exists(path))
+            {
+                if(File.GetLastWriteTime(path).AddDays(7) > DateTime.Now)
+                {
+                    update = true;
+                }
+
+            }
+            else
+            {
+                update = true;
+            }
+
+            if (update)
+            {
+                WebClient client = new WebClient();
+                string downloadString = client.DownloadString("https://raw.githubusercontent.com/j-b-n/Fastmove/master/update.xml");
+
+                File.WriteAllText(path, downloadString);
+            }
+
+            return update;
+        }
+
         /// <summary>
         /// Check GitHub for the current published version
         /// </summary>
@@ -92,44 +119,26 @@ namespace FastMove
         /// 0 - No update available
         /// 1 - Update available</returns>
         public int CheckForUpdate()
-        {
-            FastMoveUpdateInfoVariables UpdateVariables;
-            string downloadString;            
+        {            
+            string path = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\FastMove\\OnlineVersion.xml";
+            
+            UpdateCache();
+           
             try
             {
-                WebClient client = new WebClient();
-                downloadString = client.DownloadString("https://raw.githubusercontent.com/j-b-n/Fastmove/master/update.xml");                
+                var serializer = new SharpSerializer(false);
+                UpdateVariables = (FastMoveUpdateInfoVariables)serializer.Deserialize(path);
+                
+                if (UpdateVariables.Version != Globals.ThisAddIn.publishedVersion)
+                {
+                    //New version available! 
+                    return 1;
+                }
             }
             catch
             {
-                return 0;
-            }
-
-            //writeOnlineUpdateInfo();
-
-            var serializer = new SharpSerializer(false);
-            
-            using (Stream s = GenerateStreamFromString(downloadString))
-            {
-                if (s.Length > 0)
-                {
-                    try
-                    {
-                        UpdateVariables = (FastMoveUpdateInfoVariables)serializer.Deserialize(s);
-                    }
-                    catch
-                    {
-                        return 0;
-                    }
-                    string runningVersion = GetRunningVersion();
-
-                    if (UpdateVariables.Version != runningVersion)
-                    {
-                        //New version available! 
-                        return 1;
-                    }
-                }             
-            }                       
+                return -2;
+            }            
             return 0;
         }
     }

@@ -1,10 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
-using Outlook = Microsoft.Office.Interop.Outlook;
-using System.Web;
-using System.Net;
-using System.IO;
 using System.Diagnostics;
 
 
@@ -252,6 +248,24 @@ namespace FastMove
                 MessageBox.Show("The form could not be loaded: " + ee.Message);
             }
         }
-     
+
+        private void About_Button_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                About _Form = new About
+                {
+                    Tag = this
+                };                
+                _Form.Show();
+                this.Hide();
+            }
+            catch (Exception ee)
+            {
+                // Let the user know what went wrong.
+                MessageBox.Show("The form could not be loaded: " + ee.Message);
+            }
+
+        }
     }
 }

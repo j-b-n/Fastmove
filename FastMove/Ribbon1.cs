@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Text;
-using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using Office = Microsoft.Office.Core;
-using Outlook = Microsoft.Office.Interop.Outlook;
 using System.Windows.Forms;
 
 // TODO:  Follow these steps to enable the Ribbon (XML) item:

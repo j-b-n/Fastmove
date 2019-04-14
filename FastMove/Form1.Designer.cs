@@ -52,6 +52,7 @@ namespace FastMove
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             this.button5 = new System.Windows.Forms.Button();
+            this.About_Button = new System.Windows.Forms.Button();
             this.statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
@@ -129,7 +130,7 @@ namespace FastMove
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(734, 638);
+            this.button3.Location = new System.Drawing.Point(734, 592);
             this.button3.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(179, 35);
@@ -140,7 +141,7 @@ namespace FastMove
             // 
             // button4
             // 
-            this.button4.Location = new System.Drawing.Point(734, 550);
+            this.button4.Location = new System.Drawing.Point(734, 504);
             this.button4.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(179, 35);
@@ -187,7 +188,7 @@ namespace FastMove
             // 
             // Statistics
             // 
-            this.Statistics.Location = new System.Drawing.Point(734, 594);
+            this.Statistics.Location = new System.Drawing.Point(734, 548);
             this.Statistics.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Statistics.Name = "Statistics";
             this.Statistics.Size = new System.Drawing.Size(178, 35);
@@ -198,6 +199,7 @@ namespace FastMove
             // 
             // statusStrip1
             // 
+            this.statusStrip1.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatusLabel1,
             this.toolStripStatusLabel2,
@@ -213,7 +215,7 @@ namespace FastMove
             // toolStripStatusLabel1
             // 
             this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
-            this.toolStripStatusLabel1.Size = new System.Drawing.Size(80, 25);
+            this.toolStripStatusLabel1.Size = new System.Drawing.Size(78, 25);
             this.toolStripStatusLabel1.Text = "Today: 0";
             // 
             // toolStripStatusLabel2
@@ -225,20 +227,20 @@ namespace FastMove
             // toolStripStatusLabel4
             // 
             this.toolStripStatusLabel4.Name = "toolStripStatusLabel4";
-            this.toolStripStatusLabel4.Size = new System.Drawing.Size(640, 25);
+            this.toolStripStatusLabel4.Size = new System.Drawing.Size(643, 25);
             this.toolStripStatusLabel4.Spring = true;
             // 
             // toolStripStatusLabel3
             // 
             this.toolStripStatusLabel3.Name = "toolStripStatusLabel3";
-            this.toolStripStatusLabel3.Size = new System.Drawing.Size(75, 25);
+            this.toolStripStatusLabel3.Size = new System.Drawing.Size(74, 25);
             this.toolStripStatusLabel3.Text = "Version:";
             this.toolStripStatusLabel3.TextAlign = System.Drawing.ContentAlignment.BottomRight;
             // 
             // pictureBox1
             // 
             this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
-            this.pictureBox1.Location = new System.Drawing.Point(734, 8);
+            this.pictureBox1.Location = new System.Drawing.Point(743, 8);
             this.pictureBox1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(36, 40);
@@ -249,7 +251,7 @@ namespace FastMove
             // linkLabel1
             // 
             this.linkLabel1.AutoSize = true;
-            this.linkLabel1.Location = new System.Drawing.Point(776, 20);
+            this.linkLabel1.Location = new System.Drawing.Point(785, 20);
             this.linkLabel1.Name = "linkLabel1";
             this.linkLabel1.Size = new System.Drawing.Size(128, 20);
             this.linkLabel1.TabIndex = 17;
@@ -260,13 +262,23 @@ namespace FastMove
             // 
             // button5
             // 
-            this.button5.Location = new System.Drawing.Point(734, 507);
+            this.button5.Location = new System.Drawing.Point(734, 461);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(178, 35);
             this.button5.TabIndex = 18;
             this.button5.Text = "Defer emails";
             this.button5.UseVisualStyleBackColor = true;
             this.button5.Click += new System.EventHandler(this.Button5_Click);
+            // 
+            // About_Button
+            // 
+            this.About_Button.Location = new System.Drawing.Point(734, 636);
+            this.About_Button.Name = "About_Button";
+            this.About_Button.Size = new System.Drawing.Size(179, 34);
+            this.About_Button.TabIndex = 19;
+            this.About_Button.Text = "About";
+            this.About_Button.UseVisualStyleBackColor = true;
+            this.About_Button.Click += new System.EventHandler(this.About_Button_Click);
             // 
             // Form1
             // 
@@ -275,6 +287,7 @@ namespace FastMove
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.button2;
             this.ClientSize = new System.Drawing.Size(919, 719);
+            this.Controls.Add(this.About_Button);
             this.Controls.Add(this.button5);
             this.Controls.Add(this.linkLabel1);
             this.Controls.Add(this.pictureBox1);
@@ -328,5 +341,6 @@ namespace FastMove
         private PictureBox pictureBox1;
         private LinkLabel linkLabel1;
         private Button button5;
+        private Button About_Button;
     }
 }

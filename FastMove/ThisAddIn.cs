@@ -1,14 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
-using System.Web;
-using System.Net;
 using System.IO;
-using System.Reflection;
-using System.Text;
-using System.Diagnostics;
-using System.Xml;
-using System.Xml.Serialization;
 using Outlook = Microsoft.Office.Interop.Outlook;
 using Office = Microsoft.Office.Core;
 using Polenter.Serialization;
@@ -27,6 +20,8 @@ namespace FastMove
     {
         #region Instance Variables
 
+        public String publishedVersion = "1:0:1:7";
+
         public Office.IRibbonUI ribbon;
 
         public AutoCompleteStringCollection namesCollection = new AutoCompleteStringCollection();
@@ -38,7 +33,7 @@ namespace FastMove
         public List<string> _ignoreList = new List<string>();
         public double _InboxAvg = 0;
         public List<double> _avgTimeBeforeMove = new List<double>();
-        public String publishedVersion = "0:0:0:-2";
+        
         public Dictionary<DateTime,int> _MailsPerDay = new Dictionary<DateTime, int>();
         public Dictionary<string, int> _MailsFromWho = new Dictionary<string, int>();
         public Dictionary<String, DateTime> _CountedNewMails = new Dictionary<String, DateTime>();
@@ -61,9 +56,7 @@ namespace FastMove
         /// Interval to check for updates online
         /// </summary>
         public TimeSpan _OnlineCheckInterval = TimeSpan.FromMinutes(60);
-        readonly Timer timer = new Timer();
-        int timerCounter = 0;
-        readonly Timer StartUpTimer = new Timer();
+        private readonly Timer StartUpTimer = new Timer();
 
         public int AddinUpdateAvailable = 0;
         private Outlook.Inspector myInspector = null;
@@ -71,23 +64,7 @@ namespace FastMove
 
         //Microsoft.Office.Interop.Outlook.Application _applicationObject = null;
         #endregion
-
-        #region CurrentVersion
-
-        private void GetRunningVersion()
-        {
-            if (System.Deployment.Application.ApplicationDeployment.IsNetworkDeployed)
-            {
-                System.Deployment.Application.ApplicationDeployment currDeploy = System.Deployment.Application.ApplicationDeployment.CurrentDeployment;
-                Version pubVer = currDeploy.CurrentVersion;
-                publishedVersion = pubVer.Major.ToString() + "." + pubVer.Minor.ToString() + "." + 
-                    pubVer.Build.ToString() + "." + pubVer.Revision.ToString();
-                return;
-            }
-            publishedVersion = "0:0:0:-1";
-        }
         
-        #endregion
 
         #region CacheData
 
@@ -441,15 +418,7 @@ namespace FastMove
             Outlook.MAPIFolder destFolder;
             bool movedMail = false;
             string itemMessage = "";
-
-            /*Outlook.MAPIFolder inBox = (Outlook.MAPIFolder)_addIn.Application.
-              ActiveExplorer().Session.GetDefaultFolder
-               (Outlook.OlDefaultFolders.olFolderInbox);*/
-
-            //Outlook.Items items = (Outlook.Items)inBox.Items;
-            //Outlook.MailItem moveMail = null;
-            //items.Restrict("[UnRead] = true");
-
+            
             try
             {
                 if (selectedFolderPath.Length < 1)
@@ -790,6 +759,9 @@ namespace FastMove
         #endregion
 
 
+        /* Below are some checks to see if the addin is online or not!
+         * 
+         *
         void Timer_Tick(object sender, EventArgs e)
         {
             if (Application.Session.ExchangeConnectionMode == Outlook.OlExchangeConnectionMode.olCachedDisconnected
@@ -803,48 +775,11 @@ namespace FastMove
                 Application.Session.ExchangeConnectionMode == Outlook.OlExchangeConnectionMode.olCachedOffline
                 )
             {
-                if (_LostConnection == false)
-                {
-                    timer.Stop();                              // Stop the timer                
-                    timer.Interval = (1000) * (5);              // Timer will tick X second
-                    timer.Enabled = true;                       // Enable the timer                
-                    timer.Start();
-                }
                 _LostConnection = true;
-                return;
             }
-
-            if (_LostConnection == true)
-            {
-                timer.Stop();                              // Stop the timer                
-                timer.Interval = (1000) * (60);            // Timer will tick X second
-                timer.Enabled = true;                      // Enable the timer                
-                timer.Start();
-                timerCounter = 0;
-            }
-              
-
             _LostConnection = false;
-
-            if (timerCounter < 5)
-            {
-                Outlook.MAPIFolder inBox = (Outlook.MAPIFolder)Globals.ThisAddIn.Application.
-                  ActiveExplorer().Session.GetDefaultFolder
-                   (Outlook.OlDefaultFolders.olFolderInbox);
-
-                Outlook.Items items = (Outlook.Items)inBox.Items;
-
-                foreach (Outlook.MailItem item in items)
-                {
-                    if (item is Outlook.MailItem)
-                    {
-                        CountMail((Outlook.MailItem)item);
-                    }
-                }
-            }
-
-            timerCounter++;                       
         }
+        */
 
         void Inspectors_NewInspector(Outlook.Inspector Inspector)
         {
@@ -855,7 +790,6 @@ namespace FastMove
                 //MessageBox.Show("Inspector!");
             }
         }
-
 
         #endregion
 
@@ -870,15 +804,29 @@ namespace FastMove
             if (_items.Count < 1)
                 EnumerateFoldersInDefaultStore();
 
-            CalculateMeanInboxTime();
-
-            //Check if there is an update published!
-            GetRunningVersion();
+            CalculateMeanInboxTime();            
 
             if (_LastOnlineCheck.Add(_OnlineCheckInterval) < DateTime.Now)
             {
                 AddinUpdateAvailable = (new UpdateInfo()).CheckForUpdate();
                 _LastOnlineCheck = DateTime.Now;
+            }
+
+            //Count mails in inbox
+            Outlook.MAPIFolder inBox = (Outlook.MAPIFolder)Globals.ThisAddIn.Application.
+               ActiveExplorer().Session.GetDefaultFolder
+                (Outlook.OlDefaultFolders.olFolderInbox);
+
+            Outlook.Items items = (Outlook.Items)inBox.Items;
+            if (items != null && items.Count > 0)
+            {
+                foreach (object item in items)
+                {
+                    if (item is Outlook.MailItem obj)
+                    {
+                        CountMail(obj);
+                    }
+                }
             }
 
             //Clean-up!
@@ -898,8 +846,8 @@ namespace FastMove
                 _accounts.Add(account.SmtpAddress);
             }
 
-            LoadVariables();            
-                                                                       
+            LoadVariables();
+
             Microsoft.Office.Interop.Outlook.Application app = this.Application;
 
             ((Microsoft.Office.Interop.Outlook.ApplicationEvents_11_Event)app).Quit +=
@@ -920,12 +868,7 @@ namespace FastMove
             folder.Items.ItemAdd += new Microsoft.Office.Interop.Outlook.ItemsEvents_ItemAddEventHandler(Items_ItemAdd);                       
             
             Application.Inspectors.NewInspector += new Outlook.InspectorsEvents_NewInspectorEventHandler(Inspectors_NewInspector);
-
-            timer.Tick += new EventHandler(Timer_Tick); // Everytime timer ticks, timer_Tick will be called
-            timer.Interval = (1000) * (60);              // Timer will tick X second
-            timer.Enabled = true;                       // Enable the timer
-            timer.Start();                              // Start the timer
-
+           
             //Create an event handler for when items are sent
             Application.ItemSend += new ApplicationEvents_11_ItemSendEventHandler(DeferEmail);
 
@@ -941,7 +884,7 @@ namespace FastMove
          */
 
             StartUpTimer.Tick += new EventHandler(DelayedStartup);
-            StartUpTimer.Interval = 1000;
+            StartUpTimer.Interval = 1000 * 5; //5 seconds
             StartUpTimer.Enabled = true;
             StartUpTimer.Start();                              
         }

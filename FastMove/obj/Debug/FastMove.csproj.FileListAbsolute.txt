@@ -56,3 +56,6 @@ C:\Users\joabj85\Source\Repos\Fastmove\FastMove\obj\Debug\FastMove.csproj.CoreCo
 C:\Users\joabj85\Source\Repos\Fastmove\FastMove\obj\Debug\FastMove.csproj.CopyComplete
 C:\Users\joabj85\Source\Repos\Fastmove\FastMove\bin\Debug\Microsoft.Office.Tools.Common.dll
 C:\Users\joabj85\Source\Repos\Fastmove\FastMove\bin\Debug\Microsoft.Office.Tools.dll
+C:\Users\joabj85\Source\Repos\Fastmove\FastMove\obj\Debug\FastMove.About.resources
+C:\Users\joabj85\Source\Repos\Fastmove\FastMove\bin\Debug\FastMove.dll.CodeAnalysisLog.xml
+C:\Users\joabj85\Source\Repos\Fastmove\FastMove\bin\Debug\FastMove.dll.lastcodeanalysissucceeded
