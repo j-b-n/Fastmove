@@ -1,5 +1,5 @@
 <Complex name="Root" type="FastMove.FastMoveUpdateInfoVariables, FastMove, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
   <Properties>
-    <Simple name="version" value="1.0.1.7" />
+    <Simple name="Version" value="1.0.1.7" />
   </Properties>
 </Complex>
