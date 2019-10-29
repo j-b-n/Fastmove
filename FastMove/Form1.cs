@@ -26,8 +26,7 @@ namespace FastMove
 
         public Form1()
         {                        
-            InitializeComponent();
-            
+            InitializeComponent();            
             
             double seconds = Globals.ThisAddIn._InboxAvg;
             TimeSpan TS = TimeSpan.FromSeconds(seconds);                        
@@ -101,12 +100,12 @@ namespace FastMove
             {
                 pictureBox1.Visible = true;
                 linkLabel1.Visible = true;
-            } else
+            }
+            else
             {
                 pictureBox1.Visible = false;
                 linkLabel1.Visible = false;
             }
-
         }
 
         private bool Compare(string s)

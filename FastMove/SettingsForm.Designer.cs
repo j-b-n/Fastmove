@@ -33,7 +33,7 @@
             this.listBox1 = new System.Windows.Forms.ListBox();
             this.AddBtn = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
+            this.SaveButton = new System.Windows.Forms.Button();
             this.cancel = new System.Windows.Forms.Button();
             this.listBox2 = new System.Windows.Forms.ListBox();
             this.label2 = new System.Windows.Forms.Label();
@@ -44,6 +44,8 @@
             this.toolStripStatusLabel4 = new System.Windows.Forms.ToolStripStatusLabel();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.label3 = new System.Windows.Forms.Label();
+            this.DebugCheckBox = new System.Windows.Forms.CheckBox();
+            this.Debuglabel = new System.Windows.Forms.Label();
             this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -89,17 +91,17 @@
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.Button2_Click);
             // 
-            // button3
+            // SaveButton
             // 
-            this.button3.BackColor = System.Drawing.Color.SpringGreen;
-            this.button3.Location = new System.Drawing.Point(314, 341);
-            this.button3.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(112, 35);
-            this.button3.TabIndex = 5;
-            this.button3.Text = "Save";
-            this.button3.UseVisualStyleBackColor = false;
-            this.button3.Click += new System.EventHandler(this.Button3_Click);
+            this.SaveButton.BackColor = System.Drawing.Color.SpringGreen;
+            this.SaveButton.Location = new System.Drawing.Point(314, 341);
+            this.SaveButton.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.SaveButton.Name = "SaveButton";
+            this.SaveButton.Size = new System.Drawing.Size(112, 35);
+            this.SaveButton.TabIndex = 5;
+            this.SaveButton.Text = "Save";
+            this.SaveButton.UseVisualStyleBackColor = false;
+            this.SaveButton.Click += new System.EventHandler(this.Button3_Click);
             // 
             // cancel
             // 
@@ -134,22 +136,23 @@
             // 
             // statusStrip1
             // 
+            this.statusStrip1.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatusLabel1,
             this.toolStripStatusLabel2,
             this.toolStripStatusLabel3,
             this.toolStripStatusLabel4});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 456);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 511);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Padding = new System.Windows.Forms.Padding(1, 0, 16, 0);
-            this.statusStrip1.Size = new System.Drawing.Size(739, 30);
+            this.statusStrip1.Size = new System.Drawing.Size(739, 32);
             this.statusStrip1.TabIndex = 9;
             this.statusStrip1.Text = "statusStrip1";
             // 
             // toolStripStatusLabel1
             // 
             this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
-            this.toolStripStatusLabel1.Size = new System.Drawing.Size(80, 25);
+            this.toolStripStatusLabel1.Size = new System.Drawing.Size(78, 25);
             this.toolStripStatusLabel1.Text = "Today: 0";
             // 
             // toolStripStatusLabel2
@@ -161,13 +164,13 @@
             // toolStripStatusLabel3
             // 
             this.toolStripStatusLabel3.Name = "toolStripStatusLabel3";
-            this.toolStripStatusLabel3.Size = new System.Drawing.Size(460, 25);
+            this.toolStripStatusLabel3.Size = new System.Drawing.Size(463, 25);
             this.toolStripStatusLabel3.Spring = true;
             // 
             // toolStripStatusLabel4
             // 
             this.toolStripStatusLabel4.Name = "toolStripStatusLabel4";
-            this.toolStripStatusLabel4.Size = new System.Drawing.Size(75, 25);
+            this.toolStripStatusLabel4.Size = new System.Drawing.Size(74, 25);
             this.toolStripStatusLabel4.Text = "Version:";
             // 
             // comboBox1
@@ -195,18 +198,39 @@
             this.label3.TabIndex = 12;
             this.label3.Text = "Update interval:";
             // 
+            // DebugCheckBox
+            // 
+            this.DebugCheckBox.AutoSize = true;
+            this.DebugCheckBox.Location = new System.Drawing.Point(135, 430);
+            this.DebugCheckBox.Name = "DebugCheckBox";
+            this.DebugCheckBox.Size = new System.Drawing.Size(22, 21);
+            this.DebugCheckBox.TabIndex = 13;
+            this.DebugCheckBox.UseVisualStyleBackColor = true;
+            this.DebugCheckBox.CheckedChanged += new System.EventHandler(this.DebugCheckBox_CheckedChanged);
+            // 
+            // Debuglabel
+            // 
+            this.Debuglabel.AutoSize = true;
+            this.Debuglabel.Location = new System.Drawing.Point(18, 430);
+            this.Debuglabel.Name = "Debuglabel";
+            this.Debuglabel.Size = new System.Drawing.Size(61, 20);
+            this.Debuglabel.TabIndex = 14;
+            this.Debuglabel.Text = "Debug:";
+            // 
             // SettingsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(739, 486);
+            this.ClientSize = new System.Drawing.Size(739, 543);
+            this.Controls.Add(this.Debuglabel);
+            this.Controls.Add(this.DebugCheckBox);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.comboBox1);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.listBox2);
             this.Controls.Add(this.cancel);
-            this.Controls.Add(this.button3);
+            this.Controls.Add(this.SaveButton);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.AddBtn);
             this.Controls.Add(this.listBox1);
@@ -230,7 +254,7 @@
         private System.Windows.Forms.ListBox listBox1;
         private System.Windows.Forms.Button AddBtn;
         private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Button SaveButton;
         private System.Windows.Forms.Button cancel;
         private System.Windows.Forms.ListBox listBox2;
         private System.Windows.Forms.Label label2;
@@ -241,5 +265,7 @@
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel4;
         private System.Windows.Forms.ComboBox comboBox1;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.CheckBox DebugCheckBox;
+        private System.Windows.Forms.Label Debuglabel;
     }
 }

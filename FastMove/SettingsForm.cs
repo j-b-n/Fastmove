@@ -64,7 +64,9 @@ namespace FastMove
             }
             listBox2.DataSource = null;
             listBox2.DataSource = _FolderLevel1L;
-                                
+
+            //Update Debug checkbox
+            DebugCheckBox.Checked = Globals.ThisAddIn.DebugMode;
 
             // Update statusbar!
             Dictionary<DateTime, int> _MailsPerDay = Globals.ThisAddIn._MailsPerDay;
@@ -211,6 +213,10 @@ namespace FastMove
                 Globals.ThisAddIn._OnlineCheckInterval = TimeSpan.FromMinutes(OnlineCheckIntervalValues[selectedIndex]);
             } 
         }
-       
+
+        private void DebugCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            Globals.ThisAddIn.DebugMode = DebugCheckBox.Checked;
+        }
     }
 }

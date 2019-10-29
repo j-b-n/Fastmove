@@ -6,6 +6,7 @@ using Outlook = Microsoft.Office.Interop.Outlook;
 using Office = Microsoft.Office.Core;
 using Polenter.Serialization;
 using Microsoft.Office.Interop.Outlook;
+using System.Threading;
 
 namespace FastMove
 {
@@ -20,7 +21,7 @@ namespace FastMove
     {
         #region Instance Variables
 
-        public String publishedVersion = "1:0:1:7";
+        public String publishedVersion = "1.0.1.7";
 
         public Office.IRibbonUI ribbon;
 
@@ -48,6 +49,11 @@ namespace FastMove
         public Dictionary<DayOfWeek, BetweenTime> _deferEmailsAllowedTime = new Dictionary<DayOfWeek, BetweenTime>();
 
         /// <summary>
+        /// Use Debug mode ie more logging
+        /// </summary>
+        public bool DebugMode = false;
+        
+        /// <summary>
         /// When Add-In last checked for updates
         /// </summary>
         public DateTime _LastOnlineCheck;
@@ -56,15 +62,19 @@ namespace FastMove
         /// Interval to check for updates online
         /// </summary>
         public TimeSpan _OnlineCheckInterval = TimeSpan.FromMinutes(60);
-        private readonly Timer StartUpTimer = new Timer();
+
+        private readonly System.Windows.Forms.Timer StartUpTimer = new System.Windows.Forms.Timer();
+        private readonly System.Windows.Forms.Timer CalcMeanTimeTimer = new System.Windows.Forms.Timer();
 
         public int AddinUpdateAvailable = 0;
         private Outlook.Inspector myInspector = null;
 
 
+        public DateTime _LastCalcMeanTime;
+
         //Microsoft.Office.Interop.Outlook.Application _applicationObject = null;
         #endregion
-        
+
 
         #region CacheData
 
@@ -104,7 +114,7 @@ namespace FastMove
                 Outlook.PropertyAccessor pa = storage.PropertyAccessor;
                 // PropertyAccessor will return a byte array for this property
 
-                MessageBox.Show("Vars:" + storage.Size);
+                ShowMessageBox("Vars:" + storage.Size,"");
 
                 return string.Empty;
             }
@@ -185,10 +195,11 @@ namespace FastMove
                 _avgTimeBeforeMove = up._avgTimeBeforeMove;
                 _MailsPerDay = up.MailsPerDay;
                 _LastMailReceived = up.LastMailReceived;
-                _LastOnlineCheck = up.LastOnlineCheck;  
+                _LastOnlineCheck = up.LastOnlineCheck;
                 _OnlineCheckInterval = up.OnlineCheckInterval;
                 _CountedNewMails = up.CountedNewMails;
                 _MailsFromWho = up.MailsFromWho;
+                DebugMode = up.DebugMode;
 
                 //Defer emails
                 _deferEmails = up.DeferEmailActive;
@@ -198,7 +209,7 @@ namespace FastMove
             catch (System.Exception e)
             {
                 // Let the user know what went wrong.
-               MessageBox.Show("The file could not be read: "+e.Message);
+                ShowMessageBox("The file could not be read: " + e.Message, "");
             }
 
             //GetVariables();                        
@@ -220,7 +231,7 @@ namespace FastMove
             {
                 // Fail silently
                 // Let the user know what went wrong.
-                MessageBox.Show("Error: " + e.Message);
+                ShowMessageBox("WriteVariables:\n" + e.Message, "");
             }
 
             path += "\\FastMove.xml";
@@ -246,40 +257,92 @@ namespace FastMove
 
                     DeferEmailActive = _deferEmails,
                     DeferEmailsAlwaysSendHighPriority = _deferEmailsAlwaysSendHighPriority,
-                    DeferEmailsAllowedTime = _deferEmailsAllowedTime
+                    DeferEmailsAllowedTime = _deferEmailsAllowedTime,
+                    DebugMode = DebugMode
                 };
 
                 var serializer = new SharpSerializer();
                 serializer.Serialize(up, path);
+
+                /* Should I store the variables in Outlook somehow?
+                 * 
+                
+                MemoryStream stream = new MemoryStream();
+                serializer.Serialize(up, stream);
+                // convert stream to string
+                StreamReader reader = new StreamReader(stream);
+                string text = reader.ReadToEnd();
+                */
+
             }
             catch (System.Exception e)
             {
                 // Let the user know what went wrong.
-                MessageBox.Show("The file could not be written: " + e.Message);
+                ShowMessageBox("The file could not be written: " + e.Message,"");
             }
 
             //StoreVariables();
         }
 
         #endregion
-        
+
         #region Folders
-        
+
+        private void ShowMessageBox(string text, string caption)
+        {
+            Thread t = new Thread(() => MyMessageBox(text, caption));
+            t.Start();
+        }
+
+        private void MyMessageBox(object text, object caption)
+        {
+            MessageBox.Show((string)text, (string)caption);
+        }
+
+        public void CalcMeanTime(object sender, EventArgs e)
+        {
+            try
+            {                
+                if(_LastCalcMeanTime.AddMinutes(5) > DateTime.Now)
+                {
+                    //ShowMessageBox("CalcMeanTime : \nLess than 5 minutes!","");
+                    return;
+                }
+
+                //Clean-up!
+                CalcMeanTimeTimer.Stop();
+                CalcMeanTimeTimer.Dispose();
+                _LastCalcMeanTime = DateTime.Now;
+
+                CalculateMeanInboxTime();
+            }
+            catch (System.Exception ex)
+            {             
+                ShowMessageBox("CalcMeanTime: \n"+ex.Message,"");
+            }            
+        }
+
         public void CalculateMeanInboxTime()
         {
             double avg = 0;
-            int avgCount = 1;            
-            DateTime _now = DateTime.Now;
+            int avgCount = 1;
+            DateTime _now = DateTime.Now;            
 
-             try
+            try
             {
+                //Outlook.Folder folder =
+                //Application.Session.GetDefaultFolder(
+                // Outlook.OlDefaultFolders.olFolderInbox) as Outlook.Folder;
+                if (DebugMode)
+                    ShowMessageBox("Calc mean InboxTime: " + DateTime.Now.ToLongTimeString(), "");
 
-            Outlook.Folder folder =
-             Application.Session.GetDefaultFolder(
-              Outlook.OlDefaultFolders.olFolderInbox) as Outlook.Folder;
-            
-            foreach (Object selObject in folder.Items)
-            {
+                Outlook.Folder folder = (Outlook.Folder) this.Application.ActiveExplorer().Session.GetDefaultFolder(Outlook.OlDefaultFolders.olFolderInbox);
+
+                if (folder is null)
+                    return; 
+
+                foreach (Object selObject in folder.Items)
+                {
                     if (selObject is Outlook.MailItem mail)
                     {
                         TimeSpan span = _now.Subtract(mail.ReceivedTime);
@@ -288,23 +351,20 @@ namespace FastMove
                     }
                 }
 
-            if (avgCount > 0)
-            {
-                avg /= avgCount;
+                if (avgCount > 0)
+                {
+                    avg /= avgCount;
+                }
+                else
+                {
+                    avg = 0;
+                }
+                _InboxAvg = avg;
             }
-            else
-            {
-                avg = 0;
+            catch (System.Exception ex)
+            {                
+                ShowMessageBox("CalculateMeanTome:\n"+ ex.Message, "");
             }
-            _InboxAvg = avg;
-              }
-             catch (System.Exception ex)
-             {
-                 string expMessage = ex.Message;
-                 MessageBox.Show(expMessage);
-             }
-
-
         }
 
         /// <summary>
@@ -418,6 +478,7 @@ namespace FastMove
             Outlook.MAPIFolder destFolder;
             bool movedMail = false;
             string itemMessage = "";
+            DateTime StartTime = DateTime.Now;            
             
             try
             {
@@ -439,8 +500,9 @@ namespace FastMove
                             break;
                     }
                 }
-
+                
                 itemMessage += "SelFolder: " + selectedFolderPath.ToString() + "\n";
+                itemMessage += "Time1: " + (DateTime.Now - StartTime).TotalMilliseconds;
 
                 if (destFolder != null)
                 {
@@ -456,18 +518,23 @@ namespace FastMove
                                 Outlook.MailItem mailItem =
                                    (selObject as Outlook.MailItem);
                                 itemMessage += "The item is an e-mail message." +
-                                    " The subject is " + mailItem.Subject + ".";
+                                    " The subject is " + mailItem.Subject + ".\n";
                                 //mailItem.Display(false);
 
+                                itemMessage += "Time Count 1: " + (DateTime.Now - StartTime).TotalMilliseconds + "\n";
                                 CountMail(mailItem);
+                                itemMessage += "Time Count 2: " + (DateTime.Now - StartTime).TotalMilliseconds + "\n";
 
                                 mailItem.UnRead = false;                                
-                                mailItem.Move(destFolder);                              
+                                mailItem.Move(destFolder);
+                                itemMessage += "Time Move: " + (DateTime.Now - StartTime).TotalMilliseconds+"\n";
 
                                 itemMessage += "Moved mail!\n";
                                 movedMail = true;
                                 AddRecentItem(Uri.UnescapeDataString(destFolder.FolderPath));
-                                //MessageBox.Show(itemMessage);
+
+                                //ShowMessageBox(itemMessage,"");
+
                                 itemMessage = "";
 
                                 DateTime _now = DateTime.Now;
@@ -486,23 +553,26 @@ namespace FastMove
 
             }
             catch (System.Exception ex)
-            {
-                itemMessage = ex.Message;
-                MessageBox.Show(itemMessage);
+            {                
+                ShowMessageBox("Movemail:\n" + ex.Message, "");
             }
 
             if (movedMail)
             {
-                //addRecentItem(Uri.UnescapeDataString(destFolder.FolderPath));
-                //MessageBox.Show(itemMessage);                                 
-                CalculateMeanInboxTime();
+                if (!CalcMeanTimeTimer.Enabled)
+                {
+                    CalcMeanTimeTimer.Tick += new EventHandler(CalcMeanTime);
+                    CalcMeanTimeTimer.Interval = 1000 * 60 * 5; //5 minutes
+                    CalcMeanTimeTimer.Enabled = true;
+                    CalcMeanTimeTimer.Start();
+                }                
             }
             else
             {
-                MessageBox.Show(itemMessage);
+                ShowMessageBox("Movemail:\n" + itemMessage, "");
             }
         }
-     
+    
 
         #endregion
 
@@ -569,8 +639,11 @@ namespace FastMove
         void PurgeCountedMails()
         {
             object item;
-            List<string> list = new List<string>(); 
-            
+            List<string> list = new List<string>();
+
+            if (DebugMode)
+                ShowMessageBox("Purge Mail: " + DateTime.Now.ToLongTimeString(), "");
+
             try
             {                
                 foreach (string id in _CountedNewMails.Keys)
@@ -590,14 +663,13 @@ namespace FastMove
 
             }
             catch (System.Exception ex)
-            {
-                string itemMessage = ex.Message;
-                MessageBox.Show(itemMessage);
+            {                
+                ShowMessageBox("PurgeCountedMails:\n" + ex.Message, "");
             }
         }
 
         void CountMail(Outlook.MailItem item)
-        {
+        {            
             if (item == null)
             {
                 return;
@@ -640,6 +712,8 @@ namespace FastMove
 
         void HandlerNewMailEx(string entryIDCollection)
         {
+            if (DebugMode)
+                ShowMessageBox("NewMailEx: " + DateTime.Now.ToLongTimeString(), "");
             CountMail(((Outlook.MailItem)this.Application.Session.GetItemFromID(entryIDCollection, missing)));
         }
                 
@@ -655,6 +729,8 @@ namespace FastMove
         {
             if (item is Outlook.MailItem)
             {
+                if (DebugMode)
+                    ShowMessageBox("ItemsAdd: " + DateTime.Now.ToLongTimeString(), "");
                 CountMail((Outlook.MailItem)item);
             }            
         }
@@ -663,6 +739,8 @@ namespace FastMove
         {
             if (item is Outlook.MailItem)
             {
+                if (DebugMode)
+                    ShowMessageBox("ItemsRemove: " + DateTime.Now.ToLongTimeString(), "");
                 CountMail((Outlook.MailItem)item);
             }
         }
@@ -786,8 +864,9 @@ namespace FastMove
             myInspector = Inspector;
             if (myInspector.CurrentItem is Outlook.MailItem)
             {
-                CountMail(myInspector.CurrentItem);
-                //MessageBox.Show("Inspector!");
+                if (DebugMode)
+                    ShowMessageBox("New mail: " + DateTime.Now.ToLongTimeString(), "");
+                CountMail(myInspector.CurrentItem);                
             }
         }
 
@@ -816,17 +895,24 @@ namespace FastMove
             Outlook.MAPIFolder inBox = (Outlook.MAPIFolder)Globals.ThisAddIn.Application.
                ActiveExplorer().Session.GetDefaultFolder
                 (Outlook.OlDefaultFolders.olFolderInbox);
-
             Outlook.Items items = (Outlook.Items)inBox.Items;
-            if (items != null && items.Count > 0)
+            items = items.Restrict("[Unread] = true");
+            try
             {
-                foreach (object item in items)
+                if (items != null && items.Count > 0)
                 {
-                    if (item is Outlook.MailItem obj)
+                    foreach (object item in items)
                     {
-                        CountMail(obj);
+                        if (item is Outlook.MailItem obj)
+                        {
+                            CountMail(obj);
+                        }
                     }
                 }
+            }
+            catch (System.Exception ex)
+            {
+                ShowMessageBox("DelayedStartup: " + ex.Message, "");
             }
 
             //Clean-up!

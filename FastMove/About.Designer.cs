@@ -37,9 +37,10 @@
             // 
             // OK_button
             // 
-            this.OK_button.Location = new System.Drawing.Point(287, 260);
+            this.OK_button.Location = new System.Drawing.Point(191, 169);
+            this.OK_button.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.OK_button.Name = "OK_button";
-            this.OK_button.Size = new System.Drawing.Size(79, 30);
+            this.OK_button.Size = new System.Drawing.Size(53, 19);
             this.OK_button.TabIndex = 0;
             this.OK_button.Text = "OK";
             this.OK_button.UseVisualStyleBackColor = true;
@@ -48,40 +49,44 @@
             // online_label
             // 
             this.online_label.AutoSize = true;
-            this.online_label.Location = new System.Drawing.Point(12, 227);
+            this.online_label.Location = new System.Drawing.Point(8, 148);
+            this.online_label.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.online_label.Name = "online_label";
-            this.online_label.Size = new System.Drawing.Size(112, 20);
+            this.online_label.Size = new System.Drawing.Size(77, 13);
             this.online_label.TabIndex = 1;
             this.online_label.Text = "Online version:";
             // 
             // this_label
             // 
             this.this_label.AutoSize = true;
-            this.this_label.Location = new System.Drawing.Point(12, 207);
+            this.this_label.Location = new System.Drawing.Point(8, 124);
+            this.this_label.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.this_label.Name = "this_label";
-            this.this_label.Size = new System.Drawing.Size(96, 20);
+            this.this_label.Size = new System.Drawing.Size(67, 13);
             this.this_label.TabIndex = 2;
             this.this_label.Text = "This version:";
             // 
             // label1
             // 
-            this.label1.Location = new System.Drawing.Point(13, 13);
+            this.label1.Location = new System.Drawing.Point(9, 8);
+            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(353, 145);
+            this.label1.Size = new System.Drawing.Size(235, 94);
             this.label1.TabIndex = 3;
             this.label1.Text = "With this Outlook addin you can defer emails and move mails between folders. It i" +
     "s intended to simplify some everyday task.";
             // 
             // About
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(381, 302);
+            this.ClientSize = new System.Drawing.Size(254, 196);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.this_label);
             this.Controls.Add(this.online_label);
             this.Controls.Add(this.OK_button);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Name = "About";
             this.Text = "About";
             this.Load += new System.EventHandler(this.About_Load);

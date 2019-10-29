@@ -240,10 +240,10 @@ namespace FastMove
             // pictureBox1
             // 
             this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
-            this.pictureBox1.Location = new System.Drawing.Point(743, 8);
+            this.pictureBox1.Location = new System.Drawing.Point(743, 13);
             this.pictureBox1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(36, 40);
+            this.pictureBox1.Size = new System.Drawing.Size(32, 35);
             this.pictureBox1.TabIndex = 16;
             this.pictureBox1.TabStop = false;
             this.pictureBox1.Visible = false;
@@ -251,7 +251,7 @@ namespace FastMove
             // linkLabel1
             // 
             this.linkLabel1.AutoSize = true;
-            this.linkLabel1.Location = new System.Drawing.Point(785, 20);
+            this.linkLabel1.Location = new System.Drawing.Point(791, 20);
             this.linkLabel1.Name = "linkLabel1";
             this.linkLabel1.Size = new System.Drawing.Size(128, 20);
             this.linkLabel1.TabIndex = 17;

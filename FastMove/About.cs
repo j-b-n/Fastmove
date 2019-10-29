@@ -24,7 +24,7 @@ namespace FastMove
             int AddinUpdateAvailable = ui.CheckForUpdate();
             string runningVersion = Globals.ThisAddIn.publishedVersion;
            
-            this_label.Text = string.Format("Version: {0}", runningVersion);
+            this_label.Text = string.Format("Version: '{0}'", runningVersion);
             online_label.Text = string.Format("Online version: '{0}'", ui.UpdateVariables.Version);
         }
     }

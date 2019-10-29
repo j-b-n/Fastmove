@@ -118,5 +118,16 @@ namespace FastMove
             get { return _deferEmailsAllowedTime; }
             set { _deferEmailsAllowedTime = value; }
         }
+
+
+        //Defer email variables
+
+        public bool _DebugMode;
+
+        public bool DebugMode
+        {
+            get { return _DebugMode; }
+            set { _DebugMode = value; }
+        }
     }
 }
