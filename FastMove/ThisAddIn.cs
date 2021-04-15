@@ -17,6 +17,13 @@ namespace FastMove
         public TimeSpan StopTS {get; set;}
     }
 
+    public class MailWho
+    {
+        public int count { get; set; }
+        public DateTime lastMail {get; set; }
+        public DateTime firstMail { get; set; }
+    }
+
     public partial class ThisAddIn
     {
         #region Instance Variables
@@ -36,7 +43,8 @@ namespace FastMove
         public List<double> _avgTimeBeforeMove = new List<double>();
         
         public Dictionary<DateTime,int> _MailsPerDay = new Dictionary<DateTime, int>();
-        public Dictionary<string, int> _MailsFromWho = new Dictionary<string, int>();
+        public Dictionary<string, int> Who = new Dictionary<string, int>();
+        public Dictionary<string, MailWho> _MailsFromWho = new Dictionary<string, MailWho>();
         public Dictionary<String, DateTime> _CountedNewMails = new Dictionary<String, DateTime>();
 
         public DateTime _LastMailReceived;
@@ -114,12 +122,15 @@ namespace FastMove
                 Outlook.PropertyAccessor pa = storage.PropertyAccessor;
                 // PropertyAccessor will return a byte array for this property
 
+                _deferEmails = pa.GetProperty("_deferEmails");
+
                 ShowMessageBox("Vars:" + storage.Size,"");
 
                 return string.Empty;
             }
             catch
             {
+                ShowMessageBox("Failed to load variables!", "Error");
                 return string.Empty;
             }
         }
@@ -133,18 +144,52 @@ namespace FastMove
                     Outlook.OlDefaultFolders.olFolderInbox).GetStorage(
                     "FastMove.Configuration.Variables",
                     Outlook.OlStorageIdentifierType.olIdentifyBySubject);
-
-                Outlook.PropertyAccessor pa = storage.PropertyAccessor;
-                // PropertyAccessor will return a byte array for this property
-
-                pa.SetProperty("_deferEmails", _deferEmails);
                 
+                Outlook.PropertyAccessor pa = storage.PropertyAccessor;                
+
+                ///
+                /// 
+                PurgeCountedMails();
+
+                FastMoveVariables up = new FastMoveVariables
+                {
+                    _FoldersLevel1 = _FoldersLevel1,
+                    _ignoreList = _ignoreList,
+                    _recentItems = _recentItems,
+                    _folderItems = _items,
+                    _InboxAvg = _InboxAvg,
+                    _avgTimeBeforeMove = _avgTimeBeforeMove,
+                    MailsPerDay = _MailsPerDay,
+                    LastMailReceived = _LastMailReceived,
+                    LastOnlineCheck = _LastOnlineCheck,
+                    OnlineCheckInterval = _OnlineCheckInterval,
+                    _CountedNewMails = _CountedNewMails,
+                    MailsFromWho = _MailsFromWho,
+
+                    DeferEmailActive = _deferEmails,
+                    DeferEmailsAlwaysSendHighPriority = _deferEmailsAlwaysSendHighPriority,
+                    DeferEmailsAllowedTime = _deferEmailsAllowedTime,
+                    DebugMode = DebugMode
+                };
+
+                var serializer = new SharpSerializer();
+                                
+                MemoryStream stream = new MemoryStream();
+                serializer.Serialize(up, stream);
+                // convert stream to string
+                StreamReader reader = new StreamReader(stream);
+                string text = reader.ReadToEnd();                
+                ///
+
+                pa.SetProperty("data", text);
+
                 storage.Save();
 
                 return string.Empty;
             }
-            catch
+            catch (System.Exception e)
             {
+                ShowMessageBox("Failed to store variables! " + e.Message, "Error");
                 return string.Empty;
             }
         }
@@ -217,6 +262,7 @@ namespace FastMove
 
         public void WriteVariables()
         {
+
             string path = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\FastMove";
 
             try
@@ -294,9 +340,10 @@ namespace FastMove
             t.Start();
         }
 
-        private void MyMessageBox(object text, object caption)
+        private void MyMessageBox(string text, string caption)
         {
-            MessageBox.Show((string)text, (string)caption);
+            //MessageBox.Show((string)text, (string)caption);
+            AutoClosingMessageBox.Show(text, caption, 2500);
         }
 
         public void CalcMeanTime(object sender, EventArgs e)
@@ -363,7 +410,7 @@ namespace FastMove
             }
             catch (System.Exception ex)
             {                
-                ShowMessageBox("CalculateMeanTome:\n"+ ex.Message, "");
+                ShowMessageBox("CalculateMeanTime:\n"+ ex.Message, "");
             }
         }
 
@@ -699,12 +746,21 @@ namespace FastMove
             string fromWho = item.SenderName + " (" + GetEmailAdress(item) + ")";
             if (_MailsFromWho.ContainsKey(fromWho))
             {
-                _MailsFromWho[fromWho] = _MailsFromWho[fromWho] + 1;
+                MailWho mw = _MailsFromWho[fromWho];
+
+                mw.count = mw.count + 1;
+                mw.lastMail = DateTime.Now;
+
+                _MailsFromWho[fromWho] =  mw;
             }
             else
             {
-                _MailsFromWho.Add(fromWho, 1);
+                MailWho mw = new MailWho();
+                mw.count = 1;
+                mw.lastMail = DateTime.Now;
+                mw.firstMail = DateTime.Now;
 
+                _MailsFromWho[fromWho] = mw;
             }            
 
             _CountedNewMails.Add(item.EntryID, item.ReceivedTime);            

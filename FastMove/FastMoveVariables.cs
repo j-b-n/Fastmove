@@ -80,8 +80,8 @@ namespace FastMove
         }
 
 
-        public Dictionary<string, int> _MailsFromWho = new Dictionary<string, int>();
-        public Dictionary<string, int> MailsFromWho
+        public Dictionary<string, MailWho> _MailsFromWho = new Dictionary<string, MailWho>();
+        public Dictionary<string, MailWho> MailsFromWho
         {
             get { return _MailsFromWho; }
             set { _MailsFromWho = value; }        
