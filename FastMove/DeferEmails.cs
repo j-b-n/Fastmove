@@ -158,7 +158,9 @@ namespace FastMove
             Globals.ThisAddIn.WriteVariables();
 
             this.Close();
+
             var form1 = (Form1)Tag;
+            form1.Invalidate();
             form1.Show();            
         }
 

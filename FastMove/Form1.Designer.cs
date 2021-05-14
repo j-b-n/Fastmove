@@ -47,12 +47,15 @@ namespace FastMove
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabel2 = new System.Windows.Forms.ToolStripStatusLabel();
-            this.toolStripStatusLabel4 = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabel3 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolStripStatusLabel4 = new System.Windows.Forms.ToolStripStatusLabel();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             this.button5 = new System.Windows.Forms.Button();
             this.About_Button = new System.Windows.Forms.Button();
+            this.label4 = new System.Windows.Forms.Label();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.textBox3 = new System.Windows.Forms.TextBox();
             this.statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
@@ -203,12 +206,12 @@ namespace FastMove
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatusLabel1,
             this.toolStripStatusLabel2,
-            this.toolStripStatusLabel4,
-            this.toolStripStatusLabel3});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 689);
+            this.toolStripStatusLabel3,
+            this.toolStripStatusLabel4});
+            this.statusStrip1.Location = new System.Drawing.Point(0, 715);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Padding = new System.Windows.Forms.Padding(1, 0, 16, 0);
-            this.statusStrip1.Size = new System.Drawing.Size(919, 30);
+            this.statusStrip1.Size = new System.Drawing.Size(919, 32);
             this.statusStrip1.TabIndex = 15;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -224,18 +227,19 @@ namespace FastMove
             this.toolStripStatusLabel2.Size = new System.Drawing.Size(107, 25);
             this.toolStripStatusLabel2.Text = "Last week: 0";
             // 
-            // toolStripStatusLabel4
-            // 
-            this.toolStripStatusLabel4.Name = "toolStripStatusLabel4";
-            this.toolStripStatusLabel4.Size = new System.Drawing.Size(643, 25);
-            this.toolStripStatusLabel4.Spring = true;
-            // 
             // toolStripStatusLabel3
             // 
             this.toolStripStatusLabel3.Name = "toolStripStatusLabel3";
-            this.toolStripStatusLabel3.Size = new System.Drawing.Size(74, 25);
-            this.toolStripStatusLabel3.Text = "Version:";
-            this.toolStripStatusLabel3.TextAlign = System.Drawing.ContentAlignment.BottomRight;
+            this.toolStripStatusLabel3.Size = new System.Drawing.Size(59, 25);
+            this.toolStripStatusLabel3.Text = "Defer:";
+            // 
+            // toolStripStatusLabel4
+            // 
+            this.toolStripStatusLabel4.Name = "toolStripStatusLabel4";
+            this.toolStripStatusLabel4.Size = new System.Drawing.Size(658, 25);
+            this.toolStripStatusLabel4.Spring = true;
+            this.toolStripStatusLabel4.Text = "Version:";
+            this.toolStripStatusLabel4.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // pictureBox1
             // 
@@ -280,13 +284,42 @@ namespace FastMove
             this.About_Button.UseVisualStyleBackColor = true;
             this.About_Button.Click += new System.EventHandler(this.About_Button_Click);
             // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(202, 680);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(53, 20);
+            this.label4.TabIndex = 20;
+            this.label4.Text = "Defer:";
+            // 
+            // checkBox1
+            // 
+            this.checkBox1.AutoSize = true;
+            this.checkBox1.Location = new System.Drawing.Point(261, 681);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(22, 21);
+            this.checkBox1.TabIndex = 21;
+            this.checkBox1.UseVisualStyleBackColor = true;
+            this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
+            // 
+            // textBox3
+            // 
+            this.textBox3.Location = new System.Drawing.Point(304, 679);
+            this.textBox3.Name = "textBox3";
+            this.textBox3.Size = new System.Drawing.Size(420, 26);
+            this.textBox3.TabIndex = 22;
+            // 
             // Form1
             // 
             this.AcceptButton = this.button1;
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.button2;
-            this.ClientSize = new System.Drawing.Size(919, 719);
+            this.ClientSize = new System.Drawing.Size(919, 747);
+            this.Controls.Add(this.textBox3);
+            this.Controls.Add(this.checkBox1);
+            this.Controls.Add(this.label4);
             this.Controls.Add(this.About_Button);
             this.Controls.Add(this.button5);
             this.Controls.Add(this.linkLabel1);
@@ -310,6 +343,7 @@ namespace FastMove
             this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Name = "Form1";
             this.Text = "FastMove";
+            this.Activated += new System.EventHandler(this.Form1_Activated);
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
@@ -337,10 +371,13 @@ namespace FastMove
         private ToolStripStatusLabel toolStripStatusLabel1;
         private ToolStripStatusLabel toolStripStatusLabel2;
         private ToolStripStatusLabel toolStripStatusLabel4;
-        private ToolStripStatusLabel toolStripStatusLabel3;
         private PictureBox pictureBox1;
         private LinkLabel linkLabel1;
         private Button button5;
         private Button About_Button;
+        private ToolStripStatusLabel toolStripStatusLabel3;
+        private Label label4;
+        private CheckBox checkBox1;
+        private TextBox textBox3;
     }
 }

@@ -94,6 +94,7 @@ namespace FastMove
 
             toolStripStatusLabel2.Text = string.Format("Last week: {0}", count);
             toolStripStatusLabel4.Text = string.Format("Version: {0}", Globals.ThisAddIn.publishedVersion);
+            
             statusStrip1.Refresh();
 
             /// Online Check Interval Drop-Down list

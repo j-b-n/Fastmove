@@ -32,6 +32,9 @@ namespace FastMove
 
         public Office.IRibbonUI ribbon;
 
+
+        public bool _failedtoloadvars = false;
+
         public AutoCompleteStringCollection namesCollection = new AutoCompleteStringCollection();
         public List<string> _items = new List<string>();
         public List<string> _FoldersLevel1 = new List<string>();       
@@ -210,7 +213,7 @@ namespace FastMove
             }
             catch (System.Exception)
             {
-                // Fail silently
+                // Fail silently                
             }
             path += "\\FastMove.xml";
             try
@@ -255,6 +258,7 @@ namespace FastMove
             {
                 // Let the user know what went wrong.
                 ShowMessageBox("The file could not be read: " + e.Message, "");
+                _failedtoloadvars = true;
             }
 
             //GetVariables();                        
@@ -262,6 +266,12 @@ namespace FastMove
 
         public void WriteVariables()
         {
+
+            if(_failedtoloadvars)
+            {
+                ShowMessageBox("AddIn failed to load varis. Not saving!", "Not saving vars!");
+                return;
+            }
 
             string path = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\FastMove";
 

@@ -90,9 +90,11 @@ namespace FastMove
             }
 
             toolStripStatusLabel2.Text = string.Format("Last week: {0}", count);
+            toolStripStatusLabel4.Text = string.Format("Version: {0}", Globals.ThisAddIn.publishedVersion);
 
-            toolStripStatusLabel3.Text = string.Format("Version: {0}", Globals.ThisAddIn.publishedVersion);
-            
+            DateTime deferTime = Globals.ThisAddIn.NextPossibleSendTime();
+            toolStripStatusLabel3.Text = string.Format("Defer: {0}", deferTime.ToString());                      
+           
             statusStrip1.Refresh();
 
             ///Check for updates!
@@ -263,6 +265,35 @@ namespace FastMove
             {
                 // Let the user know what went wrong.
                 MessageBox.Show("The form could not be loaded: " + ee.Message);
+            }
+
+        }
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+            Globals.ThisAddIn._deferEmails = checkBox1.Checked;
+
+            if(Globals.ThisAddIn._deferEmails)
+            {
+                DateTime deferTime = Globals.ThisAddIn.NextPossibleSendTime();
+                textBox3.Text = string.Format("{0}", deferTime.ToString());
+            } else
+            {
+                textBox3.Text = string.Format("Immediately");
+            }
+        }
+
+        private void Form1_Activated(object sender, EventArgs e)
+        {
+            DateTime deferTime = Globals.ThisAddIn.NextPossibleSendTime();
+            checkBox1.Checked = Globals.ThisAddIn._deferEmails;
+            if (Globals.ThisAddIn._deferEmails)
+            {
+                textBox3.Text = string.Format("{0}", deferTime.ToString());
+            }
+            else
+            {
+                textBox3.Text = string.Format("Immediately");
             }
 
         }
