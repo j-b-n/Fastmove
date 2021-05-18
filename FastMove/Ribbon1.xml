@@ -3,13 +3,11 @@
 	<ribbon>
 		<tabs>
 			<tab idMso="TabMail">
-				<group id="FastMoveGroup" label="FastMove" keytip="MM" >
-					<button id="Button" label="Move" keytip="MMM"
+        <group id="FastMoveGroup" label="FastMove" visible="true"> 
+					<button id="Button" label="Move" visible="true"
 							screentip="Move"							
 							supertip="Move an item to a folder."
 							size="large" onAction="FastMoveMail" imageMso="MoveItem" />
-
-
 
 					<dynamicMenu id="menu1" getContent="menu1_GetContent" />
 					
@@ -18,7 +16,7 @@
 						<button id="btn2" imageMso="FileUpdate" label="file1" onAction="FastMoveMail_btn2"/>
 					-->
 					
-				</group>
+				</group> 
 			</tab>
 		</tabs>
 	</ribbon>
