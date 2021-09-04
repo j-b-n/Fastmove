@@ -133,7 +133,7 @@ namespace FastMove
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(734, 592);
+            this.button3.Location = new System.Drawing.Point(736, 628);
             this.button3.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(179, 35);
@@ -144,7 +144,7 @@ namespace FastMove
             // 
             // button4
             // 
-            this.button4.Location = new System.Drawing.Point(734, 504);
+            this.button4.Location = new System.Drawing.Point(736, 540);
             this.button4.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(179, 35);
@@ -191,7 +191,7 @@ namespace FastMove
             // 
             // Statistics
             // 
-            this.Statistics.Location = new System.Drawing.Point(734, 548);
+            this.Statistics.Location = new System.Drawing.Point(736, 584);
             this.Statistics.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Statistics.Name = "Statistics";
             this.Statistics.Size = new System.Drawing.Size(178, 35);
@@ -208,10 +208,10 @@ namespace FastMove
             this.toolStripStatusLabel2,
             this.toolStripStatusLabel3,
             this.toolStripStatusLabel4});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 715);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 721);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Padding = new System.Windows.Forms.Padding(1, 0, 16, 0);
-            this.statusStrip1.Size = new System.Drawing.Size(919, 32);
+            this.statusStrip1.Size = new System.Drawing.Size(922, 32);
             this.statusStrip1.TabIndex = 15;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -266,7 +266,7 @@ namespace FastMove
             // 
             // button5
             // 
-            this.button5.Location = new System.Drawing.Point(734, 461);
+            this.button5.Location = new System.Drawing.Point(736, 497);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(178, 35);
             this.button5.TabIndex = 18;
@@ -276,7 +276,7 @@ namespace FastMove
             // 
             // About_Button
             // 
-            this.About_Button.Location = new System.Drawing.Point(734, 636);
+            this.About_Button.Location = new System.Drawing.Point(736, 672);
             this.About_Button.Name = "About_Button";
             this.About_Button.Size = new System.Drawing.Size(179, 34);
             this.About_Button.TabIndex = 19;
@@ -305,9 +305,9 @@ namespace FastMove
             // 
             // textBox3
             // 
-            this.textBox3.Location = new System.Drawing.Point(304, 679);
+            this.textBox3.Location = new System.Drawing.Point(289, 679);
             this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(420, 26);
+            this.textBox3.Size = new System.Drawing.Size(435, 26);
             this.textBox3.TabIndex = 22;
             // 
             // Form1
@@ -316,7 +316,7 @@ namespace FastMove
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.button2;
-            this.ClientSize = new System.Drawing.Size(919, 747);
+            this.ClientSize = new System.Drawing.Size(922, 753);
             this.Controls.Add(this.textBox3);
             this.Controls.Add(this.checkBox1);
             this.Controls.Add(this.label4);
