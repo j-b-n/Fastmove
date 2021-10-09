@@ -112,7 +112,7 @@ namespace FastMove
 
         private bool Compare(string s)
         {
-            string t = comboBox1.Text;
+            string t = comboBox1.Text;                       
 
             s = s.ToLower();
             t = t.ToLower();
@@ -128,7 +128,35 @@ namespace FastMove
         {
             if (comboBox1.Text.Length > 0)
             {
-                _Searchitems = _items.FindAll(Compare);
+                List<string> Searchitems = new List<string>();
+                _Searchitems = new List<string>();
+                Searchitems = _items.FindAll(Compare);
+
+                string t = comboBox1.Text;                                
+                t = t.ToLower();
+                bool addFirst = false;
+
+                foreach (string item in Searchitems)
+                {
+                    string _item = item.ToLower();
+                    //If we have an exact match for a part in the path of a folder - return true
+                    string[] words = _item.Split('\\');
+                    addFirst = false;
+                    foreach (string word in words)
+                    {
+                        if (word.Equals(t))
+                        {                            
+                            addFirst = true;
+                            break;
+                        }                        
+                    }
+
+                    if (addFirst)
+                        _Searchitems.Insert(0, item);
+                    else
+                        _Searchitems.Add(item);                    
+                }
+                
                 listBox1.DataSource = _Searchitems;
             }
         }
