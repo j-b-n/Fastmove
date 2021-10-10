@@ -20,11 +20,11 @@ namespace FastMove.WPF
     /// <summary>
     /// Interaction logic for Window1.xaml
     /// </summary>
-    public partial class Window1 : AdonisUI.Controls.AdonisWindow
+    public partial class MainWindow : AdonisUI.Controls.AdonisWindow
     {
         ThemeManager themeManager = null;
 
-        public Window1()
+        public MainWindow()
         {
             AdonisUI.SpaceExtension.SetSpaceResourceOwnerFallback(this);
             InitializeComponent();                                

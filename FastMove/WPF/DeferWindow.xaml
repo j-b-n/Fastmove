@@ -8,7 +8,8 @@
              xmlns:adonisUi="clr-namespace:AdonisUI;assembly=AdonisUI"
              xmlns:adonisControls="clr-namespace:AdonisUI.Controls;assembly=AdonisUI"
              xmlns:adonisExtensions="clr-namespace:AdonisUI.Extensions;assembly=AdonisUI"             
-             d:DesignHeight="450" d:DesignWidth="800" Loaded="Window_Loaded"
+             Width="600" Height="550"                             
+             Loaded="Window_Loaded"
              Title="Defer emails">
 
     <Window.Resources>
@@ -52,8 +53,25 @@
                 <TextBlock x:Name="SBLastWeek" TextWrapping="Wrap" Text="Last week: 0" />
             </StatusBarItem>
         </StatusBar>
-        
+
         <Grid>
+            <CheckBox Content="Defer emails" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
+            <GroupBox Header="Send emails during these times:" Margin="0,31,0,116" HorizontalAlignment="Center" Width="580">
+                <Grid>
+                    <CheckBox x:Name="MondayCB" Content="Monday" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.2,-0.394"/>
+                    <CheckBox x:Name="TuesdayCB" Content="Tuesday" HorizontalAlignment="Left" Margin="10,20,0,0" VerticalAlignment="Top"/>
+                    <CheckBox x:Name="WednesdayCB" Content="Wednesday" HorizontalAlignment="Left" Margin="10,40,0,0" VerticalAlignment="Top"/>
+                    <CheckBox x:Name="ThursdayCB" Content="Thursday" HorizontalAlignment="Left" Margin="10,60,0,0" VerticalAlignment="Top"/>
+                    <CheckBox x:Name="FridayCB" Content="Friday" HorizontalAlignment="Left" Margin="10,80,0,0" VerticalAlignment="Top"/>
+                    <CheckBox x:Name="SaturdayCB" Content="Saturday" HorizontalAlignment="Left" Margin="10,100,0,0" VerticalAlignment="Top"/>
+                    <CheckBox x:Name="SundayCB" Content="Sunday" HorizontalAlignment="Left" Margin="10,120,0,0" VerticalAlignment="Top"/>
+                    <Label Content="between" HorizontalAlignment="Left" Margin="150,0,0,0" VerticalAlignment="Top"/>
+                    <Label Content="between" HorizontalAlignment="Left" Margin="150,20,0,0" VerticalAlignment="Top"/>
+                </Grid>
+            </GroupBox>
+            <Button x:Name="OkBtn" Content="Ok" HorizontalAlignment="Left" Margin="475,475,0,0" VerticalAlignment="Top" Width="80"/>
+            <CheckBox Content="Always send high priority emails directly" HorizontalAlignment="Left" Margin="10,419,0,0" VerticalAlignment="Top"/>
+            <TextBlock HorizontalAlignment="Left" Margin="10,440,0,0" TextWrapping="Wrap" VerticalAlignment="Top"><Run Language="sv-se" Text="Next possible send time: UNKNOWN"/></TextBlock>
 
         </Grid>
     </DockPanel>

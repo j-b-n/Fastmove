@@ -215,7 +215,7 @@ namespace FastMove
                 //Form1 _Form = new Form1();
                 //_Form.Show();
 
-                WPF.Window1 ui = new WPF.Window1();
+                WPF.MainWindow ui = new WPF.MainWindow();
                 ui.Show();
                 
             }
