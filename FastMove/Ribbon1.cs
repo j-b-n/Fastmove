@@ -6,6 +6,7 @@ using System.Runtime.InteropServices;
 using Office = Microsoft.Office.Core;
 using System.Windows.Forms;
 
+
 // TODO:  Follow these steps to enable the Ribbon (XML) item:
 
 // 1: Copy the following code block into the ThisAddin, ThisWorkbook, or ThisDocument class.
@@ -213,6 +214,9 @@ namespace FastMove
                 this.ribbon.Invalidate();
                 Form1 _Form = new Form1();
                 _Form.Show();
+
+                WPF.Window1 ui = new WPF.Window1();
+                ui.Show();
                 
             }
             catch (Exception e)
