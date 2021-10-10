@@ -1,4 +1,4 @@
-﻿<adonisControls:AdonisWindow  x:Class="FastMove.WPF.AboutWindow"
+﻿<adonisControls:AdonisWindow  x:Class="FastMove.WPF.SettingsWindow"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -7,11 +7,9 @@
              mc:Ignorable="d" 
              xmlns:adonisUi="clr-namespace:AdonisUI;assembly=AdonisUI"
              xmlns:adonisControls="clr-namespace:AdonisUI.Controls;assembly=AdonisUI"
-             xmlns:adonisExtensions="clr-namespace:AdonisUI.Extensions;assembly=AdonisUI"             
-             Width="400"
-             Height="250"
-             Title="About"
-             Loaded="Window_Loaded">
+             xmlns:adonisExtensions="clr-namespace:AdonisUI.Extensions;assembly=AdonisUI"   
+             Title="Settings"
+             d:DesignHeight="450" d:DesignWidth="800" Loaded="Window_Loaded">
 
     <Window.Resources>
         <ResourceDictionary>
@@ -39,6 +37,7 @@
         </StackPanel>
     </adonisControls:AdonisWindow.TitleBarContent>
 
+
     <DockPanel>
         <StatusBar DockPanel.Dock="Bottom" Height="25">
 
@@ -56,10 +55,6 @@
         </StatusBar>
 
         <Grid>
-            <Button Content="Ok" HorizontalAlignment="Left" Margin="304,160,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.617,0.113" Height="27" Width="80" Click="Button_Click"/>
-            <TextBlock HorizontalAlignment="Center" Margin="0,10,0,0" TextWrapping="Wrap" Text="With this Outlook addin you can defer emails and move mails between folders. It is intended to simplify some everyday task." VerticalAlignment="Top" Height="103" Width="368"/>
-            <TextBlock x:Name="ThisVersionTB" HorizontalAlignment="Left" Margin="30,118,0,0" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.785,0.427"><Run Language="sv-se" Text="This version:"/></TextBlock>
-            <TextBlock x:Name="OnlineVersionTB" HorizontalAlignment="Left" Margin="16,134,0,0" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.916,0.551"><Run Language="sv-se" Text="Online version:"/><LineBreak/><Run Language="sv-se"/></TextBlock>
 
         </Grid>
     </DockPanel>

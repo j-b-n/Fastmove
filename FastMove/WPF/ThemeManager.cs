@@ -20,7 +20,6 @@ namespace FastMove.WPF
     public class ThemeManager
     {
         private const string RegistryKeyPath = @"Software\Microsoft\Windows\CurrentVersion\Themes\Personalize";
-
         private const string RegistryValueName = "AppsUseLightTheme";
 
         private Uri _currentTheme = null;
@@ -58,7 +57,7 @@ namespace FastMove.WPF
             return registryValue > 0 ? ResourceLocator.LightColorScheme : ResourceLocator.DarkColorScheme;
         }
 
-        public void ChangeThemeIfWindowsChangedIt()
+        public void SetDefaultTheme()
         {
             var newWindowsTheme = GetWindowsTheme();
             if (_currentTheme != newWindowsTheme)
@@ -66,6 +65,25 @@ namespace FastMove.WPF
                 _currentTheme = newWindowsTheme;
                 ChangeTheme(_currentTheme);
             }
+        }
+
+        public void ToggleTheme()
+        {            
+            if (_currentTheme == ResourceLocator.DarkColorScheme)
+            { 
+                ResourceLocator.SetColorScheme(parent.Resources, ResourceLocator.LightColorScheme, ResourceLocator.DarkColorScheme);
+                _currentTheme = ResourceLocator.LightColorScheme;
+            }
+            else
+            {
+                ResourceLocator.SetColorScheme(parent.Resources, ResourceLocator.DarkColorScheme, ResourceLocator.LightColorScheme);
+                _currentTheme = ResourceLocator.DarkColorScheme;
+            }            
+        }
+
+        public Uri GetTheme()
+        {
+            return _currentTheme;
         }
     }
 }

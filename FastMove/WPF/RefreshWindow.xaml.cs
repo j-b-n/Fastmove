@@ -1,5 +1,4 @@
-﻿using AdonisUI;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,13 +16,13 @@ using System.Windows.Shapes;
 namespace FastMove.WPF
 {
     /// <summary>
-    /// Interaction logic for AboutWindow.xaml
+    /// Interaction logic for RefreshWindow.xaml
     /// </summary>
-    public partial class AboutWindow : AdonisUI.Controls.AdonisWindow
+    public partial class RefreshWindow : AdonisUI.Controls.AdonisWindow
     {
         ThemeManager themeManager = null;
 
-        public AboutWindow()
+        public RefreshWindow()
         {
             InitializeComponent();
             AdonisUI.SpaceExtension.SetSpaceResourceOwnerFallback(this);
@@ -41,20 +40,9 @@ namespace FastMove.WPF
 
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            this.Close();
-        }
-
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            UpdateInfo ui = new UpdateInfo();
 
-            int AddinUpdateAvailable = ui.CheckForUpdate();
-            string runningVersion = Globals.ThisAddIn.publishedVersion;
-
-            ThisVersionTB.Text = string.Format("Version: '{0}'", runningVersion);
-            OnlineVersionTB.Text = string.Format("Online version: '{0}'", ui.UpdateVariables.Version);
 
             ///Update StatusBar content
 

@@ -11,7 +11,7 @@
              Loaded="Window_Loaded"             
              Title="FastMove"
              Width="700"
-             Height="400"
+             Height="530"
              Visibility="Visible">
 
     <Window.Resources>
@@ -27,11 +27,61 @@
         <Style TargetType="Window" BasedOn="{StaticResource {x:Type Window}}"/>
     </Window.Style>
 
-    <Grid Margin="0,0,10,0" >
-        <Button Content="Ok" HorizontalAlignment="Left" Margin="580,10,0,0" VerticalAlignment="Top" Click="Button_Click" RenderTransformOrigin="-2.664,1.163" Height="24" Width="100"/>
-        <TextBox HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="550"/>
-        <ListBox x:Name="ListBox1" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="10,43,130,176"/>
-        <Button x:Name="CancelBtn" Content="Cancel" HorizontalAlignment="Left" Margin="580,58,0,0" VerticalAlignment="Top" Width="100" Height="25" Click="CancelBtn_Click"/>
-        <Button x:Name="AboutBtn" Content="About" HorizontalAlignment="Left" Margin="580,336,0,0" VerticalAlignment="Top" Width="100" Height="26" Click="AboutBtn_Click"/>
-    </Grid>
+    <adonisControls:AdonisWindow.TitleBarContent>
+        <StackPanel Orientation="Horizontal"
+                    HorizontalAlignment="Right">
+            <Button x:Name="ToogleThemeBtn"
+                    Click="ToogleThemeBtn_Click"
+                    Content="☀️"
+                    Style="{DynamicResource {x:Static adonisUi:Styles.WindowButton}}"
+                    
+                    FontFamily="Segoe UI"
+                    FontSize="14"/>
+        </StackPanel>
+    </adonisControls:AdonisWindow.TitleBarContent>
+
+    <DockPanel>
+        <StatusBar DockPanel.Dock="Bottom" Height="25">
+
+            <StatusBarItem DockPanel.Dock="Right" >
+                <TextBlock x:Name="SBVersion" TextWrapping="Wrap" Text="Version" />
+            </StatusBarItem>
+
+            <StatusBarItem>
+                <TextBlock x:Name="SBToday" TextWrapping="Wrap" Text="Today: 0" />
+            </StatusBarItem>
+
+            <StatusBarItem DockPanel.Dock="Left">
+                <TextBlock x:Name="SBLastWeek" TextWrapping="Wrap" Text="Last week: 0" />
+            </StatusBarItem>
+        </StatusBar>
+
+        <Grid Margin="0,0,10,0" >
+            <Button Content="Ok" HorizontalAlignment="Left" Margin="580,10,0,0" VerticalAlignment="Top" Click="Button_Click" RenderTransformOrigin="-2.664,1.163" Height="24" Width="100"/>
+            <Button x:Name="CancelBtn" Content="Cancel" HorizontalAlignment="Left" Margin="580,42,0,0" VerticalAlignment="Top" Width="100" Height="24" Click="CancelBtn_Click"/>
+            <Button x:Name="DeferBtn" Content="Defer emails" HorizontalAlignment="Left" Margin="580,327,0,0" VerticalAlignment="Top" Width="100" Height="24" Click="DeferBtn_Click"/>
+            <Button x:Name="RefreshBtn" Content="Refresh folders" HorizontalAlignment="Left" Margin="580,357,0,0" VerticalAlignment="Top" Width="100" Height="24" Click="RefreshBtn_Click"/>
+            <Button x:Name="StatisticsBtn" Content="Statistics" HorizontalAlignment="Left" Margin="580,386,0,0" VerticalAlignment="Top" Width="100" Height="24" Click="StatisticsBtn_Click"/>
+            <Button x:Name="SettingsBtn" Content="Settings" HorizontalAlignment="Left" Margin="580,415,0,0" VerticalAlignment="Top" Width="100" Height="24" Click="SettingsBtn_Click"/>
+            <Button x:Name="AboutBtn" Content="About" HorizontalAlignment="Left" Margin="580,443,0,0" VerticalAlignment="Top" Width="100" Height="24" Click="AboutBtn_Click"/>
+
+            <TextBox x:Name="TextBox1" HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" TextChanged="TextBox1_TextChanged" Text="" VerticalAlignment="Top" Width="550"/>
+            <ListBox x:Name="ListBox1" d:ItemsSource="{d:SampleData ItemCount=5}" SelectionMode="Single" Margin="10,58,130,290"/>
+            <ListBox x:Name="RecentListBox" d:ItemsSource="{d:SampleData ItemCount=5}" SelectionMode="Single" Margin="10,250,130,139"/>
+
+            <TextBlock HorizontalAlignment="Left" Margin="10,229,0,0" TextWrapping="Wrap" VerticalAlignment="Top"><Run Language="sv-se" Text="Recent:"/></TextBlock>
+            <TextBlock x:Name="TextMoveMail" HorizontalAlignment="Left" Margin="10,34,0,0" TextWrapping="Wrap" VerticalAlignment="Top"><Run Text="Move mail to"/><Run Language="sv-se" Text=" (0): "/></TextBlock>
+            <TextBlock HorizontalAlignment="Left" Margin="87,384,0,0" TextWrapping="Wrap" Text="Average time for mails in Inbox: " VerticalAlignment="Top"/>
+            <TextBlock HorizontalAlignment="Left" Margin="114,417,0,0" TextWrapping="Wrap" Text="Average time before move:" VerticalAlignment="Top"/>
+            <TextBlock HorizontalAlignment="Left" Margin="226,450,0,0" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="4.286,0.378"><Run Language="sv-se" Text="Defer:"/></TextBlock>
+            <CheckBox x:Name="DeferCheckBox" Content="" HorizontalAlignment="Left" Margin="267,451,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.759,0.921" Checked="DeferCheckBox_Checked" Unchecked="DeferCheckBox_Checked"/>
+            <TextBox x:Name="AvgTimeInboxTextBox" HorizontalAlignment="Left" Margin="267,380,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="293" IsHitTestVisible="False"/>
+            <TextBox x:Name="AvgTimeTextBox" HorizontalAlignment="Left" Margin="267,417,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="293" IsHitTestVisible="False"/>
+            <TextBox x:Name="DeferTextBox" HorizontalAlignment="Left" Margin="290,446,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="270" IsHitTestVisible="False"/>
+
+        </Grid>
+    </DockPanel>
+
+
+
 </adonisControls:AdonisWindow>

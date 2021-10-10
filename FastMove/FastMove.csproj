@@ -270,7 +270,19 @@
     <Compile Include="WPF\AboutWindow.xaml.cs">
       <DependentUpon>AboutWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="WPF\DeferWindow.xaml.cs">
+      <DependentUpon>DeferWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WPF\RefreshWindow.xaml.cs">
+      <DependentUpon>RefreshWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="WPF\ResourceLocator.cs" />
+    <Compile Include="WPF\SettingsWindow.xaml.cs">
+      <DependentUpon>SettingsWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WPF\StatisticsWindow.xaml.cs">
+      <DependentUpon>StatisticsWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="WPF\ThemeManager.cs" />
     <Compile Include="WPF\Window1.xaml.cs">
       <DependentUpon>Window1.xaml</DependentUpon>
@@ -345,6 +357,22 @@
   </ItemGroup>
   <ItemGroup>
     <Page Include="WPF\AboutWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WPF\DeferWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WPF\RefreshWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WPF\SettingsWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WPF\StatisticsWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
