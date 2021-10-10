@@ -212,8 +212,8 @@ namespace FastMove
             try
             {
                 this.ribbon.Invalidate();
-                Form1 _Form = new Form1();
-                _Form.Show();
+                //Form1 _Form = new Form1();
+                //_Form.Show();
 
                 WPF.Window1 ui = new WPF.Window1();
                 ui.Show();
