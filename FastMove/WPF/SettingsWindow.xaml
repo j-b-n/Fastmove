@@ -9,7 +9,8 @@
              xmlns:adonisControls="clr-namespace:AdonisUI.Controls;assembly=AdonisUI"
              xmlns:adonisExtensions="clr-namespace:AdonisUI.Extensions;assembly=AdonisUI"   
              Title="Settings"
-             d:DesignHeight="450" d:DesignWidth="800" Loaded="Window_Loaded">
+             Height="410" Width="520" Loaded="Window_Loaded"
+             ResizeMode="NoResize">
 
     <Window.Resources>
         <ResourceDictionary>
@@ -55,6 +56,17 @@
         </StatusBar>
 
         <Grid>
+            <Label x:Name="AvailableFoldersLabel" Content="Available folders (0):" HorizontalAlignment="Left" Margin="14,10,0,0" VerticalAlignment="Top"/>
+            <Label x:Name="IgnoreFoldersLabel" Content="Folders to ignore (0):" HorizontalAlignment="Left" Margin="300,10,0,0" VerticalAlignment="Top"/>
+            <ListBox x:Name="InboxFolders" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="0,30,330,90"/>
+            <ListBox x:Name="IgnoreFolders" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="330,30,0,90"/>
+            <Button x:Name="AddBtn" Content="Add -->" HorizontalAlignment="Center" Margin="0,50,0,0" VerticalAlignment="Top" Width="80" Click="AddBtn_Click"/>
+            <Button x:Name="RemoveBtn" Content="&lt;-- Remove" HorizontalAlignment="Center" Margin="0,90,0,0" VerticalAlignment="Top" Width="80" Click="RemoveBtn_Click"/>
+            <Button x:Name="OkBtn" Content="Ok" HorizontalAlignment="Left" Margin="434,304,0,0" VerticalAlignment="Top" IsDefault="True" Click="OkBtn_Click"/>
+            <Button x:Name="CancelBtn" Content="Cancel" HorizontalAlignment="Left" Margin="361,304,0,0" VerticalAlignment="Top" IsCancel="True" Click="CancelBtn_Click"/>
+            <Label Content="Update intervall" HorizontalAlignment="Left" Margin="10,291,0,0" VerticalAlignment="Top"/>
+            <CheckBox x:Name="DebugCB" Content="Debug mode" HorizontalAlignment="Left" Margin="10,319,0,0" VerticalAlignment="Top" Checked="DebugCB_Checked" Unchecked="DebugCB_Checked"/>
+            <ComboBox x:Name="UpdateCB" HorizontalAlignment="Left" Margin="122,287,0,0" VerticalAlignment="Top" Width="178"/>
 
         </Grid>
     </DockPanel>

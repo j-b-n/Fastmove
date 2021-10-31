@@ -32,6 +32,7 @@ namespace FastMove
     public class Ribbon1 : Office.IRibbonExtensibility
     {        
         private Office.IRibbonUI ribbon;
+        
         //readonly List<string> lastList = new List<string>(); // <-- Add this
 
 
@@ -53,7 +54,7 @@ namespace FastMove
 
         public void Ribbon_Load(Office.IRibbonUI ribbonUI)
         {
-            this.ribbon = ribbonUI;
+            this.ribbon = ribbonUI;            
         }
 
         public string Menu1_GetContent(Office.IRibbonControl control)
@@ -200,7 +201,7 @@ namespace FastMove
             if (Globals.ThisAddIn._recentItems.Count >= 9)
                 Globals.ThisAddIn.MoveMail(Globals.ThisAddIn._recentItems[9].ToString());
             this.ribbon.Invalidate();
-        }
+        }        
 
         public void FastMoveMail(Office.IRibbonControl control)
         {
@@ -211,13 +212,13 @@ namespace FastMove
 
             try
             {
-                this.ribbon.Invalidate();
                 //Form1 _Form = new Form1();
                 //_Form.Show();
+                //
+                WPF.MainWindow mainwindow = new WPF.MainWindow();
+                mainwindow.Show();
 
-                WPF.MainWindow ui = new WPF.MainWindow();
-                ui.Show();
-                
+                this.ribbon.Invalidate();
             }
             catch (Exception e)
             {

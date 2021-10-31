@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -18,7 +19,7 @@ using System.Windows.Shapes;
 namespace FastMove.WPF
 {
     /// <summary>
-    /// Interaction logic for Window1.xaml
+    /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : AdonisUI.Controls.AdonisWindow
     {
@@ -27,7 +28,9 @@ namespace FastMove.WPF
         public MainWindow()
         {
             AdonisUI.SpaceExtension.SetSpaceResourceOwnerFallback(this);
-            InitializeComponent();                                
+            InitializeComponent();
+
+            DataContext = this;
         }
 
         public string Pad(int i)
@@ -43,6 +46,8 @@ namespace FastMove.WPF
         {
             themeManager = new ThemeManager(this);
             themeManager.SetDefaultTheme();
+
+            //ListBox1.ItemsSource = FastMove.Globals.ThisAddIn._items;
 
             ListBox1.ItemsSource = Globals.ThisAddIn._items;
             RecentListBox.ItemsSource = Globals.ThisAddIn._recentItems;
@@ -116,19 +121,26 @@ namespace FastMove.WPF
             SBVersion.Text = string.Format("Version: {0}", Globals.ThisAddIn.publishedVersion);
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            object selectedItem = ListBox1.SelectedItem;
-            
-            MessageBox.Show(selectedItem.ToString());
-            //Globals.ThisAddIn.MoveMail(selectedItem.ToString());
-            this.Close();
-        }
-
         private void CancelBtn_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
-        }        
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            object selectedItem = ListBox1.SelectedItem;                        
+            Globals.ThisAddIn.MoveMail(selectedItem.ToString());
+            this.Close();
+        }
+
+        private void TextBox1_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.Key != Key.Enter) return;
+
+            object selectedItem = ListBox1.SelectedItem;            
+            Globals.ThisAddIn.MoveMail(selectedItem.ToString());
+            this.Close();
+        }
 
         private bool Compare(string s)
         {
@@ -219,18 +231,31 @@ namespace FastMove.WPF
             WPF.DeferWindow ui = new WPF.DeferWindow();
             ui.Show();
         }
+
+        readonly WPF.RefreshWindow ui = new WPF.RefreshWindow();
         private void RefreshBtn_Click(object sender, RoutedEventArgs e)
-        {
-            WPF.RefreshWindow ui = new WPF.RefreshWindow();
+        {            
             ui.Show();
-        }        
+            Thread thread = new Thread(UpdateFolders);
+            thread.Start();                                    
+        }
+        private void UpdateFolders()
+        {
+            Globals.ThisAddIn.EnumerateFoldersInDefaultStore();
+            Globals.ThisAddIn.CalculateMeanInboxTime();
+
+            this.Dispatcher.BeginInvoke(new Action(() =>
+            {
+                ui.Close();
+            }));
+        }
         private void StatisticsBtn_Click(object sender, RoutedEventArgs e)
         {
             WPF.StatisticsWindow ui = new WPF.StatisticsWindow();
             ui.Show();
         }
         private void SettingsBtn_Click(object sender, RoutedEventArgs e)
-        {
+        {            
             WPF.SettingsWindow ui = new WPF.SettingsWindow();
             ui.Show();
         }
@@ -238,6 +263,6 @@ namespace FastMove.WPF
         {
             WPF.AboutWindow ui = new WPF.AboutWindow();
             ui.Show();
-        }        
+        }
     }    
 }

@@ -3,16 +3,19 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:FastMove.WPF"
+             xmlns:local="clr-namespace:FastMove.WPF"             
              xmlns:adonisUi="clr-namespace:AdonisUI;assembly=AdonisUI"
              xmlns:adonisControls="clr-namespace:AdonisUI.Controls;assembly=AdonisUI"
              xmlns:adonisExtensions="clr-namespace:AdonisUI.Extensions;assembly=AdonisUI"             
              mc:Ignorable="d"              
-             Loaded="Window_Loaded"             
+             Loaded="Window_Loaded"                                                       
              Title="FastMove"
              Width="700"
              Height="530"
-             Visibility="Visible">
+             WindowStartupLocation="Manual" 
+             Left="100" Top="50"
+             Visibility="Visible"
+             ResizeMode="NoResize">
 
     <Window.Resources>
         <ResourceDictionary>
@@ -40,7 +43,7 @@
         </StackPanel>
     </adonisControls:AdonisWindow.TitleBarContent>
 
-    <DockPanel>
+    <DockPanel FocusManager.FocusedElement="{Binding ElementName=TextBox1}">
         <StatusBar DockPanel.Dock="Bottom" Height="25">
 
             <StatusBarItem DockPanel.Dock="Right" >
@@ -58,14 +61,14 @@
 
         <Grid Margin="0,0,10,0" >
             <Button Content="Ok" HorizontalAlignment="Left" Margin="580,10,0,0" VerticalAlignment="Top" Click="Button_Click" RenderTransformOrigin="-2.664,1.163" Height="24" Width="100"/>
-            <Button x:Name="CancelBtn" Content="Cancel" HorizontalAlignment="Left" Margin="580,42,0,0" VerticalAlignment="Top" Width="100" Height="24" Click="CancelBtn_Click"/>
+            <Button x:Name="CancelBtn" Content="Cancel" HorizontalAlignment="Left" Margin="580,42,0,0" VerticalAlignment="Top" Width="100" Height="24" Click="CancelBtn_Click" IsCancel="True"/>
             <Button x:Name="DeferBtn" Content="Defer emails" HorizontalAlignment="Left" Margin="580,327,0,0" VerticalAlignment="Top" Width="100" Height="24" Click="DeferBtn_Click"/>
             <Button x:Name="RefreshBtn" Content="Refresh folders" HorizontalAlignment="Left" Margin="580,357,0,0" VerticalAlignment="Top" Width="100" Height="24" Click="RefreshBtn_Click"/>
             <Button x:Name="StatisticsBtn" Content="Statistics" HorizontalAlignment="Left" Margin="580,386,0,0" VerticalAlignment="Top" Width="100" Height="24" Click="StatisticsBtn_Click"/>
             <Button x:Name="SettingsBtn" Content="Settings" HorizontalAlignment="Left" Margin="580,415,0,0" VerticalAlignment="Top" Width="100" Height="24" Click="SettingsBtn_Click"/>
             <Button x:Name="AboutBtn" Content="About" HorizontalAlignment="Left" Margin="580,443,0,0" VerticalAlignment="Top" Width="100" Height="24" Click="AboutBtn_Click"/>
 
-            <TextBox x:Name="TextBox1" HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" TextChanged="TextBox1_TextChanged" Text="" VerticalAlignment="Top" Width="550"/>
+            <TextBox x:Name="TextBox1" HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" TextChanged="TextBox1_TextChanged" Text="" VerticalAlignment="Top" Width="550" KeyUp="TextBox1_KeyUp"/>
             <ListBox x:Name="ListBox1" d:ItemsSource="{d:SampleData ItemCount=5}" SelectionMode="Single" Margin="10,58,130,290"/>
             <ListBox x:Name="RecentListBox" d:ItemsSource="{d:SampleData ItemCount=5}" SelectionMode="Single" Margin="10,250,130,139"/>
 

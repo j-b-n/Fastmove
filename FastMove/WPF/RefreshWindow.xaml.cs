@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -41,9 +42,7 @@ namespace FastMove.WPF
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-
-
+        {            
             ///Update StatusBar content
 
             Dictionary<DateTime, int> _MailsPerDay = Globals.ThisAddIn._MailsPerDay;
@@ -70,8 +69,9 @@ namespace FastMove.WPF
 
             SBLastWeek.Text = string.Format("Last week: {0}", count);
 
-            SBVersion.Text = string.Format("Version: {0}", Globals.ThisAddIn.publishedVersion);
+            SBVersion.Text = string.Format("Version: {0}", Globals.ThisAddIn.publishedVersion);            
 
-        }
+            
+        }        
     }
 }

@@ -53,6 +53,8 @@
     <FriendlyName>FastMove</FriendlyName>
     <OfficeApplicationDescription>An Outlook add-in to move mails from the inbox to other folders!</OfficeApplicationDescription>
     <LoadBehavior>3</LoadBehavior>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.0,Profile=Client">
