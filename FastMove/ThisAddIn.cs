@@ -898,6 +898,8 @@ namespace FastMove
             AutoClosingMessageBox.Show("Sending mail at: "+ deferTime.ToString(),"Defer time",600);
             
             msg.DeferredDeliveryTime = deferTime;
+
+            
         }
 
         #endregion
@@ -930,8 +932,8 @@ namespace FastMove
             myInspector = Inspector;
             if (myInspector.CurrentItem is Outlook.MailItem)
             {
-                if (DebugMode)
-                    ShowMessageBox("New mail: " + DateTime.Now.ToLongTimeString(), "");
+                //if (DebugMode)
+                 ShowMessageBox("New mail: " + DateTime.Now.ToLongTimeString(), "");
                 CountMail(myInspector.CurrentItem);                
             }
         }
@@ -991,8 +993,11 @@ namespace FastMove
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
+
+        
         private void ThisAddIn_Startup(object sender, System.EventArgs e)
-        {
+        {            
+
             foreach (Outlook.Account account in Application.Session.Accounts)
             {
                 _accounts.Add(account.SmtpAddress);
@@ -1020,9 +1025,14 @@ namespace FastMove
             folder.Items.ItemAdd += new Microsoft.Office.Interop.Outlook.ItemsEvents_ItemAddEventHandler(Items_ItemAdd);                       
             
             Application.Inspectors.NewInspector += new Outlook.InspectorsEvents_NewInspectorEventHandler(Inspectors_NewInspector);
-           
+
+
             //Create an event handler for when items are sent
             Application.ItemSend += new ApplicationEvents_11_ItemSendEventHandler(DeferEmail);
+            
+            
+
+            
 
 
             /*
@@ -1038,7 +1048,7 @@ namespace FastMove
             StartUpTimer.Tick += new EventHandler(DelayedStartup);
             StartUpTimer.Interval = 1000 * 5; //5 seconds
             StartUpTimer.Enabled = true;
-            StartUpTimer.Start();                              
+            StartUpTimer.Start();                    
         }
 
 

@@ -69,8 +69,8 @@
             <Button x:Name="AboutBtn" Content="About" HorizontalAlignment="Left" Margin="580,443,0,0" VerticalAlignment="Top" Width="100" Height="24" Click="AboutBtn_Click"/>
 
             <TextBox x:Name="TextBox1" HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" TextChanged="TextBox1_TextChanged" Text="" VerticalAlignment="Top" Width="550" KeyUp="TextBox1_KeyUp"/>
-            <ListBox x:Name="ListBox1" d:ItemsSource="{d:SampleData ItemCount=5}" SelectionMode="Single" Margin="10,58,130,290"/>
-            <ListBox x:Name="RecentListBox" d:ItemsSource="{d:SampleData ItemCount=5}" SelectionMode="Single" Margin="10,250,130,139"/>
+            <ListBox x:Name="ListBox1" d:ItemsSource="{d:SampleData ItemCount=5}" SelectionMode="Single" Margin="10,0,130,265" Height="152" VerticalAlignment="Bottom" KeyUp="ListBox1_KeyUp" MouseDoubleClick="ListBox1_MouseDoubleClick" BorderThickness="1,1,1,1"/>
+            <ListBox x:Name="RecentListBox" d:ItemsSource="{d:SampleData ItemCount=5}" SelectionMode="Single" Margin="10,250,130,120" BorderThickness="1,1,1,1"/>
 
             <TextBlock HorizontalAlignment="Left" Margin="10,229,0,0" TextWrapping="Wrap" VerticalAlignment="Top"><Run Language="sv-se" Text="Recent:"/></TextBlock>
             <TextBlock x:Name="TextMoveMail" HorizontalAlignment="Left" Margin="10,34,0,0" TextWrapping="Wrap" VerticalAlignment="Top"><Run Text="Move mail to"/><Run Language="sv-se" Text=" (0): "/></TextBlock>

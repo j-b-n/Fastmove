@@ -264,5 +264,21 @@ namespace FastMove.WPF
             WPF.AboutWindow ui = new WPF.AboutWindow();
             ui.Show();
         }
+
+        private void ListBox1_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.Key != Key.Enter) return;
+
+            object selectedItem = ListBox1.SelectedItem;
+            Globals.ThisAddIn.MoveMail(selectedItem.ToString());
+            this.Close();
+        }
+
+        private void ListBox1_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            object selectedItem = ListBox1.SelectedItem;
+            Globals.ThisAddIn.MoveMail(selectedItem.ToString());
+            this.Close();
+        }
     }    
 }
