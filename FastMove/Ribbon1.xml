@@ -12,17 +12,28 @@
 							supertip="Move an item to a folder."								
 							onAction="FastMoveMail" imageMso="MoveItem" />
 					
-					<!--<dynamicMenu label="Menu" id="menu1" getContent="menu1_GetContent" />-->
-					
-					
-
-					<!--
-						<button id="btn1" imageMso="FileUpdate" label="file1" onAction="FastMoveMail_btn1"/>
-						<button id="btn2" imageMso="FileUpdate" label="file1" onAction="FastMoveMail_btn2"/>
-					-->
+					<!--<dynamicMenu label="Menu" id="menu1" getContent="menu1_GetContent" />-->										
 
 				</group> 
 			</tab>
+			<tab idMso="TabNewMailMessage">
+				<group id="MyGroup1" label="FastMove">
+					<button id="MyButton1" imageMso="MoveItem" label="Defer mail" size="large"/>
+				</group>
+			</tab>
 		</tabs>
+
+		<contextualTabs>
+			<tabSet idMso="TabComposeTools">
+				<tab idMso="TabMessage">
+					<group id="MyGroup" label="My Group">
+						<button id="MyButton" imageMso="HappyFace" label="MyButton" size="large"/>
+					</group>
+				</tab>
+				
+			</tabSet>						
+			
+		</contextualTabs>
+
 	</ribbon>
 </customUI>

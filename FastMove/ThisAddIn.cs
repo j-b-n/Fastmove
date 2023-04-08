@@ -7,6 +7,7 @@ using Office = Microsoft.Office.Core;
 using Polenter.Serialization;
 using Microsoft.Office.Interop.Outlook;
 using System.Threading;
+using System.Windows.Threading;
 
 namespace FastMove
 {
@@ -876,6 +877,7 @@ namespace FastMove
             var msg = Item as Outlook.MailItem;
             //DateTime sendTime;
             DateTime deferTime;
+            
 
             if (_deferEmails == false)
             {                
@@ -927,16 +929,7 @@ namespace FastMove
         }
         */
 
-        void Inspectors_NewInspector(Outlook.Inspector Inspector)
-        {
-            myInspector = Inspector;
-            if (myInspector.CurrentItem is Outlook.MailItem)
-            {
-                //if (DebugMode)
-                 ShowMessageBox("New mail: " + DateTime.Now.ToLongTimeString(), "");
-                CountMail(myInspector.CurrentItem);                
-            }
-        }
+        
 
         #endregion
 
@@ -994,10 +987,17 @@ namespace FastMove
         /// <param name="sender"></param>
         /// <param name="e"></param>
 
-        
+
+        Microsoft.Office.Interop.Outlook.Application app = null;
+        Outlook.Explorer mainExplorer;
+
+        private readonly System.Windows.Forms.Timer _newInspectorStartupTimer = new System.Windows.Forms.Timer();
+
+        Outlook.Inspectors inspectors;
+
+
         private void ThisAddIn_Startup(object sender, System.EventArgs e)
         {            
-
             foreach (Outlook.Account account in Application.Session.Accounts)
             {
                 _accounts.Add(account.SmtpAddress);
@@ -1005,8 +1005,7 @@ namespace FastMove
 
             LoadVariables();
 
-            Microsoft.Office.Interop.Outlook.Application app = this.Application;
-
+            app = Application;            
             ((Microsoft.Office.Interop.Outlook.ApplicationEvents_11_Event)app).Quit +=
                 new Microsoft.Office.Interop.Outlook.ApplicationEvents_11_QuitEventHandler(HandlerQuit);
 
@@ -1018,23 +1017,36 @@ namespace FastMove
             ((Microsoft.Office.Interop.Outlook.ApplicationEvents_11_Event)app).NewMailEx +=
                 new Microsoft.Office.Interop.Outlook.ApplicationEvents_11_NewMailExEventHandler(HandlerNewMailEx);
 
+            /*
             Outlook.Folder folder =
              Application.Session.GetDefaultFolder(
               Outlook.OlDefaultFolders.olFolderInbox) as Outlook.Folder;
 
-            folder.Items.ItemAdd += new Microsoft.Office.Interop.Outlook.ItemsEvents_ItemAddEventHandler(Items_ItemAdd);                       
-            
-            Application.Inspectors.NewInspector += new Outlook.InspectorsEvents_NewInspectorEventHandler(Inspectors_NewInspector);
+            folder.Items.ItemAdd += new Microsoft.Office.Interop.Outlook.ItemsEvents_ItemAddEventHandler(Items_ItemAdd);
+            */
 
+            /*
+            inspectors = this.Application.Inspectors;
+            inspectors.NewInspector +=
+            new Microsoft.Office.Interop.Outlook.InspectorsEvents_NewInspectorEventHandler(Inspectors_NewInspector);
+            */
+
+
+            /*
+            mainExplorer = this.Application.ActiveExplorer();
+            mainExplorer.SelectionChange +=
+            new Microsoft.Office.Interop.Outlook.ExplorerEvents_10_SelectionChangeEventHandler(SelectionChange);
+            
+
+            _newInspectorStartupTimer.Interval = 1000 * 2; //5 seconds
+            _newInspectorStartupTimer.Tick += new EventHandler(NewInspectorStartupTimer_Tick);
+            _newInspectorStartupTimer.Enabled = true;
+            _newInspectorStartupTimer.Start();
+            */
 
             //Create an event handler for when items are sent
             Application.ItemSend += new ApplicationEvents_11_ItemSendEventHandler(DeferEmail);
-            
-            
-
-            
-
-
+                        
             /*
              this.Application.Session.
                   DefaultStore.GetRootFolder().Folders.FolderAdd +=
@@ -1051,6 +1063,84 @@ namespace FastMove
             StartUpTimer.Start();                    
         }
 
+        private void SelectionChange()
+        {
+            Outlook.Explorer currentExplorer = null;
+            currentExplorer = this.Application.ActiveExplorer();            
+
+            try
+            {
+                if (this.Application.ActiveExplorer().Selection.Count > 0)
+                {
+                    Object selObject = this.Application.ActiveExplorer().Selection[1];
+                    if (selObject is Outlook.MailItem)
+                    {
+                        Outlook.MailItem mailItem =
+                            (selObject as Outlook.MailItem);
+                        
+                        ((Outlook.ItemEvents_10_Event)mailItem).Reply += new Microsoft.Office.Interop.Outlook.ItemEvents_10_ReplyEventHandler(AddinModule_Reply);         
+                    }
+                }                
+            }
+            catch (System.Exception ex)
+            {
+                ShowMessageBox(ex.Message, "");
+            }         
+        }
+
+        void AddinModule_Reply(object Response, ref bool Cancel)
+        {
+            // TODO: add some code
+            Outlook.MailItem mailItem = (Outlook.MailItem)Response;
+
+            bool cancel = false;
+            if (mailItem.DeferredDeliveryTime == null)
+                DeferEmail(mailItem, ref cancel);
+
+            WindowFormRegionCollection formRegions =
+            Globals.FormRegions
+             [Globals.ThisAddIn.Application.ActiveInspector()];
+            
+
+            //ShowMessageBox("Reply event! ", "");
+        }
+
+        private void NewInspectorStartupTimer_Tick(object sender, EventArgs e)
+        {
+            int inspectorCount = Application.Inspectors.Count;
+            if (inspectorCount > 0)
+            {
+                for (int i = 1; i <= inspectorCount; ++i)
+                {
+                    Inspector inspector = Application.Inspectors[i];
+                    Inspectors_NewInspector(inspector);
+                }
+            }
+
+            //Clean-up!
+            _newInspectorStartupTimer.Stop();
+            _newInspectorStartupTimer.Dispose();
+        }
+
+        
+
+        void Inspectors_NewInspector(Outlook.Inspector Inspector)
+        {
+            //ShowMessageBox("New inspector: " + DateTime.Now.ToLongTimeString(), "");
+
+            Outlook.MailItem mailItem = Inspector.CurrentItem as Outlook.MailItem;
+            if (mailItem != null)
+            {
+                
+                if (mailItem.EntryID == null)
+                {
+                    //mailItem.Subject = "This text was added by using code";
+                    //mailItem.Body = "This text was added by using code";
+                }
+
+                //ShowMessageBox("New mail: " + mailItem.Subject, "");            
+            }
+        }
 
         private void ThisAddIn_Shutdown(object sender, System.EventArgs e)
         {

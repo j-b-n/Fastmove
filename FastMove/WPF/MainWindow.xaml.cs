@@ -47,7 +47,7 @@ namespace FastMove.WPF
             themeManager = new ThemeManager(this);
             themeManager.SetDefaultTheme();
 
-            //ListBox1.ItemsSource = FastMove.Globals.ThisAddIn._items;
+            //ListBox1.ItemsSource = FastMove.Globals.ThisAddIn._items;            
 
             ListBox1.ItemsSource = Globals.ThisAddIn._items;
             RecentListBox.ItemsSource = Globals.ThisAddIn._recentItems;
@@ -119,6 +119,8 @@ namespace FastMove.WPF
             SBLastWeek.Text = string.Format("Last week: {0}", count);
 
             SBVersion.Text = string.Format("Version: {0}", Globals.ThisAddIn.publishedVersion);
+
+            OKBtn.Content = "Save";
         }
 
         private void CancelBtn_Click(object sender, RoutedEventArgs e)
@@ -128,6 +130,13 @@ namespace FastMove.WPF
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
+            if((string)OKBtn.Content == "Save")
+            {
+                Globals.ThisAddIn.WriteVariables();
+                this.Close();
+                return;
+            }
+
             object selectedItem = ListBox1.SelectedItem;                        
             Globals.ThisAddIn.MoveMail(selectedItem.ToString());
             this.Close();
@@ -135,7 +144,7 @@ namespace FastMove.WPF
 
         private void TextBox1_KeyUp(object sender, KeyEventArgs e)
         {
-            if (e.Key != Key.Enter) return;
+            if (e.Key != Key.Enter) return;            
 
             object selectedItem = ListBox1.SelectedItem;            
             Globals.ThisAddIn.MoveMail(selectedItem.ToString());
@@ -160,6 +169,7 @@ namespace FastMove.WPF
         {
             if (TextBox1.Text.Length > 0)
             {
+                OKBtn.Content = "Ok";
                 List<string> Searchitems = Globals.ThisAddIn._items.FindAll(Compare);
                 List<string> _Searchitems = new List<string>();
 
@@ -279,6 +289,22 @@ namespace FastMove.WPF
             object selectedItem = ListBox1.SelectedItem;
             Globals.ThisAddIn.MoveMail(selectedItem.ToString());
             this.Close();
+        }
+
+        private void ListBox1_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if ((string)OKBtn.Content == "Save")
+            {
+                OKBtn.Content = "Ok";
+            }
+        }
+
+        private void RecentListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if ((string)OKBtn.Content == "Save")
+            {
+                OKBtn.Content = "Ok";
+            }            
         }
     }    
 }
